@@ -221,18 +221,42 @@ const HistoryList = () => {
     }
   });
 
-  // 空格键预览图片
-  useKeyPress("space", (event) => {
-    event?.preventDefault();
-    const { activeId } = rootState;
-    if (!activeId) return;
+  // 空格键预览/关闭图片（使用原生事件确保获取最新状态）
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== " ") return;
 
-    const item = rootState.list.find((i) => i.id === activeId);
-    if (!item || item.type !== "image") return;
+      // 如果焦点在输入框中，不处理
+      const target = event.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable
+      ) {
+        return;
+      }
 
-    setPreviewImage(item as DatabaseSchemaHistory<"image">);
-    setPreviewVisible(true);
-  });
+      event.preventDefault();
+
+      // 如果预览已经打开，关闭预览
+      if (previewVisible) {
+        handleClosePreview();
+        return;
+      }
+
+      const { activeId } = rootState;
+      if (!activeId) return;
+
+      const item = rootState.list.find((i) => i.id === activeId);
+      if (!item || item.type !== "image") return;
+
+      setPreviewImage(item as DatabaseSchemaHistory<"image">);
+      setPreviewVisible(true);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [previewVisible, rootState.activeId, rootState.list]);
 
   // 关闭图片预览
   const handleClosePreview = () => {

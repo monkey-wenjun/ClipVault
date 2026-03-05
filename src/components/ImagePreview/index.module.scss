@@ -14,12 +14,12 @@
   }
 
   :global(.ant-modal-body) {
-    padding: 24px;
+    padding: 16px 24px 24px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 300px;
-    max-height: 80vh;
+    max-height: 90vh;
     overflow: auto;
   }
 
@@ -48,8 +48,8 @@
 }
 
 .image {
-  max-width: 95vw;
-  max-height: 85vh;
+  max-width: 98vw;
+  max-height: 92vh;
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
