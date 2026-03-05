@@ -1,0 +1,18 @@
+"$schema" = "schemas/schema.json"
+
+[default]
+description = "Default permissions for the image hosting plugin"
+permissions = [
+    "allow-upload-image",
+    "allow-upload-image-to-default",
+]
+
+[[permission]]
+identifier = "allow-upload-image"
+description = "Allows uploading images to image hosting"
+commands.allow = ["upload_image"]
+
+[[permission]]
+identifier = "allow-upload-image-to-default"
+description = "Allows uploading images to default image hosting"
+commands.allow = ["upload_image_to_default"]

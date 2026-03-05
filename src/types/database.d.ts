@@ -16,10 +16,11 @@ export type DatabaseSchemaHistory<
   createTime: string;
   note?: string;
   subtype?: DatabaseSchemaHistorySubtype;
+  tags?: string; // JSON string of tag ids
 };
 
 export type DatabaseSchemaGroupId = LiteralUnion<
-  "all" | "text" | "image" | "files" | "favorite",
+  "all" | "text" | "image" | "files" | "favorite" | "tag",
   string
 >;
 
@@ -30,7 +31,23 @@ export interface DatabaseSchemaGroup {
   createTime?: string;
 }
 
+// 自定义标签
+export interface DatabaseSchemaTag {
+  id: string;
+  name: string;
+  color: string;
+  createTime: string;
+}
+
+// 历史记录与标签关联
+export interface DatabaseSchemaHistoryTag {
+  historyId: string;
+  tagId: string;
+}
+
 export interface DatabaseSchema {
   history: DatabaseSchemaHistory;
   group: DatabaseSchemaGroup;
+  tag: DatabaseSchemaTag;
+  historyTag: DatabaseSchemaHistoryTag;
 }

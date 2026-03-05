@@ -15,6 +15,7 @@
         "send_email": "Send Email",
         "show_in_file_explorer": "Show in File Explorer",
         "show_in_finder": "Show in Finder",
+        "tags": "Tags",
         "unfavorite": "Unfavorite"
       }
     },
@@ -65,6 +66,21 @@
       },
       "label": {
         "note": "Note"
+      }
+    },
+    "tag_selector": {
+      "label": {
+        "add_new_tag": "Create New Tag",
+        "all_tags": "All Tags",
+        "cancel": "Cancel",
+        "create": "Create",
+        "input_tag_name": "Enter tag name",
+        "name_required": "Please enter tag name",
+        "no_tags": "No tags yet, create one first",
+        "selected": "Selected",
+        "select_tags": "Manage Tags",
+        "tag_color": "Tag Color",
+        "tag_name": "Tag Name"
       }
     },
     "shortcut_key": {
@@ -243,7 +259,28 @@
         "clipboard": "Clipboard",
         "general": "General",
         "history": "History",
-        "shortcut": "Shortcuts"
+        "shortcut": "Shortcuts",
+        "tags": "Tags Management"
+      }
+    },
+    "tags": {
+      "title": "Tags Management",
+      "label": {
+        "add_tag": "Create Tag",
+        "create_success": "Tag created successfully",
+        "delete": "Delete",
+        "delete_confirm": "Confirm Delete",
+        "delete_confirm_content": "Are you sure you want to delete the tag \"{{name}}\"? Associated history items will no longer show this tag.",
+        "delete_success": "Tag deleted successfully",
+        "edit": "Edit",
+        "edit_tag": "Edit Tag",
+        "input_tag_name": "Enter tag name",
+        "name_required": "Please enter tag name",
+        "no_tags": "No tags yet. Click the button above to create one.",
+        "save_error": "Save failed",
+        "tag_color": "Tag Color",
+        "tag_name": "Tag Name",
+        "update_success": "Tag updated successfully"
       }
     },
     "settings": {

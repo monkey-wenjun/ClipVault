@@ -1,0 +1,57 @@
+.container {
+  padding: 8px 0;
+}
+
+.section {
+  margin-bottom: 16px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.sectionTitle {
+  font-size: 12px;
+  color: var(--ant-color-text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.selected {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--ant-color-primary);
+}
+
+.unselected {
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.addForm {
+  padding: 16px;
+  background: var(--ant-color-fill-quaternary);
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.colorDot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--ant-color-primary);
+  }
+}

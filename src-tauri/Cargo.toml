@@ -41,6 +41,7 @@ tauri-plugin-eco-window.workspace = true
 tauri-plugin-eco-paste.workspace = true
 tauri-plugin-eco-autostart.workspace = true
 tauri-plugin-eco-sync.workspace = true
+tauri-plugin-eco-image-hosting.workspace = true
 aes-gcm = { version = "0.10.3", features = ["aes"] }
 hex = "0.4.3"
 rand = "0.10.0"

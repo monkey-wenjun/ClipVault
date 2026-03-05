@@ -1,15 +1,17 @@
 import clsx from "clsx";
 import type { FC } from "react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Marker } from "react-mark.js";
 import { useSnapshot } from "valtio";
 import SafeHtml from "@/components/SafeHtml";
 import UnoIcon from "@/components/UnoIcon";
+import TagBadge from "@/components/TagBadge";
 import { useContextMenu } from "@/hooks/useContextMenu";
 import { MainContext } from "@/pages/Main";
 import { pasteToClipboard } from "@/plugins/clipboard";
 import { clipboardStore } from "@/stores/clipboard";
-import type { DatabaseSchemaHistory } from "@/types/database";
+import type { DatabaseSchemaHistory, DatabaseSchemaTag } from "@/types/database";
+import { getHistoryTags } from "@/database/tag";
 import Files from "../Files";
 import Image from "../Image";
 import Rtf from "../Rtf";
@@ -21,14 +23,25 @@ export interface ItemProps {
   data: DatabaseSchemaHistory;
   deleteModal: any;
   handleNote: () => void;
+  handleTag?: () => void;
 }
 
 const Item: FC<ItemProps> = (props) => {
-  const { index, data } = props;
+  const { index, data, handleTag } = props;
   const { id, type, note, favorite, count, createTime } = data;
   const { rootState } = useContext(MainContext);
   const { content } = useSnapshot(clipboardStore);
   const isActive = rootState.activeId === id;
+  const [tags, setTags] = useState<DatabaseSchemaTag[]>([]);
+
+  // 加载历史记录的标签
+  useEffect(() => {
+    const loadTags = async () => {
+      const historyTags = await getHistoryTags(id);
+      setTags(historyTags);
+    };
+    loadTags();
+  }, [id]);
 
   const handleNext = () => {
     const { list } = rootState;
@@ -39,6 +52,8 @@ const Item: FC<ItemProps> = (props) => {
   const { handleContextMenu } = useContextMenu({
     ...props,
     handleNext,
+    tags,
+    onTagsChange: setTags,
   });
 
   const handleClick = (clickType: typeof content.autoPaste) => {
@@ -117,6 +132,15 @@ const Item: FC<ItemProps> = (props) => {
           {renderContent()}
         </div>
       </div>
+
+      {/* 标签显示 */}
+      {tags.length > 0 && (
+        <div className={styles.tags}>
+          {tags.map((tag) => (
+            <TagBadge key={tag.id} size="small" tag={tag} />
+          ))}
+        </div>
+      )}
 
       {/* 卡片底部 - 简洁的元信息 */}
       <div className={styles.footer}>

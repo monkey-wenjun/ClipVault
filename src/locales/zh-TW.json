@@ -15,6 +15,7 @@
         "send_email": "發送郵件",
         "show_in_file_explorer": "在檔案總管中顯示",
         "show_in_finder": "在 Finder 中顯示",
+        "tags": "標籤",
         "unfavorite": "取消收藏"
       }
     },
@@ -65,6 +66,21 @@
       },
       "label": {
         "note": "備註"
+      }
+    },
+    "tag_selector": {
+      "label": {
+        "add_new_tag": "新建標籤",
+        "all_tags": "所有標籤",
+        "cancel": "取消",
+        "create": "創建",
+        "input_tag_name": "請輸入標籤名稱",
+        "name_required": "請輸入標籤名稱",
+        "no_tags": "暫無標籤，請先創建",
+        "selected": "已選擇",
+        "select_tags": "管理標籤",
+        "tag_color": "標籤顏色",
+        "tag_name": "標籤名稱"
       }
     },
     "shortcut_key": {
@@ -243,7 +259,28 @@
         "clipboard": "剪貼簿",
         "general": "通用設定",
         "history": "歷史記錄",
-        "shortcut": "快捷鍵"
+        "shortcut": "快捷鍵",
+        "tags": "標籤管理"
+      }
+    },
+    "tags": {
+      "title": "標籤管理",
+      "label": {
+        "add_tag": "新建標籤",
+        "create_success": "標籤創建成功",
+        "delete": "刪除",
+        "delete_confirm": "確認刪除",
+        "delete_confirm_content": "確定要刪除標籤 "{{name}}" 嗎？關聯的歷史記錄將不再顯示此標籤。",
+        "delete_success": "標籤刪除成功",
+        "edit": "編輯",
+        "edit_tag": "編輯標籤",
+        "input_tag_name": "請輸入標籤名稱",
+        "name_required": "請輸入標籤名稱",
+        "no_tags": "暫無標籤，點擊上方按鈕創建",
+        "save_error": "保存失敗",
+        "tag_color": "標籤顏色",
+        "tag_name": "標籤名稱",
+        "update_success": "標籤更新成功"
       }
     },
     "settings": {

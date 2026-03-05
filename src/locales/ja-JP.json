@@ -15,6 +15,7 @@
         "send_email": "メールを送信",
         "show_in_file_explorer": "ファイルエクスプローラで表示",
         "show_in_finder": "Finder で表示",
+        "tags": "タグ",
         "unfavorite": "コレクションのキャンセル"
       }
     },
@@ -65,6 +66,21 @@
       },
       "label": {
         "note": "備考"
+      }
+    },
+    "tag_selector": {
+      "label": {
+        "add_new_tag": "新規タグ",
+        "all_tags": "すべてのタグ",
+        "cancel": "キャンセル",
+        "create": "作成",
+        "input_tag_name": "タグ名を入力してください",
+        "name_required": "タグ名を入力してください",
+        "no_tags": "タグがありません。先に作成してください",
+        "selected": "選択済み",
+        "select_tags": "タグを管理",
+        "tag_color": "タグの色",
+        "tag_name": "タグ名"
       }
     },
     "shortcut_key": {
@@ -243,7 +259,28 @@
         "clipboard": "クリップボード",
         "general": "共通設定",
         "history": "履歴",
-        "shortcut": "ショートカットキー"
+        "shortcut": "ショートカットキー",
+        "tags": "タグ管理"
+      }
+    },
+    "tags": {
+      "title": "タグ管理",
+      "label": {
+        "add_tag": "新規タグ",
+        "create_success": "タグを作成しました",
+        "delete": "削除",
+        "delete_confirm": "削除の確認",
+        "delete_confirm_content": "タグ \"{{name}}\" を削除してもよろしいですか？関連する履歴にはこのタグが表示されなくなります。",
+        "delete_success": "タグを削除しました",
+        "edit": "編集",
+        "edit_tag": "タグを編集",
+        "input_tag_name": "タグ名を入力してください",
+        "name_required": "タグ名を入力してください",
+        "no_tags": "タグがありません。上のボタンをクリックして作成してください。",
+        "save_error": "保存に失敗しました",
+        "tag_color": "タグの色",
+        "tag_name": "タグ名",
+        "update_success": "タグを更新しました"
       }
     },
     "settings": {

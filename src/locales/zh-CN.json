@@ -15,6 +15,7 @@
         "send_email": "发送邮件",
         "show_in_file_explorer": "在文件资源管理器中显示",
         "show_in_finder": "在 Finder 中显示",
+        "tags": "标签",
         "unfavorite": "取消收藏"
       }
     },
@@ -65,6 +66,21 @@
       },
       "label": {
         "note": "备注"
+      }
+    },
+    "tag_selector": {
+      "label": {
+        "add_new_tag": "新建标签",
+        "all_tags": "所有标签",
+        "cancel": "取消",
+        "create": "创建",
+        "input_tag_name": "请输入标签名称",
+        "name_required": "请输入标签名称",
+        "no_tags": "暂无标签，请先创建",
+        "selected": "已选择",
+        "select_tags": "管理标签",
+        "tag_color": "标签颜色",
+        "tag_name": "标签名称"
       }
     },
     "shortcut_key": {
@@ -243,8 +259,30 @@
         "clipboard": "剪贴板",
         "general": "通用设置",
         "history": "历史记录",
+        "imageHosting": "图床",
         "shortcut": "快捷键",
-        "sync": "同步"
+        "sync": "同步",
+        "tags": "标签管理"
+      }
+    },
+    "tags": {
+      "title": "标签管理",
+      "label": {
+        "add_tag": "新建标签",
+        "create_success": "标签创建成功",
+        "delete": "删除",
+        "delete_confirm": "确认删除",
+        "delete_confirm_content": "确定要删除标签 {{name}} 吗？关联的历史记录将不再显示此标签。",
+        "delete_success": "标签删除成功",
+        "edit": "编辑",
+        "edit_tag": "编辑标签",
+        "input_tag_name": "请输入标签名称",
+        "name_required": "请输入标签名称",
+        "no_tags": "暂无标签，点击上方按钮创建",
+        "save_error": "保存失败",
+        "tag_color": "标签颜色",
+        "tag_name": "标签名称",
+        "update_success": "标签更新成功"
       }
     },
     "settings": {

@@ -48,6 +48,24 @@ export const getDatabase = async () => {
     .addColumn("subtype", "text")
     .execute();
 
+  // 创建标签表
+  await db.schema
+    .createTable("tag")
+    .ifNotExists()
+    .addColumn("id", "text", (col) => col.primaryKey())
+    .addColumn("name", "text", (col) => col.notNull())
+    .addColumn("color", "text", (col) => col.notNull())
+    .addColumn("createTime", "text", (col) => col.notNull())
+    .execute();
+
+  // 创建历史记录与标签关联表
+  await db.schema
+    .createTable("historyTag")
+    .ifNotExists()
+    .addColumn("historyId", "text", (col) => col.notNull())
+    .addColumn("tagId", "text", (col) => col.notNull())
+    .execute();
+
   return db;
 };
 

@@ -44,7 +44,8 @@
     "eco-window:default",
     "eco-paste:default",
     "eco-autostart:default",
-    "eco-sync:default"
+    "eco-sync:default",
+    "eco-image-hosting:default"
   ],
   "windows": ["*"]
 }

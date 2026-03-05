@@ -11,6 +11,7 @@ import { omit } from "es-toolkit/compat";
 import { getLocale } from "tauri-plugin-locale-api";
 import { clipboardStore } from "@/stores/clipboard";
 import { globalStore } from "@/stores/global";
+import { imageHostingStore } from "@/stores/imageHosting";
 import type { Language, Store } from "@/types/store";
 import { deepAssign } from "./object";
 import { getSaveStorePath } from "./path";
@@ -43,7 +44,7 @@ const initStore = async () => {
  * @param backup 是否为备份数据
  */
 export const saveStore = async (backup = false) => {
-  const store = { clipboardStore, globalStore };
+  const store = { clipboardStore, globalStore, imageHostingStore };
 
   const path = await getSaveStorePath(backup);
 
@@ -66,6 +67,9 @@ export const restoreStore = async (backup = false) => {
 
     deepAssign(globalStore, nextGlobalStore);
     deepAssign(clipboardStore, store.clipboardStore);
+    if (store.imageHostingStore) {
+      deepAssign(imageHostingStore, store.imageHostingStore);
+    }
   }
 
   if (backup) return;

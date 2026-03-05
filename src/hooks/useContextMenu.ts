@@ -7,6 +7,7 @@ import { type MouseEvent, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 import { deleteHistory, updateHistory } from "@/database/history";
+import type { DatabaseSchemaTag } from "@/types/database";
 import { MainContext } from "@/pages/Main";
 import type { ItemProps } from "@/pages/Main/components/HistoryList/components/Item";
 import { pasteToClipboard, writeToClipboard } from "@/plugins/clipboard";
@@ -17,6 +18,8 @@ import { join } from "@/utils/path";
 
 interface UseContextMenuProps extends ItemProps {
   handleNext: () => void;
+  tags?: DatabaseSchemaTag[];
+  onTagsChange?: (tags: DatabaseSchemaTag[]) => void;
 }
 
 interface ContextMenuItem extends MenuItemOptions {
@@ -24,7 +27,7 @@ interface ContextMenuItem extends MenuItemOptions {
 }
 
 export const useContextMenu = (props: UseContextMenuProps) => {
-  const { data, deleteModal, handleNote, handleNext } = props;
+  const { data, deleteModal, handleNote, handleTag, handleNext, tags = [], onTagsChange } = props;
   const { id, type, value, group, favorite, subtype } = data;
   const { t } = useTranslation();
   const { env } = useSnapshot(globalStore);
@@ -116,6 +119,10 @@ export const useContextMenu = (props: UseContextMenuProps) => {
     deleteHistory(data);
   };
 
+  const handleManageTags = () => {
+    handleTag?.();
+  };
+
   const handleContextMenu = async (event: MouseEvent) => {
     event.preventDefault();
 
@@ -129,6 +136,10 @@ export const useContextMenu = (props: UseContextMenuProps) => {
       {
         action: handleNote,
         text: t("clipboard.button.context_menu.note"),
+      },
+      {
+        action: handleManageTags,
+        text: t("clipboard.button.context_menu.tags"),
       },
       {
         action: pasteAsText,

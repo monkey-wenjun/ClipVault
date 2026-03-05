@@ -1,0 +1,22 @@
+[package]
+name = "tauri-plugin-eco-image-hosting"
+version = "0.1.0"
+edition = "2021"
+links = "tauri-plugin-eco-image-hosting"
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", features = ["json", "multipart"] }
+tokio = { version = "1", features = ["fs", "rt", "macros"] }
+chrono = "0.4"
+base64 = "0.22"
+sha2 = "0.10"
+hmac = "0.12"
+hex = "0.4"
+urlencoding = "2"
+uuid = { version = "1", features = ["v4"] }
+
+[build-dependencies]
+tauri-plugin = { version = "2", features = ["build"] }

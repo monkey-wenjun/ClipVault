@@ -23,8 +23,10 @@ import About from "./components/About";
 import Clipboard from "./components/Clipboard";
 import General from "./components/General";
 import History from "./components/History";
+import ImageHosting from "./components/ImageHosting";
 import Shortcut from "./components/Shortcut";
 import Sync from "./components/Sync";
+import Tags from "./components/Tags";
 import styles from "./index.module.scss";
 
 const Preference = () => {
@@ -76,6 +78,12 @@ const Preference = () => {
         label: t("preference.menu.title.history"),
       },
       {
+        content: <Tags />,
+        icon: "i-lucide:tags",
+        key: "tags",
+        label: t("preference.menu.title.tags"),
+      },
+      {
         content: <General />,
         icon: "i-lucide:bolt",
         key: "general",
@@ -92,6 +100,12 @@ const Preference = () => {
         icon: "i-lucide:refresh-cw",
         key: "sync",
         label: t("preference.menu.title.sync"),
+      },
+      {
+        content: <ImageHosting />,
+        icon: "i-lucide:image",
+        key: "imageHosting",
+        label: "图床",
       },
       {
         content: <About />,

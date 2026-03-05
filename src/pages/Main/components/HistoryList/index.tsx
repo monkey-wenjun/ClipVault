@@ -2,21 +2,26 @@ import { useKeyPress, useUpdateEffect } from "ahooks";
 import { Modal } from "antd";
 import clsx from "clsx";
 import { findIndex } from "es-toolkit/compat";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { LISTEN_KEY } from "@/constants";
 import { useHistoryList } from "@/hooks/useHistoryList";
 import { useKeyboard } from "@/hooks/useKeyboard";
 import { useTauriListen } from "@/hooks/useTauriListen";
+import TagSelector, { type TagSelectorRef } from "@/components/TagSelector";
 import { MainContext } from "../..";
 import Item from "./components/Item";
 import NoteModal, { type NoteModalRef } from "./components/NoteModal";
 import styles from "./index.module.scss";
+import { selectHistoryTagIds } from "@/database/tag";
 
 const HistoryList = () => {
   const { rootState } = useContext(MainContext);
   const noteModelRef = useRef<NoteModalRef>(null);
+  const tagSelectorRef = useRef<TagSelectorRef>(null);
   const [deleteModal, contextHolder] = Modal.useModal();
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const [currentHistoryId, setCurrentHistoryId] = useState<string>("");
+  const [currentTagIds, setCurrentTagIds] = useState<string[]>([]);
 
   const scrollToIndex = (index: number) => {
     const container = scrollerRef.current;
@@ -113,6 +118,14 @@ const HistoryList = () => {
   useKeyPress("downarrow", selectNextItem);
   useKeyPress("tab", selectNextItem);
 
+  // 处理标签选择
+  const handleTag = async (historyId: string) => {
+    const tagIds = await selectHistoryTagIds(historyId);
+    setCurrentHistoryId(historyId);
+    setCurrentTagIds(tagIds);
+    tagSelectorRef.current?.open(historyId, tagIds);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.list} onWheel={handleWheel} ref={scrollerRef}>
@@ -126,6 +139,7 @@ const HistoryList = () => {
               data={item}
               deleteModal={deleteModal}
               handleNote={() => noteModelRef.current?.open(item.id)}
+              handleTag={() => handleTag(item.id)}
               index={index}
             />
           </div>
@@ -133,6 +147,7 @@ const HistoryList = () => {
       </div>
 
       <NoteModal ref={noteModelRef} />
+      <TagSelector ref={tagSelectorRef} />
 
       {contextHolder}
     </div>

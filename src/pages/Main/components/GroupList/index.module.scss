@@ -71,3 +71,39 @@
     }
   }
 }
+
+/* 分隔线 */
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--ant-color-border);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* 自定义标签项 */
+.tagTab {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--ant-color-fill-quaternary);
+  }
+}
+
+/* 自定义标签选中状态 */
+.activeTagTab {
+  background: var(--ant-color-fill-tertiary);
+  box-shadow: 0 0 0 2px var(--ant-color-primary);
+
+  &:hover {
+    background: var(--ant-color-fill-tertiary);
+  }
+}

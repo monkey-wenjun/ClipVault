@@ -6,7 +6,9 @@ import { useContext } from "react";
 import { getDefaultSaveImagePath } from "tauri-plugin-clipboard-x-api";
 import { LISTEN_KEY } from "@/constants";
 import { selectHistory } from "@/database/history";
+import { selectHistoryByTagId } from "@/database/tag";
 import { MainContext } from "@/pages/Main";
+import { tagStore } from "@/stores/tag";
 import { isBlank } from "@/utils/is";
 import { getSaveImagePath, join } from "@/utils/path";
 import { useTauriListen } from "./useTauriListen";
@@ -33,15 +35,27 @@ export const useHistoryList = (options: Options) => {
 
       const { page } = state;
 
+      // 如果是标签筛选，需要特殊处理
+      const { selectedTagId } = tagStore;
+      let historyIds: string[] = [];
+
+      if (selectedTagId) {
+        const results = await selectHistoryByTagId(selectedTagId);
+        historyIds = results.map((r) => r.historyId);
+      }
+
       const list = await selectHistory((qb) => {
         const { size } = state;
         const { group, search } = rootState;
         const isFavoriteGroup = group === "favorite";
-        const isNormalGroup = group !== "all" && !isFavoriteGroup;
+        const isNormalGroup = group !== "all" && !isFavoriteGroup && !selectedTagId;
+        const isTagGroup = !!selectedTagId;
 
         return qb
           .$if(isFavoriteGroup, (eb) => eb.where("favorite", "=", true))
           .$if(isNormalGroup, (eb) => eb.where("group", "=", group))
+          .$if(isTagGroup && historyIds.length > 0, (eb) => eb.where("id", "in", historyIds))
+          .$if(isTagGroup && historyIds.length === 0, (eb) => eb.where("id", "=", "__no_match__")) // 无匹配时返回空
           .$if(!isBlank(search), (eb) => {
             return eb.where((eb) => {
               return eb.or([
@@ -115,7 +129,7 @@ export const useHistoryList = (options: Options) => {
     await reload();
 
     rootState.activeId = rootState.list[0]?.id;
-  }, [rootState.group, rootState.search]);
+  }, [rootState.group, rootState.search, tagStore.selectedTagId]);
 
   return {
     loadMore,

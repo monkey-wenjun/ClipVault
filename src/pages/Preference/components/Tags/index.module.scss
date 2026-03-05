@@ -1,0 +1,35 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.tagList {
+  .tagItem {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--ant-color-border-secondary);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.colorDot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--ant-color-primary);
+  }
+}
