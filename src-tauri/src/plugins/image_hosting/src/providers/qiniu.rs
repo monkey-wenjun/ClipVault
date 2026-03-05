@@ -31,15 +31,15 @@ fn generate_upload_token(access_key: &str, secret_key: &str, bucket: &str, key: 
     });
 
     let put_policy_str = put_policy.to_string();
-    use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine as _};
-    let encoded_put_policy = URL_SAFE_NO_PAD.encode(put_policy_str.as_bytes());
+    // URL Safe Base64 编码（不使用标准库的 URL_SAFE_NO_PAD）
+    let encoded_put_policy = base64_encode_url_safe(&put_policy_str);
 
     // 计算签名
     let mut mac = HmacSha1::new_from_slice(secret_key.as_bytes())
         .expect("HMAC can take key of any size");
     mac.update(encoded_put_policy.as_bytes());
     let result = mac.finalize();
-    let encoded_sign = URL_SAFE_NO_PAD.encode(result.into_bytes());
+    let encoded_sign = base64_encode_url_safe_bytes(&result.into_bytes());
 
     format!("{}:{}:{}", access_key, encoded_sign, encoded_put_policy)
 }
@@ -148,5 +148,25 @@ pub async fn upload(
             .unwrap_or_else(|_| "Unknown error".to_string());
         Err(format!("Upload failed ({}): {}", status, error_text))
     }
+}
+
+/// URL Safe Base64 编码（将 + 替换为 -，/ 替换为 _，并去掉 = 填充）
+fn base64_encode_url_safe(s: &str) -> String {
+    let standard = base64::encode(s.as_bytes());
+    standard
+        .replace('+', "-")
+        .replace('/', "_")
+        .trim_end_matches('=')
+        .to_string()
+}
+
+/// URL Safe Base64 编码字节数组
+fn base64_encode_url_safe_bytes(data: &[u8]) -> String {
+    let standard = base64::encode(data);
+    standard
+        .replace('+', "-")
+        .replace('/', "_")
+        .trim_end_matches('=')
+        .to_string()
 }
 

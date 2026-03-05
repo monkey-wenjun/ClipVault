@@ -5,8 +5,7 @@ use crate::commands::{ImageHostingConfig, UploadResult};
 use chrono::Utc;
 use hmac::{Hmac, Mac};
 use reqwest::Client;
-use sha1::{Sha1, Digest};
-use std::collections::HashMap;
+use sha1::Sha1;
 
 type HmacSha1 = Hmac<Sha1>;
 
@@ -31,7 +30,7 @@ fn generate_signature(
         .expect("HMAC can take key of any size");
     mac.update(string_to_sign.as_bytes());
     let result = mac.finalize();
-    let signature = BASE64.encode(result.into_bytes());
+    let signature = base64_encode_data(&result.into_bytes());
 
     format!("OSS {}:{}", access_key_id, signature)
 }
@@ -72,7 +71,7 @@ pub async fn upload(
     };
 
     // 计算 Content-MD5
-    let content_md5 = BASE64.encode(compute_md5(&image_data));
+    let content_md5 = base64_encode_data(&compute_md5(&image_data));
     let content_type = "image/png"; // 根据实际情况调整
     let date = Utc::now().format("%a, %d %b %Y %H:%M:%S GMT").to_string();
     let endpoint = get_endpoint(&config);
@@ -134,9 +133,14 @@ pub async fn upload(
     }
 }
 
-use base64::{engine::general_purpose::STANDARD as BASE64, Engine as _};
+use crate::crypto::{base64_encode, base64_decode};
 
 /// 计算 MD5
 fn compute_md5(data: &[u8]) -> [u8; 16] {
     md5::compute(data).0
+}
+
+/// base64 编码封装
+fn base64_encode_data(data: &[u8]) -> String {
+    base64_encode(data)
 }

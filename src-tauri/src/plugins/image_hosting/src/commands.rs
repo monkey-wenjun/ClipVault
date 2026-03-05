@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 use tauri::{command, AppHandle, Runtime};
 
-pub mod providers;
-mod crypto;
+use crate::providers;
+use crate::crypto;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

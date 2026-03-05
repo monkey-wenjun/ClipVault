@@ -1,11 +1,12 @@
 use tauri::{
     generate_handler,
     plugin::{Builder, TauriPlugin},
-    Manager, Runtime,
+    Runtime,
 };
 
 mod commands;
-mod providers;
+pub mod providers;
+pub mod crypto;
 
 pub use commands::*;
 

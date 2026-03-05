@@ -42,7 +42,7 @@ pub fn encrypt(plaintext: &str) -> Result<String, String> {
     result.extend_from_slice(&nonce_bytes);
     result.extend_from_slice(&ciphertext);
     
-    Ok(base64::encode(&result))
+    Ok(base64_encode(&result))
 }
 
 /// 解密数据
@@ -51,7 +51,7 @@ pub fn decrypt(ciphertext_b64: &str) -> Result<String, String> {
     let cipher = Aes256Gcm::new_from_slice(&key)
         .map_err(|e| format!("Failed to create cipher: {}", e))?;
     
-    let ciphertext = base64::decode(ciphertext_b64)
+    let ciphertext = base64_decode(ciphertext_b64)
         .map_err(|e| format!("Base64 decode failed: {}", e))?;
     
     if ciphertext.len() < NONCE_SIZE {
@@ -74,17 +74,17 @@ pub fn is_encrypted(s: &str) -> bool {
     if s.len() < 20 {
         return false;
     }
-    base64::decode(s).is_ok()
+    base64_decode(s).is_ok()
 }
 
 use base64::{engine::general_purpose::STANDARD as BASE64, Engine as _};
 
 /// base64 编码
-pub fn encode(data: &[u8]) -> String {
+pub fn base64_encode(data: &[u8]) -> String {
     BASE64.encode(data)
 }
 
 /// base64 解码
-pub fn decode(s: &str) -> Result<Vec<u8>, String> {
+pub fn base64_decode(s: &str) -> Result<Vec<u8>, String> {
     BASE64.decode(s).map_err(|e| format!("Base64 decode error: {}", e))
 }

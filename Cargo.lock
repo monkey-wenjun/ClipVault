@@ -6328,11 +6328,13 @@ dependencies = [
 name = "tauri-plugin-eco-image-hosting"
 version = "0.1.0"
 dependencies = [
- "base64 0.22.1",
+ "aes-gcm",
+ "base64 0.21.7",
  "chrono",
  "hex",
  "hmac",
  "md5",
+ "rand 0.8.5",
  "reqwest",
  "serde",
  "serde_json",
