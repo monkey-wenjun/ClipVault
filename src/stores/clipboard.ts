@@ -8,7 +8,7 @@ export const clipboardStore = proxy<ClipboardStore>({
 
   content: {
     autoFavorite: false,
-    autoPaste: "double",
+    autoPaste: "single",
     autoSort: false,
     copyPlain: false,
     deleteConfirm: true,
