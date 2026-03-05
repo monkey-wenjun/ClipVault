@@ -5,10 +5,10 @@ use crate::commands::{ImageHostingConfig, UploadResult};
 use chrono::Utc;
 use hmac::{Hmac, Mac};
 use reqwest::Client;
-use sha1::Sha1;
+use sha1::{Sha1, Digest};
 use std::collections::HashMap;
 
-type HmacSha1 = Hmac<Sha1, sha1::Sha1>;
+type HmacSha1 = Hmac<Sha1>;
 
 /// 生成阿里云 OSS 签名
 /// 签名格式: "OSS " + AccessKeyId + ":" + Signature

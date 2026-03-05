@@ -6,10 +6,9 @@ use hmac::{Hmac, Mac};
 use reqwest::Client;
 use serde_json::json;
 use sha1::Sha1;
-use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-type HmacSha1 = Hmac<Sha1, sha1::Sha1>;
+type HmacSha1 = Hmac<Sha1>;
 
 /// 生成七牛云 Upload Token
 /// 格式: <AccessKey>:<EncodedSign>:<EncodedPutPolicy>
