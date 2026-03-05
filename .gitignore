@@ -15,6 +15,9 @@ auto-imports.d.ts
 *.patch
 /target/
 
+# Tauri signer keys
+.tauri/
+
 # Editor directories and files
 .idea
 .DS_Store
