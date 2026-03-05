@@ -2,6 +2,7 @@
 // 参考文档: https://developer.qiniu.com/kodo/1206/put-policy
 
 use crate::commands::{ImageHostingConfig, UploadResult};
+use base64::{engine::general_purpose::STANDARD, Engine};
 use hmac::{Hmac, Mac};
 use reqwest::Client;
 use serde_json::json;
@@ -123,8 +124,8 @@ pub async fn upload(
         .map_err(|e| format!("Request failed: {}", e))?;
 
     if response.status().is_success() {
-        // 解析返回结果
-        let result: serde_json::Value = response
+        // 解析返回结果（确保响应有效）
+        let _result: serde_json::Value = response
             .json()
             .await
             .map_err(|e| format!("Failed to parse response: {}", e))?;
@@ -152,7 +153,7 @@ pub async fn upload(
 
 /// URL Safe Base64 编码（将 + 替换为 -，/ 替换为 _，并去掉 = 填充）
 fn base64_encode_url_safe(s: &str) -> String {
-    let standard = base64::encode(s.as_bytes());
+    let standard = STANDARD.encode(s.as_bytes());
     standard
         .replace('+', "-")
         .replace('/', "_")
@@ -162,7 +163,7 @@ fn base64_encode_url_safe(s: &str) -> String {
 
 /// URL Safe Base64 编码字节数组
 fn base64_encode_url_safe_bytes(data: &[u8]) -> String {
-    let standard = base64::encode(data);
+    let standard = STANDARD.encode(data);
     standard
         .replace('+', "-")
         .replace('/', "_")

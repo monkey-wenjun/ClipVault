@@ -59,13 +59,6 @@ fn decrypt_config(config: &mut ImageHostingConfig) -> Result<(), String> {
     Ok(())
 }
 
-/// 解密配置用于上传
-fn decrypt_config_for_use(config: &ImageHostingConfig) -> Result<ImageHostingConfig, String> {
-    let mut decrypted = config.clone();
-    decrypt_config(&mut decrypted)?;
-    Ok(decrypted)
-}
-
 /// 上传图片到指定图床
 #[command]
 pub async fn upload_image<R: Runtime>(

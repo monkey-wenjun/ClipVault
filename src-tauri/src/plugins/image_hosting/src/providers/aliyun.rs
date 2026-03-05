@@ -155,7 +155,7 @@ pub async fn upload(
     }
 }
 
-use crate::crypto::{base64_encode, base64_decode};
+use crate::crypto::base64_encode;
 
 /// 计算 MD5
 fn compute_md5(data: &[u8]) -> [u8; 16] {
