@@ -122,6 +122,17 @@
           "version": "Version: "
         },
         "title": "About ClipVault"
+      },
+      "acknowledgements": {
+        "description": "Thanks to the following open source projects",
+        "ecopaste": "EcoPaste - Basic architecture and core features",
+        "tauri": "Tauri - Cross-platform desktop application framework",
+        "title": "Acknowledgements"
+      },
+      "license": {
+        "description": "This project is licensed under Apache-2.0",
+        "link": "View License",
+        "title": "License"
       }
     },
     "clipboard": {

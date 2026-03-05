@@ -122,6 +122,17 @@
           "version": "バージョン: "
         },
         "title": "ClipVault について"
+      },
+      "acknowledgements": {
+        "description": "以下のオープンソースプロジェクトに感謝します",
+        "ecopaste": "EcoPaste - 基本アーキテクチャとコア機能",
+        "tauri": "Tauri - クロスプラットフォームデスクトップアプリケーションフレームワーク",
+        "title": "謝辞"
+      },
+      "license": {
+        "description": "このプロジェクトは Apache-2.0 ライセンスで公開されています",
+        "link": "ライセンスを見る",
+        "title": "ライセンス"
       }
     },
     "clipboard": {

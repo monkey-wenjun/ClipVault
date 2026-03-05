@@ -122,6 +122,17 @@
           "version": "版本："
         },
         "title": "关于 ClipVault"
+      },
+      "acknowledgements": {
+        "description": "感谢以下开源项目对 ClipVault 的支持",
+        "ecopaste": "EcoPaste - 基础架构和核心功能",
+        "tauri": "Tauri - 跨平台桌面应用框架",
+        "title": "致谢"
+      },
+      "license": {
+        "description": "本项目采用 Apache-2.0 许可证开源",
+        "link": "查看许可证",
+        "title": "许可证"
       }
     },
     "clipboard": {
