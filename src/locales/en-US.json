@@ -270,7 +270,7 @@
         "create_success": "Tag created successfully",
         "delete": "Delete",
         "delete_confirm": "Confirm Delete",
-        "delete_confirm_content": "Are you sure you want to delete the tag \"{{name}}\"? Associated history items will no longer show this tag.",
+        "delete_confirm_content": "Are you sure you want to delete the tag '{{name}}'? Associated history items will no longer show this tag.",
         "delete_success": "Tag deleted successfully",
         "edit": "Edit",
         "edit_tag": "Edit Tag",

@@ -270,7 +270,7 @@
         "create_success": "タグを作成しました",
         "delete": "削除",
         "delete_confirm": "削除の確認",
-        "delete_confirm_content": "タグ \"{{name}}\" を削除してもよろしいですか？関連する履歴にはこのタグが表示されなくなります。",
+        "delete_confirm_content": "タグ '{{name}}' を削除してもよろしいですか？関連する履歴にはこのタグが表示されなくなります。",
         "delete_success": "タグを削除しました",
         "edit": "編集",
         "edit_tag": "タグを編集",

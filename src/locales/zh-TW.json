@@ -270,7 +270,7 @@
         "create_success": "標籤創建成功",
         "delete": "刪除",
         "delete_confirm": "確認刪除",
-        "delete_confirm_content": "確定要刪除標籤 "{{name}}" 嗎？關聯的歷史記錄將不再顯示此標籤。",
+        "delete_confirm_content": "確定要刪除標籤 '{{name}}' 嗎？關聯的歷史記錄將不再顯示此標籤。",
         "delete_success": "標籤刪除成功",
         "edit": "編輯",
         "edit_tag": "編輯標籤",

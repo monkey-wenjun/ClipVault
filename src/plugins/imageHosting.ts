@@ -1,10 +1,14 @@
 import { invoke } from "@tauri-apps/api/core";
+import { imageHostingStore } from "@/stores/imageHosting";
 import type { ImageHostingConfig, UploadResult } from "@/types/imageHosting";
 
+/**
+ * 上传图片到指定图床
+ */
 export const uploadImage = async (
 	imageData: Uint8Array,
 	fileName: string,
-	config?: ImageHostingConfig,
+	config: ImageHostingConfig,
 ): Promise<UploadResult> => {
 	return invoke("plugin:eco-image-hosting|upload_image", {
 		imageData: Array.from(imageData),
@@ -13,16 +17,38 @@ export const uploadImage = async (
 	});
 };
 
+/**
+ * 上传图片到默认图床
+ */
 export const uploadImageToDefault = async (
 	imageData: Uint8Array,
 	fileName: string,
 ): Promise<UploadResult> => {
-	return invoke("plugin:eco-image-hosting|upload_image_to_default", {
-		imageData: Array.from(imageData),
-		fileName,
-	});
+	const { configs, defaultId } = imageHostingStore;
+
+	if (configs.length === 0) {
+		return {
+			success: false,
+			error: "No image hosting configured",
+		};
+	}
+
+	// 查找默认图床配置
+	const defaultConfig = configs.find((c) => c.id === defaultId) || configs[0];
+
+	if (!defaultConfig) {
+		return {
+			success: false,
+			error: "Default image hosting not found",
+		};
+	}
+
+	return uploadImage(imageData, fileName, defaultConfig);
 };
 
+/**
+ * 生成唯一的文件名
+ */
 export const generateFileName = (originalName: string): string => {
 	const timestamp = Date.now();
 	const random = Math.random().toString(36).substring(2, 8);
@@ -30,6 +56,9 @@ export const generateFileName = (originalName: string): string => {
 	return `clip_${timestamp}_${random}.${ext}`;
 };
 
+/**
+ * 生成 Markdown 图片链接
+ */
 export const generateMarkdownImage = (url: string, alt = "image"): string => {
 	return `![${alt}](${url})`;
 };
