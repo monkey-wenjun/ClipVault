@@ -29,11 +29,6 @@ export const useClipboard = (
   state: State,
   options?: ClipboardChangeOptions,
 ) => {
-  // 处理锁，防止短时间内重复处理
-  let processingLock = false;
-  let lastImageValue: string | null = null;
-  let lastProcessTime = 0;
-
   useMount(async () => {
     await startListening();
 
@@ -41,26 +36,6 @@ export const useClipboard = (
       // 检查当前应用是否在排除列表中
       if (await isAppExcluded()) {
         return;
-      }
-
-      // 图片类型的简单去重：检查是否正在处理中，或者上次处理的值相同
-      if (result.image) {
-        const now = Date.now();
-        const imageValue = result.image.value;
-
-        // 如果正在处理中，跳过
-        if (processingLock) {
-          return;
-        }
-
-        // 如果和上次处理的图片相同，且时间在1秒内，跳过
-        if (lastImageValue === imageValue && now - lastProcessTime < 1000) {
-          return;
-        }
-
-        processingLock = true;
-        lastImageValue = imageValue;
-        lastProcessTime = now;
       }
 
       const { files, image, html, rtf, text } = result;
@@ -95,6 +70,15 @@ export const useClipboard = (
       } else if (image) {
         // 处理图片上传
         const localPath = image.value;
+
+        // 检查内存列表中是否已存在相同路径的图片（防止热更新导致的重复添加）
+        const existingItem = state.list.find(
+          (item) => item.type === "image" && item.value === localPath,
+        );
+        if (existingItem) {
+          // 已存在相同路径的图片，跳过
+          return;
+        }
 
         // 检查文件是否存在
         let fileExists = false;
@@ -168,48 +152,43 @@ export const useClipboard = (
         sqlData.value = JSON.stringify(value);
       }
 
-      try {
-        // 先检查内存列表中是否已存在相同的图片（避免短时间内重复添加）
-        const existingInList = state.list.find(
-          (item) => item.type === sqlData.type && item.value === sqlData.value,
-        );
-        if (existingInList) {
-          return;
-        }
+      // 先检查内存列表中是否已存在相同的图片（避免短时间内重复添加）
+      const existingInList = state.list.find(
+        (item) => item.type === sqlData.type && item.value === sqlData.value,
+      );
+      if (existingInList) {
+        return;
+      }
 
-        const [matched] = await selectHistory((qb) => {
-          const { type, value } = sqlData;
+      const [matched] = await selectHistory((qb) => {
+        const { type, value } = sqlData;
 
-          return qb.where("type", "=", type).where("value", "=", value);
-        });
+        return qb.where("type", "=", type).where("value", "=", value);
+      });
 
-        const visible = state.group === "all" || state.group === group;
-        if (matched) {
-          if (!clipboardStore.content.autoSort) return;
+      const visible = state.group === "all" || state.group === group;
+      if (matched) {
+        if (!clipboardStore.content.autoSort) return;
 
-          const { id } = matched;
-
-          if (visible) {
-            remove(state.list, { id });
-
-            state.list.unshift({ ...data, id });
-          }
-
-          return updateHistory(id, { createTime });
-        }
+        const { id } = matched;
 
         if (visible) {
-          state.list.unshift(data);
+          remove(state.list, { id });
+
+          state.list.unshift({ ...data, id });
         }
 
-        await insertHistory(sqlData);
-
-        // 触发自动同步
-        triggerAutoSync();
-      } finally {
-        // 释放处理锁
-        processingLock = false;
+        return updateHistory(id, { createTime });
       }
+
+      if (visible) {
+        state.list.unshift(data);
+      }
+
+      await insertHistory(sqlData);
+
+      // 触发自动同步
+      triggerAutoSync();
     }, options);
   });
 };
