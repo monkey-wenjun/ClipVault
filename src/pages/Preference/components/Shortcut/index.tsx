@@ -40,6 +40,16 @@ const Shortcut = () => {
           title={t("preference.shortcut.shortcut.label.paste_as_plain")}
           value={shortcut.pastePlain}
         />
+
+        <ProShortcut
+          description="上传最新的一张图片到图床"
+          isSystem={true}
+          onChange={(value) => {
+            globalStore.shortcut.imageHosting = value;
+          }}
+          title="上传到图床"
+          value={shortcut.imageHosting}
+        />
       </ProList>
 
       <Preset />

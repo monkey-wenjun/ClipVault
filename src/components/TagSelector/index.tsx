@@ -9,7 +9,7 @@ import TagBadge from "@/components/TagBadge";
 import styles from "./index.module.scss";
 
 // 预设颜色
-const PRESET_COLORS = [
+export const PRESET_COLORS = [
   "#f5222d", // red
   "#fa541c", // orange
   "#fa8c16", // amber

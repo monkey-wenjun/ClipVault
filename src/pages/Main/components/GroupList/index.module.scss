@@ -72,6 +72,82 @@
   }
 }
 
+/* 添加标签按钮 */
+.addTagButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--ant-color-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--ant-color-fill-quaternary);
+    color: var(--ant-color-primary);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.addTagIcon {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* 添加标签输入框包装 */
+.addTagInputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: var(--ant-color-fill-quaternary);
+  border: 1px solid var(--ant-color-primary);
+  flex-shrink: 0;
+  animation: slideIn 0.2s ease;
+
+  .addTagIcon {
+    color: var(--ant-color-primary);
+    font-size: 16px;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.addTagInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+  color: var(--ant-color-text);
+  width: 100px;
+  min-width: 80px;
+
+  &::placeholder {
+    color: var(--ant-color-text-tertiary);
+    font-size: 12px;
+  }
+}
+
 /* 分隔线 */
 .divider {
   width: 1px;

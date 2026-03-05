@@ -1,4 +1,10 @@
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+	DeleteOutlined,
+	EditOutlined,
+	ExportOutlined,
+	ImportOutlined,
+	PlusOutlined,
+} from "@ant-design/icons";
 import {
 	Button,
 	Form,
@@ -18,6 +24,11 @@ import { useSnapshot } from "valtio";
 import ProList from "@/components/ProList";
 import { uploadImage } from "@/plugins/imageHosting";
 import { imageHostingStore } from "@/stores/imageHosting";
+import {
+	exportAsEnv,
+	exportImageHostingConfig,
+	importImageHostingConfig,
+} from "@/utils/imageHostingConfig";
 import type {
 	ImageHostingConfig,
 	ImageHostingProvider,
@@ -288,14 +299,44 @@ const ImageHosting = () => {
 				header={
 					<div className="flex items-center justify-between">
 						<span>图床配置</span>
-						<Button
-							icon={<PlusOutlined />}
-							onClick={handleAdd}
-							size="small"
-							type="primary"
-						>
-							添加图床
-						</Button>
+						<div className="flex gap-2">
+							<Button
+								icon={<ImportOutlined />}
+								onClick={async () => {
+									const result = await importImageHostingConfig();
+									if (result.success) {
+										message.success(result.message);
+									} else {
+										message.error(result.message);
+									}
+								}}
+								size="small"
+							>
+								导入
+							</Button>
+							<Button
+								icon={<ExportOutlined />}
+								onClick={async () => {
+									const success = await exportImageHostingConfig();
+									if (success) {
+										message.success("导出成功");
+									} else {
+										message.error("导出失败");
+									}
+								}}
+								size="small"
+							>
+								导出
+							</Button>
+							<Button
+								icon={<PlusOutlined />}
+								onClick={handleAdd}
+								size="small"
+								type="primary"
+							>
+								添加图床
+							</Button>
+						</div>
 					</div>
 				}
 			>

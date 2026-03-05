@@ -24,6 +24,7 @@ export const globalStore = proxy<GlobalStore>({
       enable: false,
       value: "Command+Shift",
     },
+    imageHosting: "CommandOrControl+Shift+P",
   },
 
   update: {

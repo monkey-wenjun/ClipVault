@@ -1,19 +1,28 @@
-import { useKeyPress, useMount, useRequest } from "ahooks";
+import { useBoolean, useKeyPress, useMount } from "ahooks";
 import clsx from "clsx";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 import type { DatabaseSchemaGroup, DatabaseSchemaTag } from "@/types/database";
 import { scrollElementToCenter } from "@/utils/dom";
 import { MainContext } from "../..";
-import { tagStore, loadTags } from "@/stores/tag";
+import { tagStore, loadTags, addTag } from "@/stores/tag";
 import TagBadge from "@/components/TagBadge";
+import { PRESET_COLORS } from "@/components/TagSelector";
 import styles from "./index.module.scss";
+
+// 预设颜色（循环使用）
+const getRandomColor = () => {
+  return PRESET_COLORS[Math.floor(Math.random() * PRESET_COLORS.length)];
+};
 
 const GroupList = () => {
   const { rootState } = useContext(MainContext);
   const { t } = useTranslation();
   const { tags, selectedTagId } = useSnapshot(tagStore);
+  const [isAdding, { setTrue: startAdding, setFalse: stopAdding }] = useBoolean(false);
+  const [newTagName, setNewTagName] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // 加载标签
   useMount(() => {
@@ -23,6 +32,13 @@ const GroupList = () => {
   useEffect(() => {
     scrollElementToCenter(rootState.group);
   }, [rootState.group]);
+
+  // 当开始添加时，聚焦输入框
+  useEffect(() => {
+    if (isAdding) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [isAdding]);
 
   const presetGroups: DatabaseSchemaGroup[] = [
     {
@@ -91,6 +107,55 @@ const GroupList = () => {
     tagStore.selectedTagId = tag.id;
   };
 
+  // 处理创建新标签
+  const handleCreateTag = async () => {
+    const name = newTagName.trim();
+    if (!name) {
+      stopAdding();
+      return;
+    }
+
+    // 检查是否已存在同名标签
+    const existing = tags.find(t => t.name === name);
+    if (existing) {
+      // 如果已存在，直接选中
+      handleTagClick(existing);
+      setNewTagName("");
+      stopAdding();
+      return;
+    }
+
+    // 创建新标签
+    const color = getRandomColor();
+    const newTagId = await addTag(name, color);
+    
+    // 选中新创建的标签
+    tagStore.selectedTagId = newTagId;
+    rootState.group = "tag";
+    
+    setNewTagName("");
+    stopAdding();
+  };
+
+  // 处理输入框按键
+  const handleInputKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleCreateTag();
+    } else if (e.key === "Escape") {
+      stopAdding();
+      setNewTagName("");
+    }
+  };
+
+  // 处理输入框失去焦点
+  const handleInputBlur = () => {
+    if (newTagName.trim()) {
+      handleCreateTag();
+    } else {
+      stopAdding();
+    }
+  };
+
   return (
     <div className={styles.container} data-tauri-drag-region>
       {/* 预设分组 */}
@@ -112,6 +177,34 @@ const GroupList = () => {
           </button>
         );
       })}
+
+      {/* 添加标签按钮或输入框 */}
+      {isAdding ? (
+        <div className={styles.addTagInputWrapper}>
+          <span className={styles.addTagIcon}>+</span>
+          <input
+            ref={inputRef}
+            className={styles.addTagInput}
+            maxLength={20}
+            onBlur={handleInputBlur}
+            onChange={(e) => setNewTagName(e.target.value)}
+            onKeyDown={handleInputKeyDown}
+            placeholder={t("clipboard.label.tab.new_tag")}
+            type="text"
+            value={newTagName}
+          />
+        </div>
+      ) : (
+        <button
+          className={styles.addTagButton}
+          data-tauri-drag-region
+          onClick={startAdding}
+          title={t("clipboard.label.tab.add_tag")}
+          type="button"
+        >
+          <span className={styles.addTagIcon}>+</span>
+        </button>
+      )}
 
       {/* 分隔线 */}
       {tags.length > 0 && <div className={styles.divider} />}

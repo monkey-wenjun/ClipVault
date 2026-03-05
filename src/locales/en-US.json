@@ -35,10 +35,12 @@
       "plain_text": "Plain Text",
       "rtf": "Rich Text",
       "tab": {
+        "add_tag": "Add Tag",
         "all": "All",
         "favorite": "Favorite",
         "files": "File",
         "image": "Image",
+        "new_tag": "New Tag",
         "text": "Text"
       }
     }

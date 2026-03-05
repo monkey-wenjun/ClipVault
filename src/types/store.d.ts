@@ -41,6 +41,7 @@ export interface GlobalStore {
       value: string;
     };
     pastePlain: string;
+    imageHosting: string;
   };
 
   // 只在当前系统环境使用

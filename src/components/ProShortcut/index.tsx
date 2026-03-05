@@ -134,7 +134,7 @@ const ProShortcut: FC<ProShortcutProps> = (props) => {
           )
         ) : (
           <div className="font-bold text-primary">
-            {map(state.value, "symbol").join(" ")}
+            {map(state.value, "symbol").join(" + ")}
           </div>
         )}
 

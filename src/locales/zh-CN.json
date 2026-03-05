@@ -35,10 +35,12 @@
       "plain_text": "纯文本",
       "rtf": "富文本",
       "tab": {
+        "add_tag": "添加标签",
         "all": "全部",
         "favorite": "收藏",
         "files": "文件",
         "image": "图片",
+        "new_tag": "新标签",
         "text": "文本"
       }
     }

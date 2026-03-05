@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 use tauri::{command, AppHandle, Runtime};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ImageHostingConfig {
     pub id: String,
     pub name: String,

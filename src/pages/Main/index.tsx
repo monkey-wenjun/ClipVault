@@ -13,6 +13,7 @@ import { useRegister } from "@/hooks/useRegister";
 import { useSubscribeKey } from "@/hooks/useSubscribeKey";
 import { useTauriListen } from "@/hooks/useTauriListen";
 import { pasteToClipboard } from "@/plugins/clipboard";
+import { uploadLatestImage } from "@/plugins/imageHosting";
 import { startPeriodicSync } from "@/plugins/sync";
 import {
   showTaskbarIcon,
@@ -143,6 +144,12 @@ const Main = () => {
     if (!data) return;
 
     pasteToClipboard(data, true);
+  });
+
+  // 监听图床上传快捷键
+  useKeyPress(shortcut.imageHosting, async (event) => {
+    event.preventDefault();
+    await uploadLatestImage();
   });
 
   // 监听快速粘贴的快捷键

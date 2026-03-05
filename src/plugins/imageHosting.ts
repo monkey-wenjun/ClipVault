@@ -1,4 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
+import { writeText } from "tauri-plugin-clipboard-x-api";
+import { getImage } from "@/database/image";
 import { imageHostingStore } from "@/stores/imageHosting";
 import type { ImageHostingConfig, UploadResult } from "@/types/imageHosting";
 
@@ -44,6 +46,62 @@ export const uploadImageToDefault = async (
 	}
 
 	return uploadImage(imageData, fileName, defaultConfig);
+};
+
+/**
+ * 上传最新的图片到图床
+ */
+export const uploadLatestImage = async (): Promise<UploadResult> => {
+	if (!imageHostingStore.enabled || imageHostingStore.configs.length === 0) {
+		return {
+			success: false,
+			error: "Image hosting not enabled or not configured",
+		};
+	}
+
+	try {
+		// 获取最新的图片
+		const latestImage = await getImage();
+
+		if (!latestImage) {
+			return {
+				success: false,
+				error: "No image found in clipboard history",
+			};
+		}
+
+		// 读取图片文件
+		const response = await fetch(latestImage.value);
+		const blob = await response.blob();
+		const arrayBuffer = await blob.arrayBuffer();
+		const imageData = new Uint8Array(arrayBuffer);
+
+		// 生成文件名
+		const fileName = generateFileName(latestImage.value);
+
+		// 上传到图床
+		const result = await uploadImageToDefault(imageData, fileName);
+
+		if (result.success && result.url) {
+			// 如果启用 Markdown 生成，写入剪贴板
+			if (
+				imageHostingStore.generateMarkdown &&
+				result.markdownUrl
+			) {
+				await writeText(result.markdownUrl);
+			} else if (result.url) {
+				await writeText(result.url);
+			}
+		}
+
+		return result;
+	} catch (error) {
+		console.error("Upload latest image failed:", error);
+		return {
+			success: false,
+			error: String(error),
+		};
+	}
 };
 
 /**
