@@ -146,11 +146,10 @@ const Main = () => {
     pasteToClipboard(data, true);
   });
 
-  // 监听图床上传快捷键
-  useKeyPress(shortcut.imageHosting, async (event) => {
-    event.preventDefault();
+  // 注册图床上传全局快捷键
+  useRegister(async () => {
     await uploadLatestImage();
-  });
+  }, [shortcut.imageHosting]);
 
   // 监听快速粘贴的快捷键
   useRegister(

@@ -3,162 +3,163 @@ import { cloneDeep } from "es-toolkit";
 import { isEmpty, remove } from "es-toolkit/compat";
 import { nanoid } from "nanoid";
 import {
-	type ClipboardChangeOptions,
-	onClipboardChange,
-	startListening,
+  type ClipboardChangeOptions,
+  onClipboardChange,
+  startListening,
+  writeText,
 } from "tauri-plugin-clipboard-x-api";
 import { fullName } from "tauri-plugin-fs-pro-api";
 import {
-	insertHistory,
-	selectHistory,
-	updateHistory,
+  insertHistory,
+  selectHistory,
+  updateHistory,
 } from "@/database/history";
 import type { State } from "@/pages/Main";
 import { getClipboardTextSubtype } from "@/plugins/clipboard";
-import {
-	generateFileName,
-	generateMarkdownImage,
-	uploadImageToDefault,
-} from "@/plugins/imageHosting";
+import { isAppExcluded } from "@/plugins/exclusion";
+import { generateFileName, uploadImageToDefault } from "@/plugins/imageHosting";
 import { triggerAutoSync } from "@/plugins/sync";
 import { clipboardStore } from "@/stores/clipboard";
 import { imageHostingStore } from "@/stores/imageHosting";
 import type { DatabaseSchemaHistory } from "@/types/database";
 import { formatDate } from "@/utils/dayjs";
-import { writeText } from "tauri-plugin-clipboard-x-api";
 
 export const useClipboard = (
-	state: State,
-	options?: ClipboardChangeOptions,
+  state: State,
+  options?: ClipboardChangeOptions,
 ) => {
-	useMount(async () => {
-		await startListening();
+  useMount(async () => {
+    await startListening();
 
-		onClipboardChange(async (result) => {
-			const { files, image, html, rtf, text } = result;
+    onClipboardChange(async (result) => {
+      // 检查当前应用是否在排除列表中
+      if (await isAppExcluded()) {
+        return;
+      }
 
-			if (isEmpty(result) || Object.values(result).every(isEmpty)) return;
+      const { files, image, html, rtf, text } = result;
 
-			const { copyPlain } = clipboardStore.content;
+      if (isEmpty(result) || Object.values(result).every(isEmpty)) return;
 
-			const data = {
-				createTime: formatDate(),
-				favorite: false,
-				group: "text",
-				id: nanoid(),
-				search: text?.value,
-			} as DatabaseSchemaHistory;
+      const { copyPlain } = clipboardStore.content;
 
-			if (files) {
-				Object.assign(data, files, {
-					group: "files",
-					search: files.value.join(" "),
-				});
-			} else if (html && !copyPlain) {
-				Object.assign(data, html);
-			} else if (rtf && !copyPlain) {
-				Object.assign(data, rtf);
-			} else if (text) {
-				const subtype = await getClipboardTextSubtype(text.value);
+      const data = {
+        createTime: formatDate(),
+        favorite: false,
+        group: "text",
+        id: nanoid(),
+        search: text?.value,
+      } as DatabaseSchemaHistory;
 
-				Object.assign(data, text, {
-					subtype,
-				});
-			} else if (image) {
-				// 处理图片上传
-				const localPath = image.value;
-				let imageUrl = localPath;
-				let search = localPath;
+      if (files) {
+        Object.assign(data, files, {
+          group: "files",
+          search: files.value.join(" "),
+        });
+      } else if (html && !copyPlain) {
+        Object.assign(data, html);
+      } else if (rtf && !copyPlain) {
+        Object.assign(data, rtf);
+      } else if (text) {
+        const subtype = await getClipboardTextSubtype(text.value);
 
-				// 检查是否启用图床自动上传
-				if (
-					imageHostingStore.enabled &&
-					imageHostingStore.autoUpload &&
-					imageHostingStore.configs.length > 0
-				) {
-					try {
-						// 读取图片文件
-						const response = await fetch(localPath);
-						const blob = await response.blob();
-						const arrayBuffer = await blob.arrayBuffer();
-						const imageData = new Uint8Array(arrayBuffer);
+        Object.assign(data, text, {
+          subtype,
+        });
+      } else if (image) {
+        // 处理图片上传
+        const localPath = image.value;
+        let imageUrl = localPath;
+        let search = localPath;
 
-						// 生成文件名
-						const fileName = generateFileName(localPath);
+        // 检查是否启用图床自动上传
+        if (
+          imageHostingStore.enabled &&
+          imageHostingStore.autoUpload &&
+          imageHostingStore.configs.length > 0
+        ) {
+          try {
+            // 读取图片文件
+            const response = await fetch(localPath);
+            const blob = await response.blob();
+            const arrayBuffer = await blob.arrayBuffer();
+            const imageData = new Uint8Array(arrayBuffer);
 
-						// 上传到图床
-						const uploadResult = await uploadImageToDefault(
-							imageData,
-							fileName,
-						);
+            // 生成文件名
+            const fileName = generateFileName(localPath);
 
-						if (uploadResult.success && uploadResult.url) {
-							imageUrl = uploadResult.url;
-							search = uploadResult.url;
+            // 上传到图床
+            const uploadResult = await uploadImageToDefault(
+              imageData,
+              fileName,
+            );
 
-							// 如果需要生成 Markdown 链接，写入剪贴板
-							if (
-								imageHostingStore.generateMarkdown &&
-								uploadResult.markdownUrl
-							) {
-								await writeText(uploadResult.markdownUrl);
-							}
-						}
-					} catch (error) {
-						console.error("Image upload failed:", error);
-						// 上传失败仍使用本地路径
-					}
-				}
+            if (uploadResult.success && uploadResult.url) {
+              imageUrl = uploadResult.url;
+              search = uploadResult.url;
 
-				Object.assign(data, image, {
-					group: "image",
-					value: imageUrl,
-					search: search,
-				});
-			}
+              // 如果需要生成 Markdown 链接，写入剪贴板
+              if (
+                imageHostingStore.generateMarkdown &&
+                uploadResult.markdownUrl
+              ) {
+                await writeText(uploadResult.markdownUrl);
+              }
+            }
+          } catch {
+            // 上传失败仍使用本地路径
+          }
+        }
 
-			const sqlData = cloneDeep(data);
+        Object.assign(data, image, {
+          group: "image",
+          search: search,
+          value: imageUrl,
+        });
+      }
 
-			const { type, value, group, createTime } = data;
+      const sqlData = cloneDeep(data);
 
-			if (type === "image") {
-				sqlData.value = await fullName(value);
-			}
+      const { type, value, group, createTime } = data;
 
-			if (type === "files") {
-				sqlData.value = JSON.stringify(value);
-			}
+      if (type === "image") {
+        sqlData.value = await fullName(value);
+      }
 
-			const [matched] = await selectHistory((qb) => {
-				const { type, value } = sqlData;
+      if (type === "files") {
+        sqlData.value = JSON.stringify(value);
+      }
 
-				return qb.where("type", "=", type).where("value", "=", value);
-			});
+      const [matched] = await selectHistory((qb) => {
+        const { type, value } = sqlData;
 
-			const visible = state.group === "all" || state.group === group;
+        return qb.where("type", "=", type).where("value", "=", value);
+      });
 
-			if (matched) {
-				if (!clipboardStore.content.autoSort) return;
+      const visible = state.group === "all" || state.group === group;
 
-				const { id } = matched;
+      if (matched) {
+        if (!clipboardStore.content.autoSort) return;
 
-				if (visible) {
-					remove(state.list, { id });
+        const { id } = matched;
 
-					state.list.unshift({ ...data, id });
-				}
+        if (visible) {
+          remove(state.list, { id });
 
-				return updateHistory(id, { createTime });
-			}
+          state.list.unshift({ ...data, id });
+        }
 
-			if (visible) {
-				state.list.unshift(data);
-			}
+        return updateHistory(id, { createTime });
+      }
 
-			await insertHistory(sqlData);
+      if (visible) {
+        state.list.unshift(data);
+      }
 
-			// 触发自动同步
-			triggerAutoSync();
-		}, options);
-	});
+      await insertHistory(sqlData);
+
+      // 触发自动同步
+      triggerAutoSync();
+    }, options);
+  });
 };

@@ -1,11 +1,10 @@
 import { useBoolean, useMount } from "ahooks";
-import { Button, Empty, Form, Input, List, Modal, Space, message } from "antd";
-import { useSnapshot } from "valtio";
+import { Button, Empty, Form, Input, List, Modal, message, Space } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSnapshot } from "valtio";
 import ProList from "@/components/ProList";
-import TagBadge from "@/components/TagBadge";
-import { tagStore, loadTags, addTag, updateTag, removeTag } from "@/stores/tag";
+import { addTag, loadTags, removeTag, tagStore, updateTag } from "@/stores/tag";
 import type { DatabaseSchemaTag } from "@/types/database";
 import styles from "./index.module.scss";
 
@@ -28,14 +27,21 @@ const PRESET_COLORS = [
 const Tags = () => {
   const { t } = useTranslation();
   const { tags } = useSnapshot(tagStore);
-  const [isModalOpen, { setTrue: openModal, setFalse: closeModal }] = useBoolean(false);
+  const [isModalOpen, { setTrue: openModal, setFalse: closeModal }] =
+    useBoolean(false);
   const [editingTag, setEditingTag] = useState<DatabaseSchemaTag | null>(null);
   const [form] = Form.useForm();
   const [selectedColor, setSelectedColor] = useState(PRESET_COLORS[0]);
+  const [loading, setLoading] = useState(true);
 
   // 加载标签
   useMount(() => {
-    loadTags();
+    const fetchTags = async () => {
+      setLoading(true);
+      await loadTags();
+      setLoading(false);
+    };
+    fetchTags();
   });
 
   const handleAdd = () => {
@@ -54,12 +60,14 @@ const Tags = () => {
 
   const handleDelete = async (tag: DatabaseSchemaTag) => {
     Modal.confirm({
-      title: t("preference.tags.label.delete_confirm"),
-      content: t("preference.tags.label.delete_confirm_content", { name: tag.name }),
+      content: t("preference.tags.label.delete_confirm_content", {
+        name: tag.name,
+      }),
       onOk: async () => {
         await removeTag(tag.id);
         message.success(t("preference.tags.label.delete_success"));
       },
+      title: t("preference.tags.label.delete_confirm"),
     });
   };
 
@@ -71,14 +79,14 @@ const Tags = () => {
 
     try {
       if (editingTag) {
-        await updateTag(editingTag.id, { name, color: selectedColor });
+        await updateTag(editingTag.id, { color: selectedColor, name });
         message.success(t("preference.tags.label.update_success"));
       } else {
         await addTag(name, selectedColor);
         message.success(t("preference.tags.label.create_success"));
       }
       closeModal();
-    } catch (error) {
+    } catch {
       message.error(t("preference.tags.label.save_error"));
     }
   };
@@ -94,7 +102,12 @@ const Tags = () => {
         </div>
       }
     >
-      {tags.length === 0 ? (
+      {loading ? (
+        <Empty
+          description={t("preference.tags.label.loading")}
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+        />
+      ) : tags.length === 0 ? (
         <Empty
           description={t("preference.tags.label.no_tags")}
           image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -109,13 +122,24 @@ const Tags = () => {
                 <Button key="edit" onClick={() => handleEdit(tag)} type="link">
                   {t("preference.tags.label.edit")}
                 </Button>,
-                <Button danger key="delete" onClick={() => handleDelete(tag)} type="link">
+                <Button
+                  danger
+                  key="delete"
+                  onClick={() => handleDelete(tag)}
+                  type="link"
+                >
                   {t("preference.tags.label.delete")}
                 </Button>,
               ]}
               className={styles.tagItem}
             >
-              <TagBadge size="medium" tag={tag} />
+              <div className={styles.tagDisplay}>
+                <span
+                  className={styles.tagDot}
+                  style={{ backgroundColor: tag.color }}
+                />
+                <span className={styles.tagName}>{tag.name}</span>
+              </div>
             </List.Item>
           )}
         />
@@ -125,13 +149,22 @@ const Tags = () => {
         onCancel={closeModal}
         onOk={handleSubmit}
         open={isModalOpen}
-        title={editingTag ? t("preference.tags.label.edit_tag") : t("preference.tags.label.add_tag")}
+        title={
+          editingTag
+            ? t("preference.tags.label.edit_tag")
+            : t("preference.tags.label.add_tag")
+        }
       >
         <Form form={form} layout="vertical">
           <Form.Item
             label={t("preference.tags.label.tag_name")}
             name="name"
-            rules={[{ required: true, message: t("preference.tags.label.name_required") }]}
+            rules={[
+              {
+                message: t("preference.tags.label.name_required"),
+                required: true,
+              },
+            ]}
           >
             <Input
               autoFocus
@@ -149,7 +182,10 @@ const Tags = () => {
                   onClick={() => setSelectedColor(color)}
                   style={{
                     backgroundColor: color,
-                    boxShadow: selectedColor === color ? `0 0 0 2px ${color}` : undefined,
+                    boxShadow:
+                      selectedColor === color
+                        ? `0 0 0 2px ${color}`
+                        : undefined,
                   }}
                   type="button"
                 />

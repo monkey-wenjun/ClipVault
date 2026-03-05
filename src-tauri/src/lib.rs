@@ -2,10 +2,82 @@ mod core;
 mod utils;
 
 use core::{prevent_default, setup};
-use tauri::{generate_context, Builder, Manager, WindowEvent};
+use tauri::{command, generate_context, Builder, Manager, WindowEvent, AppHandle, Runtime};
 use tauri_plugin_autostart::MacosLauncher;
 use tauri_plugin_eco_window::{show_main_window, MAIN_WINDOW_LABEL, PREFERENCE_WINDOW_LABEL};
 use tauri_plugin_log::{Target, TargetKind};
+use tauri_plugin_notification::NotificationExt;
+
+/// 发送系统通知
+#[command]
+async fn send_notification<R: Runtime>(
+    app: AppHandle<R>,
+    title: String,
+    body: String,
+) -> Result<(), String> {
+    app.notification()
+        .builder()
+        .title(title)
+        .body(body)
+        .show()
+        .map_err(|e| format!("Failed to show notification: {}", e))?;
+    Ok(())
+}
+
+/// 获取当前前台应用的名称（用于排除监听）
+#[command]
+async fn get_foreground_app_name() -> Result<String, String> {
+    #[cfg(target_os = "macos")]
+    {
+        // macOS: 使用 AppleScript 获取前台应用
+        match std::process::Command::new("osascript")
+            .args(&["-e", "tell application \"System Events\" to get name of first application process whose frontmost is true"])
+            .output()
+        {
+            Ok(output) if output.status.success() => {
+                let name = String::from_utf8_lossy(&output.stdout).trim().to_string();
+                Ok(name)
+            }
+            _ => Err("Failed to get foreground app name on macOS".to_string()),
+        }
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        // Windows: 使用 PowerShell 获取前台窗口进程名
+        match std::process::Command::new("powershell")
+            .args(&["-Command", "Get-Process | Where-Object {$_.MainWindowHandle -ne 0} | Sort-Object {$_.StartTime} -Descending | Select-Object -First 1 | Select-Object -ExpandProperty ProcessName"])
+            .output()
+        {
+            Ok(output) if output.status.success() => {
+                let name = String::from_utf8_lossy(&output.stdout).trim().to_string();
+                Ok(name)
+            }
+            _ => Err("Failed to get foreground app name on Windows".to_string()),
+        }
+    }
+
+    #[cfg(target_os = "linux")]
+    {
+        // Linux: 尝试使用 xdotool 或 wmctrl
+        let commands = [
+            ("xdotool", vec!["getactivewindow", "getwindowpid"]),
+            ("wmctrl", vec!["-lp"]),
+        ];
+
+        for (cmd, args) in &commands {
+            if let Ok(output) = std::process::Command::new(cmd).args(args).output() {
+                if output.status.success() {
+                    let output_str = String::from_utf8_lossy(&output.stdout);
+                    // 简化处理：返回命令结果的前部分
+                    return Ok(output_str.trim().split_whitespace().next().unwrap_or("unknown").to_string());
+                }
+            }
+        }
+
+        Err("Failed to get foreground app name on Linux".to_string())
+    }
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -68,6 +140,8 @@ pub fn run() {
         .plugin(prevent_default::init())
         // 剪贴板插件：https://github.com/ayangweb/tauri-plugin-clipboard-x
         .plugin(tauri_plugin_clipboard_x::init())
+        // 通知插件：https://github.com/tauri-apps/plugins-workspace/tree/v2/plugins/notification
+        .plugin(tauri_plugin_notification::init())
         // 自定义的窗口管理插件
         .plugin(tauri_plugin_eco_window::init())
         // 自定义粘贴的插件
@@ -78,6 +152,8 @@ pub fn run() {
         .plugin(tauri_plugin_eco_sync::init())
         // 自定义图床插件
         .plugin(tauri_plugin_eco_image_hosting::init())
+        // 注册自定义命令
+        .invoke_handler(tauri::generate_handler![get_foreground_app_name, send_notification])
         .on_window_event(|window, event| match event {
             // 让 app 保持在后台运行：https://tauri.app/v1/guides/features/system-tray/#preventing-the-app-from-closing
             WindowEvent::CloseRequested { api, .. } => {

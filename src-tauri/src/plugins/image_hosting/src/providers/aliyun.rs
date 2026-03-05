@@ -52,6 +52,26 @@ fn get_endpoint(config: &ImageHostingConfig) -> String {
     format!("{}.{}.aliyuncs.com", config.bucket, region)
 }
 
+/// 根据文件扩展名获取 Content-Type
+fn get_content_type(file_name: &str) -> &'static str {
+    let file_name_lower = file_name.to_lowercase();
+    if file_name_lower.ends_with(".jpg") || file_name_lower.ends_with(".jpeg") {
+        "image/jpeg"
+    } else if file_name_lower.ends_with(".png") {
+        "image/png"
+    } else if file_name_lower.ends_with(".gif") {
+        "image/gif"
+    } else if file_name_lower.ends_with(".webp") {
+        "image/webp"
+    } else if file_name_lower.ends_with(".bmp") {
+        "image/bmp"
+    } else if file_name_lower.ends_with(".svg") {
+        "image/svg+xml"
+    } else {
+        "application/octet-stream" // 默认二进制流
+    }
+}
+
 pub async fn upload(
     image_data: Vec<u8>,
     file_name: String,
@@ -72,7 +92,9 @@ pub async fn upload(
 
     // 计算 Content-MD5
     let content_md5 = base64_encode_data(&compute_md5(&image_data));
-    let content_type = "image/png"; // 根据实际情况调整
+    
+    // 根据文件扩展名确定 Content-Type
+    let content_type = get_content_type(&object_key);
     let date = Utc::now().format("%a, %d %b %Y %H:%M:%S GMT").to_string();
     let endpoint = get_endpoint(&config);
     let canonicalized_resource = format!("/{}/{}", config.bucket, object_key);

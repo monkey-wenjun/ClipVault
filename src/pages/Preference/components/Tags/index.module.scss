@@ -33,3 +33,23 @@
     border-color: var(--ant-color-primary);
   }
 }
+
+/* 标签显示 - 统一主题色文字 */
+.tagDisplay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tagDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tagName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ant-color-text);
+}

@@ -17,6 +17,10 @@ export const clipboardStore = proxy<ClipboardStore>({
     showOriginalContent: false,
   },
 
+  exclusion: {
+    apps: [],
+  },
+
   history: {
     duration: 0,
     maxCount: 0,

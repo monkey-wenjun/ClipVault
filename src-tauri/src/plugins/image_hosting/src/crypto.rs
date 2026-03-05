@@ -8,6 +8,7 @@ use sha2::{Sha256, Digest};
 
 const KEY_SIZE: usize = 32; // AES-256 key size
 const NONCE_SIZE: usize = 12; // GCM nonce size
+const ENCRYPTED_PREFIX: &str = "CVENC:"; // 加密数据标识前缀
 
 /// 从设备标识派生加密密钥
 fn derive_key() -> [u8; KEY_SIZE] {
@@ -25,6 +26,10 @@ fn derive_key() -> [u8; KEY_SIZE] {
 
 /// 加密数据
 pub fn encrypt(plaintext: &str) -> Result<String, String> {
+    if plaintext.is_empty() {
+        return Ok(String::new());
+    }
+    
     let key = derive_key();
     let cipher = Aes256Gcm::new_from_slice(&key)
         .map_err(|e| format!("Failed to create cipher: {}", e))?;
@@ -42,16 +47,30 @@ pub fn encrypt(plaintext: &str) -> Result<String, String> {
     result.extend_from_slice(&nonce_bytes);
     result.extend_from_slice(&ciphertext);
     
-    Ok(base64_encode(&result))
+    // 添加加密标识前缀
+    Ok(format!("{}{}", ENCRYPTED_PREFIX, base64_encode(&result)))
 }
 
 /// 解密数据
 pub fn decrypt(ciphertext_b64: &str) -> Result<String, String> {
+    if ciphertext_b64.is_empty() {
+        return Ok(String::new());
+    }
+    
+    // 检查是否有加密标识前缀
+    if !ciphertext_b64.starts_with(ENCRYPTED_PREFIX) {
+        // 没有前缀，认为是明文，直接返回
+        return Ok(ciphertext_b64.to_string());
+    }
+    
+    // 移除前缀
+    let encrypted_data = &ciphertext_b64[ENCRYPTED_PREFIX.len()..];
+    
     let key = derive_key();
     let cipher = Aes256Gcm::new_from_slice(&key)
         .map_err(|e| format!("Failed to create cipher: {}", e))?;
     
-    let ciphertext = base64_decode(ciphertext_b64)
+    let ciphertext = base64_decode(encrypted_data)
         .map_err(|e| format!("Base64 decode failed: {}", e))?;
     
     if ciphertext.len() < NONCE_SIZE {
@@ -59,22 +78,19 @@ pub fn decrypt(ciphertext_b64: &str) -> Result<String, String> {
     }
     
     let nonce = Nonce::from_slice(&ciphertext[..NONCE_SIZE]);
-    let encrypted_data = &ciphertext[NONCE_SIZE..];
+    let encrypted_bytes = &ciphertext[NONCE_SIZE..];
     
     let plaintext = cipher
-        .decrypt(nonce, encrypted_data)
+        .decrypt(nonce, encrypted_bytes)
         .map_err(|e| format!("Decryption failed: {}", e))?;
     
     String::from_utf8(plaintext)
         .map_err(|e| format!("Invalid UTF-8: {}", e))
 }
 
-/// 检查字符串是否已加密（简单启发式：是否是有效的 base64 且长度合理）
+/// 检查字符串是否已加密（检查是否有加密标识前缀）
 pub fn is_encrypted(s: &str) -> bool {
-    if s.len() < 20 {
-        return false;
-    }
-    base64_decode(s).is_ok()
+    s.starts_with(ENCRYPTED_PREFIX)
 }
 
 use base64::{engine::general_purpose::STANDARD as BASE64, Engine as _};

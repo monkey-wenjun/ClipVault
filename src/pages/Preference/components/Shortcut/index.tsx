@@ -42,12 +42,12 @@ const Shortcut = () => {
         />
 
         <ProShortcut
-          description="上传最新的一张图片到图床"
+          description={t("preference.shortcut.shortcut.hints.image_hosting")}
           isSystem={true}
           onChange={(value) => {
             globalStore.shortcut.imageHosting = value;
           }}
-          title="上传到图床"
+          title={t("preference.shortcut.shortcut.label.image_hosting")}
           value={shortcut.imageHosting}
         />
       </ProList>

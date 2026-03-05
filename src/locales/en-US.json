@@ -70,6 +70,12 @@
         "note": "Note"
       }
     },
+    "shortcut_key": {
+      "hints": {
+        "click": "Click to record",
+        "press": "Press keys"
+      }
+    },
     "tag_selector": {
       "label": {
         "add_new_tag": "Create New Tag",
@@ -79,16 +85,10 @@
         "input_tag_name": "Enter tag name",
         "name_required": "Please enter tag name",
         "no_tags": "No tags yet, create one first",
-        "selected": "Selected",
         "select_tags": "Manage Tags",
+        "selected": "Selected",
         "tag_color": "Tag Color",
         "tag_name": "Tag Name"
-      }
-    },
-    "shortcut_key": {
-      "hints": {
-        "click": "Click to record",
-        "press": "Press keys"
       }
     },
     "tray": {
@@ -102,6 +102,14 @@
         "stop_listening": "Stop listening",
         "version": "Version"
       }
+    }
+  },
+  "notification": {
+    "image_hosting": {
+      "error_title": "Image Upload Failed",
+      "success_body": "Link copied to clipboard",
+      "success_title": "Image Upload Success",
+      "unknown_error": "Unknown error"
     }
   },
   "preference": {
@@ -158,6 +166,25 @@
           "show_original_content": "Show Original Content"
         },
         "title": "Content Settings"
+      },
+      "exclusion_settings": {
+        "hints": {
+          "excluded_apps": "Content copied from these apps will not be recorded (e.g., password managers). You can exclude by app name."
+        },
+        "label": {
+          "add": "Add",
+          "excluded": "Excluded",
+          "excluded_apps": "Excluded Apps",
+          "excluded_apps_list": "Excluded Apps List",
+          "no_excluded_apps": "No excluded apps, please add from above",
+          "or": "or"
+        },
+        "placeholder": {
+          "app_name": "Enter app name (e.g., 1Password)",
+          "custom_app": "Enter custom app name",
+          "select_preset": "Select common password manager"
+        },
+        "title": "Exclusion Settings"
       },
       "search_box_settings": {
         "hints": {
@@ -265,26 +292,6 @@
         "tags": "Tags Management"
       }
     },
-    "tags": {
-      "title": "Tags Management",
-      "label": {
-        "add_tag": "Create Tag",
-        "create_success": "Tag created successfully",
-        "delete": "Delete",
-        "delete_confirm": "Confirm Delete",
-        "delete_confirm_content": "Are you sure you want to delete the tag '{{name}}'? Associated history items will no longer show this tag.",
-        "delete_success": "Tag deleted successfully",
-        "edit": "Edit",
-        "edit_tag": "Edit Tag",
-        "input_tag_name": "Enter tag name",
-        "name_required": "Please enter tag name",
-        "no_tags": "No tags yet. Click the button above to create one.",
-        "save_error": "Save failed",
-        "tag_color": "Tag Color",
-        "tag_name": "Tag Name",
-        "update_success": "Tag updated successfully"
-      }
-    },
     "settings": {
       "app_settings": {
         "hints": {
@@ -354,10 +361,12 @@
       },
       "shortcut": {
         "hints": {
+          "image_hosting": "Upload the latest image to configured hosting and copy the link",
           "paste_as_plain": "Paste selections as plain text or paths when the window is activated",
           "quick_paste": "Use number key combos to quickly paste top 9 items when window is hidden"
         },
         "label": {
+          "image_hosting": "Upload to Image Hosting",
           "open_clipboard": "Open Clipboard Window",
           "open_settings": "Open Preferences Window",
           "paste_as_plain": "Paste as Plain Text",
@@ -365,6 +374,27 @@
         },
         "title": "Shortcuts"
       }
+    },
+    "tags": {
+      "label": {
+        "add_tag": "Create Tag",
+        "create_success": "Tag created successfully",
+        "delete": "Delete",
+        "delete_confirm": "Confirm Delete",
+        "delete_confirm_content": "Are you sure you want to delete the tag '{{name}}'? Associated history items will no longer show this tag.",
+        "delete_success": "Tag deleted successfully",
+        "edit": "Edit",
+        "edit_tag": "Edit Tag",
+        "input_tag_name": "Enter tag name",
+        "loading": "Loading...",
+        "name_required": "Please enter tag name",
+        "no_tags": "No tags yet. Click the button above to create one.",
+        "save_error": "Save failed",
+        "tag_color": "Tag Color",
+        "tag_name": "Tag Name",
+        "update_success": "Tag updated successfully"
+      },
+      "title": "Tags Management"
     },
     "title": "Preferences"
   }

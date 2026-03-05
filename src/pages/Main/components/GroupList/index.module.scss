@@ -174,12 +174,47 @@
   }
 }
 
-/* 自定义标签选中状态 */
+/* 自定义标签选中状态 - 与预设分组统一的蓝色样式 */
 .activeTagTab {
-  background: var(--ant-color-fill-tertiary);
-  box-shadow: 0 0 0 2px var(--ant-color-primary);
+  background: #0078d4;
+  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.35);
 
   &:hover {
-    background: var(--ant-color-fill-tertiary);
+    background: #006cbd;
   }
+
+  /* 选中时标签名称使用白色 */
+  .tagName {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* 深色模式下选中态 */
+  :global(.dark) & {
+    background: #0078d4;
+    box-shadow: 0 2px 8px rgba(0, 120, 212, 0.4);
+
+    &:hover {
+      background: #006cbd;
+    }
+  }
+}
+
+/* 标签颜色点 */
+.tagDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  flex-shrink: 0;
+  transition: box-shadow 0.15s ease;
+}
+
+/* 标签名称 - 使用主题色 */
+.tagName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ant-color-text);
+  white-space: nowrap;
+  transition: color 0.15s ease;
 }

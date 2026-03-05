@@ -70,6 +70,12 @@
         "note": "备注"
       }
     },
+    "shortcut_key": {
+      "hints": {
+        "click": "点击录制快捷键",
+        "press": "按下录制快捷键"
+      }
+    },
     "tag_selector": {
       "label": {
         "add_new_tag": "新建标签",
@@ -79,16 +85,10 @@
         "input_tag_name": "请输入标签名称",
         "name_required": "请输入标签名称",
         "no_tags": "暂无标签，请先创建",
-        "selected": "已选择",
         "select_tags": "管理标签",
+        "selected": "已选择",
         "tag_color": "标签颜色",
         "tag_name": "标签名称"
-      }
-    },
-    "shortcut_key": {
-      "hints": {
-        "click": "点击录制快捷键",
-        "press": "按下录制快捷键"
       }
     },
     "tray": {
@@ -102,6 +102,14 @@
         "stop_listening": "停止监听",
         "version": "版本"
       }
+    }
+  },
+  "notification": {
+    "image_hosting": {
+      "error_title": "图片上传失败",
+      "success_body": "链接已复制到剪贴板",
+      "success_title": "图片上传成功",
+      "unknown_error": "未知错误"
     }
   },
   "preference": {
@@ -158,6 +166,25 @@
           "show_original_content": "显示原内容"
         },
         "title": "内容设置"
+      },
+      "exclusion_settings": {
+        "hints": {
+          "excluded_apps": "设置后从这些应用复制的内容将不会被记录（如密码管理器），支持按应用名称排除"
+        },
+        "label": {
+          "add": "添加",
+          "excluded": "已排除",
+          "excluded_apps": "排除应用",
+          "excluded_apps_list": "已排除的应用列表",
+          "no_excluded_apps": "暂无排除应用，请从上方添加",
+          "or": "或"
+        },
+        "placeholder": {
+          "app_name": "输入应用名称（如：1Password）",
+          "custom_app": "输入自定义应用名称",
+          "select_preset": "选择常用密码管理器"
+        },
+        "title": "排除设置"
       },
       "search_box_settings": {
         "hints": {
@@ -267,26 +294,6 @@
         "tags": "标签管理"
       }
     },
-    "tags": {
-      "title": "标签管理",
-      "label": {
-        "add_tag": "新建标签",
-        "create_success": "标签创建成功",
-        "delete": "删除",
-        "delete_confirm": "确认删除",
-        "delete_confirm_content": "确定要删除标签 {{name}} 吗？关联的历史记录将不再显示此标签。",
-        "delete_success": "标签删除成功",
-        "edit": "编辑",
-        "edit_tag": "编辑标签",
-        "input_tag_name": "请输入标签名称",
-        "name_required": "请输入标签名称",
-        "no_tags": "暂无标签，点击上方按钮创建",
-        "save_error": "保存失败",
-        "tag_color": "标签颜色",
-        "tag_name": "标签名称",
-        "update_success": "标签更新成功"
-      }
-    },
     "settings": {
       "app_settings": {
         "hints": {
@@ -356,10 +363,12 @@
       },
       "shortcut": {
         "hints": {
+          "image_hosting": "将最新的图片上传到配置的图床并复制链接",
           "paste_as_plain": "激活窗口时，将选中的内容粘贴为纯文本或路径",
           "quick_paste": "隐藏窗口时，使用数字组合键快速粘贴前九项"
         },
         "label": {
+          "image_hosting": "上传到图床",
           "open_clipboard": "打开剪贴板窗口",
           "open_settings": "打开偏好设置窗口",
           "paste_as_plain": "粘贴为纯文本",
@@ -425,6 +434,27 @@
         "title": "同步设置",
         "toggle_error": "切换同步状态失败"
       }
+    },
+    "tags": {
+      "label": {
+        "add_tag": "新建标签",
+        "create_success": "标签创建成功",
+        "delete": "删除",
+        "delete_confirm": "确认删除",
+        "delete_confirm_content": "确定要删除标签 {{name}} 吗？关联的历史记录将不再显示此标签。",
+        "delete_success": "标签删除成功",
+        "edit": "编辑",
+        "edit_tag": "编辑标签",
+        "input_tag_name": "请输入标签名称",
+        "loading": "加载中...",
+        "name_required": "请输入标签名称",
+        "no_tags": "暂无标签，点击上方按钮创建",
+        "save_error": "保存失败",
+        "tag_color": "标签颜色",
+        "tag_name": "标签名称",
+        "update_success": "标签更新成功"
+      },
+      "title": "标签管理"
     },
     "title": "偏好设置"
   }

@@ -70,6 +70,12 @@
         "note": "備註"
       }
     },
+    "shortcut_key": {
+      "hints": {
+        "click": "點擊錄製快速鍵",
+        "press": "按下錄製快速鍵"
+      }
+    },
     "tag_selector": {
       "label": {
         "add_new_tag": "新建標籤",
@@ -79,16 +85,10 @@
         "input_tag_name": "請輸入標籤名稱",
         "name_required": "請輸入標籤名稱",
         "no_tags": "暫無標籤，請先創建",
-        "selected": "已選擇",
         "select_tags": "管理標籤",
+        "selected": "已選擇",
         "tag_color": "標籤顏色",
         "tag_name": "標籤名稱"
-      }
-    },
-    "shortcut_key": {
-      "hints": {
-        "click": "點擊錄製快速鍵",
-        "press": "按下錄製快速鍵"
       }
     },
     "tray": {
@@ -102,6 +102,14 @@
         "stop_listening": "停止監聽",
         "version": "版本"
       }
+    }
+  },
+  "notification": {
+    "image_hosting": {
+      "error_title": "圖片上傳失敗",
+      "success_body": "鏈接已複製到剪貼簿",
+      "success_title": "圖片上傳成功",
+      "unknown_error": "未知錯誤"
     }
   },
   "preference": {
@@ -158,6 +166,25 @@
           "show_original_content": "顯示原內容"
         },
         "title": "內容設定"
+      },
+      "exclusion_settings": {
+        "hints": {
+          "excluded_apps": "設定後從這些應用程式複製的內容將不會被記錄（如密碼管理器），支援按應用程式名稱排除"
+        },
+        "label": {
+          "add": "新增",
+          "excluded": "已排除",
+          "excluded_apps": "排除應用程式",
+          "excluded_apps_list": "已排除的應用程式列表",
+          "no_excluded_apps": "暫無排除應用程式，請從上方添加",
+          "or": "或"
+        },
+        "placeholder": {
+          "app_name": "輸入應用程式名稱（如：1Password）",
+          "custom_app": "輸入自訂應用程式名稱",
+          "select_preset": "選擇常用密碼管理器"
+        },
+        "title": "排除設定"
       },
       "search_box_settings": {
         "hints": {
@@ -265,26 +292,6 @@
         "tags": "標籤管理"
       }
     },
-    "tags": {
-      "title": "標籤管理",
-      "label": {
-        "add_tag": "新建標籤",
-        "create_success": "標籤創建成功",
-        "delete": "刪除",
-        "delete_confirm": "確認刪除",
-        "delete_confirm_content": "確定要刪除標籤 '{{name}}' 嗎？關聯的歷史記錄將不再顯示此標籤。",
-        "delete_success": "標籤刪除成功",
-        "edit": "編輯",
-        "edit_tag": "編輯標籤",
-        "input_tag_name": "請輸入標籤名稱",
-        "name_required": "請輸入標籤名稱",
-        "no_tags": "暫無標籤，點擊上方按鈕創建",
-        "save_error": "保存失敗",
-        "tag_color": "標籤顏色",
-        "tag_name": "標籤名稱",
-        "update_success": "標籤更新成功"
-      }
-    },
     "settings": {
       "app_settings": {
         "hints": {
@@ -354,10 +361,12 @@
       },
       "shortcut": {
         "hints": {
+          "image_hosting": "將最新的圖片上傳到配置的圖床並複製鏈接",
           "paste_as_plain": "啟動視窗時，將選中的內容粘貼為純文字或路徑",
           "quick_paste": "隱藏視窗時，使用數字鍵快速貼上前九項"
         },
         "label": {
+          "image_hosting": "上傳到圖床",
           "open_clipboard": "打開剪貼簿視窗",
           "open_settings": "打開偏好設定視窗",
           "paste_as_plain": "貼上為純文字",
@@ -365,6 +374,27 @@
         },
         "title": "快捷鍵"
       }
+    },
+    "tags": {
+      "label": {
+        "add_tag": "新建標籤",
+        "create_success": "標籤創建成功",
+        "delete": "刪除",
+        "delete_confirm": "確認刪除",
+        "delete_confirm_content": "確定要刪除標籤 '{{name}}' 嗎？關聯的歷史記錄將不再顯示此標籤。",
+        "delete_success": "標籤刪除成功",
+        "edit": "編輯",
+        "edit_tag": "編輯標籤",
+        "input_tag_name": "請輸入標籤名稱",
+        "loading": "加載中...",
+        "name_required": "請輸入標籤名稱",
+        "no_tags": "暫無標籤，點擊上方按鈕創建",
+        "save_error": "保存失敗",
+        "tag_color": "標籤顏色",
+        "tag_name": "標籤名稱",
+        "update_success": "標籤更新成功"
+      },
+      "title": "標籤管理"
     },
     "title": "偏好設定"
   }

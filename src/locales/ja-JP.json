@@ -70,6 +70,12 @@
         "note": "備考"
       }
     },
+    "shortcut_key": {
+      "hints": {
+        "click": "クリックして入力",
+        "press": "キーを押す"
+      }
+    },
     "tag_selector": {
       "label": {
         "add_new_tag": "新規タグ",
@@ -79,16 +85,10 @@
         "input_tag_name": "タグ名を入力してください",
         "name_required": "タグ名を入力してください",
         "no_tags": "タグがありません。先に作成してください",
-        "selected": "選択済み",
         "select_tags": "タグを管理",
+        "selected": "選択済み",
         "tag_color": "タグの色",
         "tag_name": "タグ名"
-      }
-    },
-    "shortcut_key": {
-      "hints": {
-        "click": "クリックして入力",
-        "press": "キーを押す"
       }
     },
     "tray": {
@@ -102,6 +102,14 @@
         "stop_listening": "使用を再開",
         "version": "バージョン"
       }
+    }
+  },
+  "notification": {
+    "image_hosting": {
+      "error_title": "画像のアップロードに失敗しました",
+      "success_body": "リンクをクリップボードにコピーしました",
+      "success_title": "画像のアップロード成功",
+      "unknown_error": "不明なエラー"
     }
   },
   "preference": {
@@ -158,6 +166,25 @@
           "show_original_content": "元の内容を表示します"
         },
         "title": "コンテンツ設定"
+      },
+      "exclusion_settings": {
+        "hints": {
+          "excluded_apps": "これらのアプリケーションからコピーした内容は記録されません（パスワードマネージャーなど）。アプリケーション名で除外できます。"
+        },
+        "label": {
+          "add": "追加",
+          "excluded": "除外済み",
+          "excluded_apps": "除外アプリケーション",
+          "excluded_apps_list": "除外アプリケーション一覧",
+          "no_excluded_apps": "除外アプリケーションがありません。上から追加してください",
+          "or": "または"
+        },
+        "placeholder": {
+          "app_name": "アプリケーション名を入力（例：1Password）",
+          "custom_app": "カスタムアプリケーション名を入力",
+          "select_preset": "一般的なパスワードマネージャーを選択"
+        },
+        "title": "除外設定"
       },
       "search_box_settings": {
         "hints": {
@@ -265,26 +292,6 @@
         "tags": "タグ管理"
       }
     },
-    "tags": {
-      "title": "タグ管理",
-      "label": {
-        "add_tag": "新規タグ",
-        "create_success": "タグを作成しました",
-        "delete": "削除",
-        "delete_confirm": "削除の確認",
-        "delete_confirm_content": "タグ '{{name}}' を削除してもよろしいですか？関連する履歴にはこのタグが表示されなくなります。",
-        "delete_success": "タグを削除しました",
-        "edit": "編集",
-        "edit_tag": "タグを編集",
-        "input_tag_name": "タグ名を入力してください",
-        "name_required": "タグ名を入力してください",
-        "no_tags": "タグがありません。上のボタンをクリックして作成してください。",
-        "save_error": "保存に失敗しました",
-        "tag_color": "タグの色",
-        "tag_name": "タグ名",
-        "update_success": "タグを更新しました"
-      }
-    },
     "settings": {
       "app_settings": {
         "hints": {
@@ -354,10 +361,12 @@
       },
       "shortcut": {
         "hints": {
+          "image_hosting": "最新の画像を設定した画像ホスティングにアップロードしてリンクをコピー",
           "paste_as_plain": "選択範囲をプレーンテキスト、パスとして貼り付けます。",
           "quick_paste": "ウィンドウを隠す際、数字キーの組み合わせで最初の9項目を素早く貼り付ける"
         },
         "label": {
+          "image_hosting": "画像ホスティングにアップロード",
           "open_clipboard": "クリップボードを開く",
           "open_settings": "クリップボード設定を開く",
           "paste_as_plain": "プレーンテキストとして貼り付け",
@@ -365,6 +374,27 @@
         },
         "title": "ショートカットキー"
       }
+    },
+    "tags": {
+      "label": {
+        "add_tag": "新規タグ",
+        "create_success": "タグを作成しました",
+        "delete": "削除",
+        "delete_confirm": "削除の確認",
+        "delete_confirm_content": "タグ '{{name}}' を削除してもよろしいですか？関連する履歴にはこのタグが表示されなくなります。",
+        "delete_success": "タグを削除しました",
+        "edit": "編集",
+        "edit_tag": "タグを編集",
+        "input_tag_name": "タグ名を入力してください",
+        "loading": "読み込み中...",
+        "name_required": "タグ名を入力してください",
+        "no_tags": "タグがありません。上のボタンをクリックして作成してください。",
+        "save_error": "保存に失敗しました",
+        "tag_color": "タグの色",
+        "tag_name": "タグ名",
+        "update_success": "タグを更新しました"
+      },
+      "title": "タグ管理"
     },
     "title": "環境設定"
   }

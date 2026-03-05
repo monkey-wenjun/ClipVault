@@ -95,6 +95,11 @@ export interface ClipboardStore {
     showOriginalContent: boolean;
   };
 
+  // 排除设置
+  exclusion: {
+    apps: string[]; // 忽略的应用/进程名称列表
+  };
+
   // 历史记录
   history: {
     duration: number;

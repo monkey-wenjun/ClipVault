@@ -1,30 +1,32 @@
 ClipVault
-Copyright 2025 阿文 (hi@awen.me)
+Copyright 2025 ClipVault Contributors
 
-This product is based on EcoPaste (https://github.com/EcoPasteHub/EcoPaste)
-Copyright (c) EcoPasteHub and contributors
+This product includes software developed by EcoPasteHub
+(https://github.com/EcoPasteHub/EcoPaste).
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+---
 
-    http://www.apache.org/licenses/LICENSE-2.0
+THIRD-PARTY SOFTWARE NOTICES
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+This project is based on or incorporates the following open source projects:
 
-==============================================================================
+1. EcoPaste
+   - Copyright: EcoPasteHub and contributors
+   - License: Apache-2.0
+   - Source: https://github.com/EcoPasteHub/EcoPaste
+   - Usage: Base architecture and core functionality
 
-This software contains code derived from EcoPaste, which is licensed under
-the Apache License 2.0. The original EcoPaste software can be found at:
-https://github.com/EcoPasteHub/EcoPaste
+2. Tauri
+   - License: Apache-2.0 or MIT
+   - Source: https://github.com/tauri-apps/tauri
 
-Modifications made:
-- UI redesign with Windows 11 style
-- Added AES-256 encryption for sync feature
-- Added local directory synchronization
-- Changed application name to ClipVault
-- Updated version to 1.0.0-beta.1
+3. React
+   - License: MIT
+   - Source: https://github.com/facebook/react
+
+4. Ant Design
+   - License: MIT
+   - Source: https://github.com/ant-design/ant-design
+
+For the complete licenses of these projects, please see the LICENSE file
+or visit their respective repositories.

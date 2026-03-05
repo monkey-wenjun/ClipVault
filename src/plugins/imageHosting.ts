@@ -1,6 +1,11 @@
 import { invoke } from "@tauri-apps/api/core";
-import { writeText } from "tauri-plugin-clipboard-x-api";
-import { getImage } from "@/database/image";
+import { readFile } from "@tauri-apps/plugin-fs";
+import {
+  isPermissionGranted,
+  requestPermission,
+} from "@tauri-apps/plugin-notification";
+import { readImage, writeText } from "tauri-plugin-clipboard-x-api";
+import { i18n } from "@/locales";
 import { imageHostingStore } from "@/stores/imageHosting";
 import type { ImageHostingConfig, UploadResult } from "@/types/imageHosting";
 
@@ -8,137 +13,170 @@ import type { ImageHostingConfig, UploadResult } from "@/types/imageHosting";
  * 加密图床配置
  */
 export const encryptConfig = async (
-	config: ImageHostingConfig,
+  config: ImageHostingConfig,
 ): Promise<ImageHostingConfig> => {
-	return invoke("plugin:eco-image-hosting|encrypt_image_hosting_config", {
-		config,
-	});
+  return invoke("plugin:eco-image-hosting|encrypt_image_hosting_config", {
+    config,
+  });
 };
 
 /**
  * 解密图床配置
  */
 export const decryptConfig = async (
-	config: ImageHostingConfig,
+  config: ImageHostingConfig,
 ): Promise<ImageHostingConfig> => {
-	return invoke("plugin:eco-image-hosting|decrypt_image_hosting_config", {
-		config,
-	});
+  return invoke("plugin:eco-image-hosting|decrypt_image_hosting_config", {
+    config,
+  });
 };
 
 /**
  * 上传图片到指定图床
  */
 export const uploadImage = async (
-	imageData: Uint8Array,
-	fileName: string,
-	config: ImageHostingConfig,
+  imageData: Uint8Array,
+  fileName: string,
+  config: ImageHostingConfig,
 ): Promise<UploadResult> => {
-	return invoke("plugin:eco-image-hosting|upload_image", {
-		imageData: Array.from(imageData),
-		fileName,
-		config,
-	});
+  return invoke("plugin:eco-image-hosting|upload_image", {
+    config,
+    fileName,
+    imageData: Array.from(imageData),
+  });
 };
 
 /**
  * 上传图片到默认图床
  */
 export const uploadImageToDefault = async (
-	imageData: Uint8Array,
-	fileName: string,
+  imageData: Uint8Array,
+  fileName: string,
 ): Promise<UploadResult> => {
-	const { configs, defaultId } = imageHostingStore;
+  const { configs, defaultId } = imageHostingStore;
 
-	if (configs.length === 0) {
-		return {
-			success: false,
-			error: "No image hosting configured",
-		};
-	}
+  if (configs.length === 0) {
+    return {
+      error: "No image hosting configured",
+      success: false,
+    };
+  }
 
-	// 查找默认图床配置
-	const defaultConfig = configs.find((c) => c.id === defaultId) || configs[0];
+  // 查找默认图床配置
+  const defaultConfig = configs.find((c) => c.id === defaultId) || configs[0];
 
-	if (!defaultConfig) {
-		return {
-			success: false,
-			error: "Default image hosting not found",
-		};
-	}
+  if (!defaultConfig) {
+    return {
+      error: "Default image hosting not found",
+      success: false,
+    };
+  }
 
-	return uploadImage(imageData, fileName, defaultConfig);
+  return uploadImage(imageData, fileName, defaultConfig);
+};
+
+/**
+ * 发送系统通知（使用 Tauri 原生通知）
+ */
+const sendNotification = async (title: string, body: string) => {
+  try {
+    // 检查通知权限
+    let permissionGranted = await isPermissionGranted();
+    if (!permissionGranted) {
+      const permission = await requestPermission();
+      permissionGranted = permission === "granted";
+    }
+
+    if (permissionGranted) {
+      // 调用 Rust 命令发送通知
+      await invoke("send_notification", { body, title });
+    }
+  } catch {
+    // 忽略通知发送失败
+  }
 };
 
 /**
  * 上传最新的图片到图床
  */
 export const uploadLatestImage = async (): Promise<UploadResult> => {
-	if (!imageHostingStore.enabled || imageHostingStore.configs.length === 0) {
-		return {
-			success: false,
-			error: "Image hosting not enabled or not configured",
-		};
-	}
+  const { t } = i18n;
 
-	try {
-		// 获取最新的图片
-		const latestImage = await getImage();
+  if (!imageHostingStore.enabled || imageHostingStore.configs.length === 0) {
+    const error = "Image hosting not enabled or not configured";
+    await sendNotification(t("notification.image_hosting.error_title"), error);
+    return { error, success: false };
+  }
 
-		if (!latestImage) {
-			return {
-				success: false,
-				error: "No image found in clipboard history",
-			};
-		}
+  try {
+    // 直接从剪贴板读取图片
+    const imageInfo = await readImage();
 
-		// 读取图片文件
-		const response = await fetch(latestImage.value);
-		const blob = await response.blob();
-		const arrayBuffer = await blob.arrayBuffer();
-		const imageData = new Uint8Array(arrayBuffer);
+    if (!imageInfo || !imageInfo.path) {
+      const error = "No image found in clipboard";
+      await sendNotification(
+        t("notification.image_hosting.error_title"),
+        error,
+      );
+      return { error, success: false };
+    }
 
-		// 生成文件名
-		const fileName = generateFileName(latestImage.value);
+    // 使用 Tauri fs API 读取文件内容
+    const imageData = await readFile(imageInfo.path);
 
-		// 上传到图床
-		const result = await uploadImageToDefault(imageData, fileName);
+    // 生成文件名
+    const fileName = generateFileName(imageInfo.path);
 
-		if (result.success && result.url) {
-			// 如果启用 Markdown 生成，写入剪贴板
-			if (
-				imageHostingStore.generateMarkdown &&
-				result.markdownUrl
-			) {
-				await writeText(result.markdownUrl);
-			} else if (result.url) {
-				await writeText(result.url);
-			}
-		}
+    // 上传到图床
+    const result = await uploadImageToDefault(imageData, fileName);
 
-		return result;
-	} catch (error) {
-		console.error("Upload latest image failed:", error);
-		return {
-			success: false,
-			error: String(error),
-		};
-	}
+    if (result.success && result.url) {
+      // 默认使用 Markdown 格式写入剪贴板
+      const markdownUrl =
+        result.markdownUrl || generateMarkdownImage(result.url, fileName);
+      await writeText(markdownUrl);
+
+      // 发送系统通知 - 成功
+      await sendNotification(
+        t("notification.image_hosting.success_title"),
+        `${t("notification.image_hosting.success_body")}: ${markdownUrl.substring(0, 50)}...`,
+      );
+    } else {
+      // 发送系统通知 - 失败
+      await sendNotification(
+        t("notification.image_hosting.error_title"),
+        result.error || t("notification.image_hosting.unknown_error"),
+      );
+    }
+
+    return result;
+  } catch (error) {
+    const errorMsg = String(error);
+    // 发送系统通知 - 异常
+    await sendNotification(
+      t("notification.image_hosting.error_title"),
+      errorMsg,
+    );
+    return {
+      error: errorMsg,
+      success: false,
+    };
+  }
 };
 
 /**
  * 生成唯一的文件名
  */
 export const generateFileName = (originalName: string): string => {
-	const timestamp = Date.now();
-	const random = Math.random().toString(36).substring(2, 8);
-	const ext = originalName.split(".").pop() || "png";
-	return `clip_${timestamp}_${random}.${ext}`;
+  const timestamp = Date.now();
+  const random = Math.random().toString(36).substring(2, 8);
+  const ext = originalName.split(".").pop() || "png";
+  return `clip_${timestamp}_${random}.${ext}`;
 };
 
 /**
  * 生成 Markdown 图片链接
  */
 export const generateMarkdownImage = (url: string, alt = "image"): string => {
-	return `![${alt}](${url})`;
+  return `![${alt}](${url})`;
 };

@@ -1,0 +1,108 @@
+.container {
+  padding: 16px 0;
+}
+
+.inputSection {
+  margin-bottom: 24px;
+}
+
+.description {
+  font-size: 14px;
+  color: var(--ant-color-text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.presetSelect {
+  width: 200px;
+  
+  :global(.ant-select-selector) {
+    height: 40px !important;
+    font-size: 15px !important;
+    
+    .ant-select-selection-item {
+      line-height: 38px !important;
+    }
+  }
+}
+
+.orText {
+  color: var(--ant-color-text-tertiary);
+  font-size: 14px;
+}
+
+.customInput {
+  width: 240px;
+  height: 40px;
+  font-size: 15px;
+  
+  :global(input) {
+    font-size: 15px;
+  }
+}
+
+.appList {
+  margin-top: 16px;
+  
+  :global(.ant-list-header) {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ant-color-text);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--ant-color-border);
+  }
+}
+
+.appItem {
+  padding: 16px 20px !important;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: var(--ant-color-fill-quaternary);
+  }
+}
+
+.appName {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ant-color-text);
+}
+
+.appTag {
+  font-size: 13px;
+  padding: 4px 10px;
+  margin: 0;
+}
+
+.deleteBtn {
+  font-size: 16px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background-color: var(--ant-color-error-bg) !important;
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 15px;
+  color: var(--ant-color-text-tertiary);
+  background-color: var(--ant-color-fill-quaternary);
+  border-radius: 8px;
+  margin-top: 16px;
+}

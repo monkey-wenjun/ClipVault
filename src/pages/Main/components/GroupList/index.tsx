@@ -3,12 +3,11 @@ import clsx from "clsx";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
+import { PRESET_COLORS } from "@/components/TagSelector";
+import { addTag, loadTags, tagStore } from "@/stores/tag";
 import type { DatabaseSchemaGroup, DatabaseSchemaTag } from "@/types/database";
 import { scrollElementToCenter } from "@/utils/dom";
 import { MainContext } from "../..";
-import { tagStore, loadTags, addTag } from "@/stores/tag";
-import TagBadge from "@/components/TagBadge";
-import { PRESET_COLORS } from "@/components/TagSelector";
 import styles from "./index.module.scss";
 
 // 预设颜色（循环使用）
@@ -20,7 +19,8 @@ const GroupList = () => {
   const { rootState } = useContext(MainContext);
   const { t } = useTranslation();
   const { tags, selectedTagId } = useSnapshot(tagStore);
-  const [isAdding, { setTrue: startAdding, setFalse: stopAdding }] = useBoolean(false);
+  const [isAdding, { setTrue: startAdding, setFalse: stopAdding }] =
+    useBoolean(false);
   const [newTagName, setNewTagName] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -70,13 +70,16 @@ const GroupList = () => {
 
   // 左右箭头键切换分组
   useKeyPress("leftarrow", () => {
-    const allItems = [...presetGroups, ...tags.map(t => ({ ...t, icon: "🏷️" }))];
+    const allItems = [
+      ...presetGroups,
+      ...tags.map((t) => ({ ...t, icon: "🏷️" })),
+    ];
     const index = allItems.findIndex((item) => item.id === rootState.group);
     const length = allItems.length;
     const nextIndex = index === 0 ? length - 1 : index - 1;
     const nextGroup = allItems[nextIndex];
     rootState.group = nextGroup.id;
-    if ('color' in nextGroup) {
+    if ("color" in nextGroup) {
       tagStore.selectedTagId = nextGroup.id;
     } else {
       tagStore.selectedTagId = null;
@@ -84,13 +87,16 @@ const GroupList = () => {
   });
 
   useKeyPress("rightarrow", () => {
-    const allItems = [...presetGroups, ...tags.map(t => ({ ...t, icon: "🏷️" }))];
+    const allItems = [
+      ...presetGroups,
+      ...tags.map((t) => ({ ...t, icon: "🏷️" })),
+    ];
     const index = allItems.findIndex((item) => item.id === rootState.group);
     const length = allItems.length;
     const nextIndex = index === length - 1 ? 0 : index + 1;
     const nextGroup = allItems[nextIndex];
     rootState.group = nextGroup.id;
-    if ('color' in nextGroup) {
+    if ("color" in nextGroup) {
       tagStore.selectedTagId = nextGroup.id;
     } else {
       tagStore.selectedTagId = null;
@@ -116,7 +122,7 @@ const GroupList = () => {
     }
 
     // 检查是否已存在同名标签
-    const existing = tags.find(t => t.name === name);
+    const existing = tags.find((t) => t.name === name);
     if (existing) {
       // 如果已存在，直接选中
       handleTagClick(existing);
@@ -128,11 +134,11 @@ const GroupList = () => {
     // 创建新标签
     const color = getRandomColor();
     const newTagId = await addTag(name, color);
-    
+
     // 选中新创建的标签
     tagStore.selectedTagId = newTagId;
     rootState.group = "tag";
-    
+
     setNewTagName("");
     stopAdding();
   };
@@ -194,7 +200,11 @@ const GroupList = () => {
             onClick={() => handleTagClick(tag)}
             type="button"
           >
-            <TagBadge size="medium" tag={tag} />
+            <span
+              className={styles.tagDot}
+              style={{ backgroundColor: tag.color }}
+            />
+            <span className={styles.tagName}>{tag.name}</span>
           </button>
         );
       })}
@@ -204,13 +214,13 @@ const GroupList = () => {
         <div className={styles.addTagInputWrapper}>
           <span className={styles.addTagIcon}>+</span>
           <input
-            ref={inputRef}
             className={styles.addTagInput}
             maxLength={20}
             onBlur={handleInputBlur}
             onChange={(e) => setNewTagName(e.target.value)}
             onKeyDown={handleInputKeyDown}
             placeholder={t("clipboard.label.tab.new_tag")}
+            ref={inputRef}
             type="text"
             value={newTagName}
           />

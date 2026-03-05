@@ -5,6 +5,7 @@ import ProSwitch from "@/components/ProSwitch";
 import { clipboardStore } from "@/stores/clipboard";
 import AudioSettings from "./components/AudioSettings";
 import AutoPaste from "./components/AutoPaste";
+import ExcludedApps from "./components/ExcludedApps";
 import OperationButton from "./components/OperationButton";
 import SearchPosition from "./components/SearchPosition";
 import WindowPosition from "./components/WindowPosition";
@@ -142,6 +143,10 @@ const ClipboardSettings = () => {
           )}
           value={content.showOriginalContent}
         />
+      </ProList>
+
+      <ProList header={t("preference.clipboard.exclusion_settings.title")}>
+        <ExcludedApps />
       </ProList>
     </>
   );

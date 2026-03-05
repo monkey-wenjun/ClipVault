@@ -32,7 +32,7 @@ import styles from "./index.module.scss";
 const Preference = () => {
   const { t } = useTranslation();
   const { app, shortcut, appearance } = useSnapshot(globalStore);
-  const [activeKey, setActiveKey] = useState("clipboard");
+  const [activeKey, setActiveKey] = useState("general");
   const contentRef = useRef<HTMLElement>(null);
 
   const { createTray } = useTray();
@@ -66,6 +66,12 @@ const Preference = () => {
   const menuItems = useCreation(() => {
     return [
       {
+        content: <General />,
+        icon: "i-lucide:bolt",
+        key: "general",
+        label: t("preference.menu.title.general"),
+      },
+      {
         content: <Clipboard />,
         icon: "i-lucide:clipboard-list",
         key: "clipboard",
@@ -82,12 +88,6 @@ const Preference = () => {
         icon: "i-lucide:tags",
         key: "tags",
         label: t("preference.menu.title.tags"),
-      },
-      {
-        content: <General />,
-        icon: "i-lucide:bolt",
-        key: "general",
-        label: t("preference.menu.title.general"),
       },
       {
         content: <Shortcut />,
