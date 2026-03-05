@@ -164,7 +164,7 @@ jobs:
           workspaces: "./src-tauri -> target"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build MacOS app
         if: startsWith(matrix.os, 'macos')
