@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { findIndex } from "es-toolkit/compat";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import ImagePreview from "@/components/ImagePreview";
 import TagSelector, { type TagSelectorRef } from "@/components/TagSelector";
 import { LISTEN_KEY } from "@/constants";
 import { deleteHistory } from "@/database/history";
@@ -11,6 +12,7 @@ import { selectHistoryTagIds } from "@/database/tag";
 import { useHistoryList } from "@/hooks/useHistoryList";
 import { useKeyboard } from "@/hooks/useKeyboard";
 import { useTauriListen } from "@/hooks/useTauriListen";
+import type { DatabaseSchemaHistory } from "@/types/database";
 import { MainContext } from "../..";
 import Item from "./components/Item";
 import NoteModal, { type NoteModalRef } from "./components/NoteModal";
@@ -25,6 +27,11 @@ const HistoryList = () => {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [, setCurrentHistoryId] = useState<string>("");
   const [, setCurrentTagIds] = useState<string[]>([]);
+
+  // 图片预览状态
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewImage, setPreviewImage] =
+    useState<DatabaseSchemaHistory<"image"> | null>(null);
 
   const scrollToIndex = (index: number) => {
     const container = scrollerRef.current;
@@ -175,6 +182,43 @@ const HistoryList = () => {
     }
   });
 
+  // 空格键预览图片
+  useKeyPress("space", (event) => {
+    event?.preventDefault();
+    const { activeId } = rootState;
+    if (!activeId) return;
+
+    const item = rootState.list.find((i) => i.id === activeId);
+    if (!item || item.type !== "image") return;
+
+    setPreviewImage(item as DatabaseSchemaHistory<"image">);
+    setPreviewVisible(true);
+  });
+
+  // 关闭图片预览
+  const handleClosePreview = () => {
+    setPreviewVisible(false);
+    setPreviewImage(null);
+  };
+
+  // 删除预览的图片
+  const handleDeletePreviewImage = async () => {
+    if (!previewImage) return;
+
+    const confirmed = await deleteModal.confirm({
+      content: t("clipboard.hints.delete_modal_content"),
+      title: t("clipboard.button.context_menu.delete"),
+    });
+
+    if (!confirmed) return;
+
+    await deleteHistory(previewImage);
+    rootState.list = rootState.list.filter((i) => i.id !== previewImage.id);
+    rootState.activeId = rootState.list[0]?.id;
+    handleClosePreview();
+    message.success(t("clipboard.button.context_menu.delete") + t("success"));
+  };
+
   // 处理标签选择
   const handleTag = async (historyId: string) => {
     const tagIds = await selectHistoryTagIds(historyId);
@@ -205,6 +249,13 @@ const HistoryList = () => {
 
       <NoteModal ref={noteModelRef} />
       <TagSelector ref={tagSelectorRef} />
+
+      <ImagePreview
+        data={previewImage}
+        onClose={handleClosePreview}
+        onDelete={handleDeletePreviewImage}
+        visible={previewVisible}
+      />
 
       {contextHolder}
     </div>
