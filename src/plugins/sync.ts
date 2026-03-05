@@ -73,6 +73,18 @@ export const getSyncStatus = async (): Promise<{
 let syncDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
 /**
+ * 生成加密密钥
+ */
+export const generateEncryptionKey = (): string => {
+  const chars = "0123456789abcdef";
+  let key = "";
+  for (let i = 0; i < 64; i++) {
+    key += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return key;
+};
+
+/**
  * 触发自动同步（带防抖）
  * 在剪贴板内容变化时调用
  */
