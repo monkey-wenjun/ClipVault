@@ -13,7 +13,7 @@ export const clipboardStore = proxy<ClipboardStore>({
     copyPlain: false,
     deleteConfirm: true,
     operationButtons: ["copy", "star", "delete"],
-    pastePlain: false,
+    pastePlain: true,
     showOriginalContent: false,
   },
 

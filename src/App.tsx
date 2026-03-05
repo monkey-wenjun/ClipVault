@@ -1,5 +1,9 @@
 import { HappyProvider } from "@ant-design/happy-work-theme";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+import {
+  enable,
+  isEnabled as isAutoStartEnabled,
+} from "@tauri-apps/plugin-autostart";
 import { error } from "@tauri-apps/plugin-log";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { useBoolean, useEventListener, useKeyPress, useMount } from "ahooks";
@@ -31,6 +35,14 @@ const App = () => {
     await restoreState();
 
     await restoreStore();
+
+    // 如果开启了自启动，确保系统注册
+    if (globalStore.app.autoStart) {
+      const enabled = await isAutoStartEnabled();
+      if (!enabled) {
+        await enable();
+      }
+    }
 
     toggle();
 

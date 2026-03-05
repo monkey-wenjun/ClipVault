@@ -3,10 +3,10 @@ import type { GlobalStore } from "@/types/store";
 
 export const globalStore = proxy<GlobalStore>({
   app: {
-    autoStart: false,
+    autoStart: true,
     showMenubarIcon: true,
     showTaskbarIcon: false,
-    silentStart: false,
+    silentStart: true,
   },
 
   appearance: {
