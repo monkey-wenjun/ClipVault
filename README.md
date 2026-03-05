@@ -33,6 +33,35 @@
 
 ---
 
+## 📸 界面预览
+
+### 主界面
+<p align="center">
+  <img src="https://file.awen.me/clip_1772685982052_78asyk.png" width="80%" alt="主界面" />
+</p>
+
+### 偏好设置 - 图床配置
+<p align="center">
+  <img src="https://file.awen.me/clip_1772685998478_uztcr8.png" width="80%" alt="图床配置" />
+</p>
+
+### 偏好设置 - 排除应用
+<p align="center">
+  <img src="https://file.awen.me/clip_1772686025427_5317n4.png" width="80%" alt="排除应用" />
+</p>
+
+### 偏好设置 - 快捷键
+<p align="center">
+  <img src="https://file.awen.me/clip_1772686033435_k5seac.png" width="80%" alt="快捷键设置" />
+</p>
+
+### 标签管理
+<p align="center">
+  <img src="https://file.awen.me/clip_1772686046576_p7msnn.png" width="80%" alt="标签管理" />
+</p>
+
+---
+
 ## 📥 下载安装
 
 从 [Releases](https://github.com/yourusername/ClipVault/releases) 页面下载最新版本。

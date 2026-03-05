@@ -33,6 +33,35 @@
 
 ---
 
+## 📸 Screenshots
+
+### Main Interface
+<p align="center">
+  <img src="https://file.awen.me/clip_1772685982052_78asyk.png" width="80%" alt="Main Interface" />
+</p>
+
+### Preferences - Image Hosting
+<p align="center">
+  <img src="https://file.awen.me/clip_1772685998478_uztcr8.png" width="80%" alt="Image Hosting Config" />
+</p>
+
+### Preferences - Exclude Apps
+<p align="center">
+  <img src="https://file.awen.me/clip_1772686025427_5317n4.png" width="80%" alt="Exclude Apps" />
+</p>
+
+### Preferences - Shortcuts
+<p align="center">
+  <img src="https://file.awen.me/clip_1772686033435_k5seac.png" width="80%" alt="Shortcuts" />
+</p>
+
+### Tags Management
+<p align="center">
+  <img src="https://file.awen.me/clip_1772686046576_p7msnn.png" width="80%" alt="Tags Management" />
+</p>
+
+---
+
 ## 📥 Download
 
 Download the latest version from the [Releases](https://github.com/yourusername/ClipVault/releases) page.
