@@ -24,7 +24,7 @@
         "minHeight": 600,
         "minWidth": 360,
         "skipTaskbar": true,
-        "title": "EcoPaste",
+        "title": "ClipVault",
         "transparent": true,
         "url": "index.html/#/",
         "visible": false,
@@ -34,18 +34,18 @@
       {
         "center": true,
         "dragDropEnabled": false,
-        "height": 480,
+        "height": 956,
         "hiddenTitle": true,
         "label": "preference",
         "maximizable": false,
-        "minHeight": 480,
-        "minWidth": 700,
+        "minHeight": 956,
+        "minWidth": 1226,
         "skipTaskbar": true,
         "titleBarStyle": "Overlay",
         "transparent": true,
         "url": "index.html/#/preference",
         "visible": false,
-        "width": 700,
+        "width": 1226,
         "windowEffects": {
           "effects": ["sidebar"],
           "state": "active"
@@ -70,11 +70,11 @@
       "icons/icon.ico"
     ],
     "resources": ["assets/tray.ico"],
-    "shortDescription": "EcoPaste",
+    "shortDescription": "ClipVault",
     "targets": ["nsis", "dmg", "app", "appimage", "deb", "rpm"]
   },
-  "identifier": "com.ayangweb.EcoPaste",
-  "mainBinaryName": "EcoPaste",
+  "identifier": "me.awen.clipvault",
+  "mainBinaryName": "ClipVault",
   "plugins": {
     "fs": {
       "requireLiteralLeadingDot": false
@@ -84,6 +84,6 @@
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDcwNEIyQkUwRjNEMTg4NgpSV1NHR0QwUHZySUVCeXFRQzZ4aEpNRWdFdThVQ2I4b2dSQktRcmNtV1dYTFJJV1h2VmVVZXBWSgo="
     }
   },
-  "productName": "EcoPaste",
+  "productName": "ClipVault",
   "version": "../package.json"
 }

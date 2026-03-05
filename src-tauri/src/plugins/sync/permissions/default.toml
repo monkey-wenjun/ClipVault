@@ -1,0 +1,13 @@
+"$schema" = "schemas/schema.json"
+
+[default]
+description = "Default permissions for the sync plugin"
+permissions = [
+    "allow-set-sync-path",
+    "allow-get-sync-path",
+    "allow-enable-sync",
+    "allow-is-sync-enabled",
+    "allow-sync-now",
+    "allow-set-encryption-key",
+    "allow-is-encryption-enabled",
+]

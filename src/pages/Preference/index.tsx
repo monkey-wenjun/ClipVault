@@ -24,6 +24,8 @@ import Clipboard from "./components/Clipboard";
 import General from "./components/General";
 import History from "./components/History";
 import Shortcut from "./components/Shortcut";
+import Sync from "./components/Sync";
+import styles from "./index.module.scss";
 
 const Preference = () => {
   const { t } = useTranslation();
@@ -85,12 +87,12 @@ const Preference = () => {
         key: "shortcut",
         label: t("preference.menu.title.shortcut"),
       },
-      // {
-      //   content: <Backup />,
-      //   icon: "i-lucide:database-backup",
-      //   key: "backup",
-      //   label: t("preference.menu.title.backup"),
-      // },
+      {
+        content: <Sync />,
+        icon: "i-lucide:refresh-cw",
+        key: "sync",
+        label: t("preference.menu.title.sync"),
+      },
       {
         content: <About />,
         icon: "i-lucide:info",
@@ -109,53 +111,73 @@ const Preference = () => {
   };
 
   return (
-    <Flex className="h-screen">
+    <Flex className={clsx("h-screen overflow-hidden", styles.container)}>
+      {/* 左侧菜单栏 - Win11 风格 */}
       <Flex
-        className={clsx("h-full w-50 p-3", [isMac ? "pt-8" : "bg-color-1"])}
+        className={clsx(
+          "h-full flex-col p-3",
+          styles.sidebar,
+          isMac ? "pt-8" : "bg-color-1",
+        )}
         data-tauri-drag-region
         gap="small"
         vertical
       >
         {menuItems.map((item) => {
           const { key, label, icon } = item;
+          const isActive = activeKey === key;
 
           return (
             <Flex
               align="center"
               className={clsx(
-                "cursor-pointer rounded-lg p-3 p-r-0 text-color-2 transition hover:bg-color-4",
-                {
-                  "bg-primary! text-white!": activeKey === key,
-                },
+                styles.menuItem,
+                "cursor-pointer px-4 py-3 transition-all duration-200",
+                isActive && styles.active,
               )}
               gap="small"
               key={key}
               onClick={() => handleMenuClick(key)}
             >
-              <UnoIcon name={icon} size={20} />
-
-              <span className="font-bold">{label}</span>
+              <UnoIcon
+                className={clsx(isActive ? "text-white" : "text-color-2")}
+                name={icon}
+                size={18}
+              />
+              <span
+                className={clsx(
+                  "font-medium text-sm",
+                  isActive ? "text-white" : "text-color-2",
+                )}
+              >
+                {label}
+              </span>
             </Flex>
           );
         })}
       </Flex>
 
-      <MacScrollbar
-        className="h-full flex-1 bg-color-2 p-4"
-        data-tauri-drag-region
-        ref={contentRef}
-        skin={appearance.isDark ? "dark" : "light"}
+      {/* 右侧内容区域 */}
+      <div
+        className={clsx("flex-1 overflow-hidden bg-color-2", styles.content)}
       >
-        {menuItems.map((item) => {
-          const { key, content } = item;
+        <MacScrollbar
+          className="h-full p-6"
+          data-tauri-drag-region
+          ref={contentRef}
+          skin={appearance.isDark ? "dark" : "light"}
+        >
+          {menuItems.map((item) => {
+            const { key, content } = item;
 
-          return (
-            <div hidden={key !== activeKey} key={key}>
-              {content}
-            </div>
-          );
-        })}
-      </MacScrollbar>
+            return (
+              <div hidden={key !== activeKey} key={key}>
+                {content}
+              </div>
+            );
+          })}
+        </MacScrollbar>
+      </div>
 
       <UpdateApp />
     </Flex>

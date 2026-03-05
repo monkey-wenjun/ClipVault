@@ -1,0 +1,72 @@
+/* Win11 风格偏好设置页面 */
+
+.container {
+  /* 整体背景使用微妙的纹理 */
+  background: var(--ant-color-bg-layout);
+}
+
+/* 左侧菜单栏 */
+.sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--ant-color-border-secondary);
+  background: var(--ant-color-bg-container) !important;
+}
+
+/* 菜单项 - Win11 Pill 样式 */
+.menuItem {
+  position: relative;
+  border-radius: 8px;
+  margin: 2px 0;
+  
+  /* 默认状态 */
+  background: transparent;
+  
+  /* 悬停效果 */
+  &:hover {
+    background: var(--ant-color-fill-quaternary);
+  }
+  
+  /* 图标和文字颜色过渡 */
+  :global {
+    .uno-icon {
+      transition: all 0.15s ease;
+    }
+  }
+}
+
+/* 选中状态 - Win11 Pill 样式 */
+.active {
+  background: var(--ant-blue) !important;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.25);
+  
+  /* 悬停时保持选中态 */
+  &:hover {
+    background: var(--ant-blue) !important;
+  }
+}
+
+/* 右侧内容区域 */
+.content {
+  /* Win11 内容区域背景 */
+  background: var(--ant-color-bg-layout) !important;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 60px;
+    padding: 8px !important;
+    
+    /* 仅显示图标 */
+    span {
+      display: none;
+    }
+  }
+  
+  .menuItem {
+    justify-content: center;
+    padding: 12px !important;
+  }
+}

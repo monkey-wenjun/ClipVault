@@ -90,22 +90,12 @@
     "about": {
       "about_software": {
         "button": {
-          "check_update": "檢查更新",
-          "copy": "複製",
-          "feedback_issue": "迴響問題"
-        },
-        "hints": {
-          "copy_success": "複製成功",
-          "software_info": "複製軟件資訊並提供給 Bug Issue"
+          "check_update": "檢查更新"
         },
         "label": {
-          "community": "社區交流",
-          "open_source_address": "開源地址",
-          "software_info": "軟件資訊",
-          "sponsor": "贊助我們",
           "version": "版本："
         },
-        "title": "關於軟件"
+        "title": "關於 ClipVault"
       }
     },
     "clipboard": {

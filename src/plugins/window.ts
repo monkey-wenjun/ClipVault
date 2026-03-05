@@ -1,12 +1,10 @@
 import { invoke } from "@tauri-apps/api/core";
 import { emit } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
-import { PhysicalPosition, PhysicalSize } from "@tauri-apps/api/window";
 import { LISTEN_KEY, WINDOW_LABEL } from "@/constants";
 import { clipboardStore } from "@/stores/clipboard";
 import type { WindowLabel } from "@/types/plugin";
 import { isLinux } from "@/utils/is";
-import { getCursorMonitor } from "@/utils/monitor";
 
 const COMMAND = {
   HIDE_WINDOW: "plugin:eco-window|hide_window",
@@ -56,39 +54,8 @@ export const toggleWindowVisible = async () => {
       await emit(LISTEN_KEY.ACTIVATE_BACK_TOP);
     }
 
-    if (window.style === "standard" && window.position !== "remember") {
-      const monitor = await getCursorMonitor();
-
-      if (monitor) {
-        const { position, size, cursorPoint } = monitor;
-        const { width, height } = await appWindow.innerSize();
-        let { x, y } = cursorPoint;
-
-        if (window.position === "follow") {
-          x = Math.min(x, position.x + size.width - width);
-          y = Math.min(y, position.y + size.height - height);
-        } else {
-          x = position.x + (size.width - width) / 2;
-          y = position.y + (size.height - height) / 2;
-        }
-
-        await appWindow.setPosition(
-          new PhysicalPosition(Math.round(x), Math.round(y)),
-        );
-      }
-    } else if (window.style === "dock") {
-      const monitor = await getCursorMonitor();
-
-      if (monitor) {
-        const { width, height } = monitor.size;
-        const { x } = monitor.position;
-        const windowHeight = 400;
-        const y = height - windowHeight;
-
-        await appWindow.setSize(new PhysicalSize(width, windowHeight));
-        await appWindow.setPosition(new PhysicalPosition(x, y));
-      }
-    }
+    // 窗口位置和尺寸由 Rust 后端统一管理，前端不再覆盖
+    // 保持原有逻辑：标准模式和 Dock 模式都在 Rust 端处理
   }
 
   showWindow();

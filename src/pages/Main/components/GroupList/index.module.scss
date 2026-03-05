@@ -1,0 +1,73 @@
+/* Win11 Pill 样式标签页 */
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+  padding: 0 4px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* 标签页项 - Pill 样式 */
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--ant-color-text-secondary);
+  transition: all 0.15s ease;
+
+  /* 悬停效果 */
+  &:hover {
+    background: var(--ant-color-fill-quaternary);
+    color: var(--ant-color-text);
+  }
+
+  /* 图标 */
+  .icon {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  /* 文字 */
+  .label {
+    font-weight: 500;
+  }
+}
+
+/* 选中状态 - 蓝色强调色 */
+.active {
+  background: #0078d4;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.35);
+
+  &:hover {
+    background: #006cbd;
+    color: #fff;
+  }
+
+  /* 深色模式下选中态 */
+  :global(.dark) & {
+    background: #0078d4;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 120, 212, 0.4);
+
+    &:hover {
+      background: #006cbd;
+    }
+  }
+}

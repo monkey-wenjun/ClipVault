@@ -1,12 +1,11 @@
 import { useKeyPress } from "ahooks";
-import { Tag } from "antd";
 import clsx from "clsx";
 import { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import Scrollbar from "@/components/Scrollbar";
 import type { DatabaseSchemaGroup } from "@/types/database";
 import { scrollElementToCenter } from "@/utils/dom";
 import { MainContext } from "../..";
+import styles from "./index.module.scss";
 
 const GroupList = () => {
   const { rootState } = useContext(MainContext);
@@ -18,64 +17,70 @@ const GroupList = () => {
 
   const presetGroups: DatabaseSchemaGroup[] = [
     {
+      icon: "📋",
       id: "all",
       name: t("clipboard.label.tab.all"),
     },
     {
+      icon: "⭐",
+      id: "favorite",
+      name: t("clipboard.label.tab.favorite"),
+    },
+    {
+      icon: "📝",
       id: "text",
       name: t("clipboard.label.tab.text"),
     },
     {
+      icon: "🖼️",
       id: "image",
       name: t("clipboard.label.tab.image"),
     },
     {
+      icon: "📁",
       id: "files",
       name: t("clipboard.label.tab.files"),
     },
-    {
-      id: "favorite",
-      name: t("clipboard.label.tab.favorite"),
-    },
   ];
 
-  useKeyPress("tab", (event) => {
+  // 左右箭头键切换分组
+  useKeyPress("leftarrow", () => {
     const index = presetGroups.findIndex((item) => item.id === rootState.group);
     const length = presetGroups.length;
+    const nextIndex = index === 0 ? length - 1 : index - 1;
+    rootState.group = presetGroups[nextIndex].id;
+  });
 
-    let nextIndex = index;
-
-    if (event.shiftKey) {
-      nextIndex = index === 0 ? length - 1 : index - 1;
-    } else {
-      nextIndex = index === length - 1 ? 0 : index + 1;
-    }
-
+  useKeyPress("rightarrow", () => {
+    const index = presetGroups.findIndex((item) => item.id === rootState.group);
+    const length = presetGroups.length;
+    const nextIndex = index === length - 1 ? 0 : index + 1;
     rootState.group = presetGroups[nextIndex].id;
   });
 
   return (
-    <Scrollbar className="flex" data-tauri-drag-region>
+    <div className={styles.container} data-tauri-drag-region>
       {presetGroups.map((item) => {
-        const { id, name } = item;
-
-        const isChecked = id === rootState.group;
+        const { id, name, icon } = item;
+        const isActive = id === rootState.group;
 
         return (
-          <div id={id} key={id}>
-            <Tag.CheckableTag
-              checked={isChecked}
-              className={clsx({ "bg-primary!": isChecked })}
-              onChange={() => {
-                rootState.group = id;
-              }}
-            >
-              {name}
-            </Tag.CheckableTag>
-          </div>
+          <button
+            className={clsx(styles.tab, isActive && styles.active)}
+            data-tauri-drag-region
+            id={id}
+            key={id}
+            onClick={() => {
+              rootState.group = id;
+            }}
+            type="button"
+          >
+            <span className={styles.icon}>{icon}</span>
+            <span className={styles.label}>{name}</span>
+          </button>
         );
       })}
-    </Scrollbar>
+    </div>
   );
 };
 

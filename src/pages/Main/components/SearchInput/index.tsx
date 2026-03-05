@@ -1,6 +1,4 @@
 import { useBoolean, useKeyPress } from "ahooks";
-import type { InputRef } from "antd";
-import { Input } from "antd";
 import {
   type FC,
   type HTMLAttributes,
@@ -15,33 +13,29 @@ import { PRESET_SHORTCUT } from "@/constants";
 import { useTauriFocus } from "@/hooks/useTauriFocus";
 import { clipboardStore } from "@/stores/clipboard";
 import { MainContext } from "../..";
+import styles from "./index.module.scss";
 
 const SearchInput: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
   const { rootState } = useContext(MainContext);
-  const inputRef = useRef<InputRef>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState<string>();
   const [isComposition, { setTrue, setFalse }] = useBoolean();
   const { t } = useTranslation();
 
   useEffect(() => {
     if (isComposition) return;
-
     rootState.search = value;
   }, [value, isComposition]);
 
   useTauriFocus({
     onBlur() {
       const { search } = clipboardStore;
-
-      // 搜索框自动清空
       if (search.autoClear) {
         setValue(void 0);
       }
     },
     onFocus() {
       const { search } = clipboardStore;
-
-      // 搜索框默认聚焦
       if (search.defaultFocus) {
         inputRef.current?.focus();
       } else {
@@ -54,32 +48,30 @@ const SearchInput: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
     inputRef.current?.focus();
   });
 
-  useKeyPress(
-    ["enter", "uparrow", "downarrow"],
-    () => {
-      inputRef.current?.blur();
-    },
-    {
-      target: inputRef.current?.input,
-    },
-  );
-
   return (
-    <div {...props}>
-      <Input
-        allowClear
+    <div className={styles.container} {...props}>
+      <UnoIcon className={styles.icon} name="i-lucide:search" />
+      <input
+        autoComplete="off"
         autoCorrect="off"
-        onChange={(event) => {
-          setValue(event.target.value);
-        }}
+        className={styles.input}
+        onChange={(e) => setValue(e.target.value)}
         onCompositionEnd={setFalse}
         onCompositionStart={setTrue}
         placeholder={t("clipboard.hints.search_placeholder")}
-        prefix={<UnoIcon name="i-lucide:search" />}
-        ref={inputRef}
-        size="small"
-        value={value}
+        ref={inputRef as any}
+        type="text"
+        value={value || ""}
       />
+      {value && (
+        <button
+          className={styles.clear}
+          onClick={() => setValue("")}
+          type="button"
+        >
+          <UnoIcon name="i-lucide:x" />
+        </button>
+      )}
     </div>
   );
 };

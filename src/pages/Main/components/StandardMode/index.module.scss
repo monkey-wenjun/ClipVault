@@ -1,0 +1,92 @@
+/* Win11 风格标准模式主界面 */
+
+.container {
+  /* Win11 Mica/Acrylic 材质效果 */
+  background: var(--ant-color-bg-container);
+  border-radius: 12px;
+}
+
+/* 顶部工具栏 */
+.toolbar {
+  height: 56px;
+  padding: 0 16px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 100%
+  );
+  border-bottom: 1px solid var(--ant-color-border-secondary);
+  flex-shrink: 0;
+}
+
+/* 分隔线 */
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--ant-color-border);
+  margin: 0 8px;
+}
+
+/* 操作按钮组 */
+.actions {
+  margin-left: auto;
+}
+
+/* 图标按钮 */
+.iconBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--ant-color-text-secondary);
+  transition: all 0.15s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ant-color-fill-quaternary);
+    color: var(--ant-color-text);
+  }
+}
+
+/* 底部状态栏 */
+.statusbar {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.02);
+  border-top: 1px solid var(--ant-color-border-secondary);
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+.statusItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ant-color-text-secondary);
+  white-space: nowrap;
+
+  &.right {
+    margin-left: auto;
+  }
+}
+
+/* 深色模式调整 */
+.dark {
+  .toolbar {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 100%
+    );
+  }
+
+  .statusbar {
+    background: rgba(255, 255, 255, 0.02);
+  }
+}

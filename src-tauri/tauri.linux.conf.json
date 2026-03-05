@@ -3,13 +3,13 @@
     "linux": {
       "deb": {
         "depends": ["gstreamer1.0-plugins-good"],
-        "desktopTemplate": "./EcoPaste.desktop"
+        "desktopTemplate": "./ClipVault.desktop"
       },
       "rpm": {
         "depends": ["gstreamer1-plugins-good"],
-        "desktopTemplate": "./EcoPaste.desktop"
+        "desktopTemplate": "./ClipVault.desktop"
       }
     }
   },
-  "identifier": "com.ayangweb.EcoPaste"
+  "identifier": "me.awen.clipvault"
 }

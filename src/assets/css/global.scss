@@ -27,3 +27,90 @@ html {
     }
   }
 }
+
+/* Win11 风格 Switch 开关 */
+.ant-switch {
+  min-width: 40px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.25);
+  
+  .ant-switch-handle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  &.ant-switch-checked {
+    background-color: #0078d4;
+    
+    .ant-switch-handle {
+      left: calc(100% - 18px);
+    }
+  }
+  
+  &:hover:not(.ant-switch-disabled) {
+    background-color: rgba(0, 0, 0, 0.35);
+  }
+  
+  &.ant-switch-checked:hover:not(.ant-switch-disabled) {
+    background-color: #006cbd;
+  }
+}
+
+/* 深色模式 Switch */
+.dark {
+  .ant-switch {
+    background-color: rgba(255, 255, 255, 0.25);
+    
+    &:hover:not(.ant-switch-disabled) {
+      background-color: rgba(255, 255, 255, 0.35);
+    }
+    
+    &.ant-switch-checked {
+      background-color: #0078d4;
+      
+      &:hover:not(.ant-switch-disabled) {
+        background-color: #006cbd;
+      }
+    }
+  }
+}
+
+/* Win11 风格 Select */
+.ant-select {
+  .ant-select-selector {
+    border-radius: 6px !important;
+    transition: all 0.15s ease;
+  }
+}
+
+/* Win11 风格 Button */
+.ant-btn {
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  
+  &.ant-btn-primary {
+    background-color: var(--ant-blue);
+    
+    &:hover {
+      background-color: #006cbd;
+    }
+  }
+}
+
+/* Win11 风格 Input */
+.ant-input {
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+/* 偏好设置窗口整体圆角 */
+.preference-window {
+  border-radius: 12px;
+  overflow: hidden;
+}

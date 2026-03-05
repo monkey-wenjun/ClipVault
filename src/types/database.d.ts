@@ -26,6 +26,7 @@ export type DatabaseSchemaGroupId = LiteralUnion<
 export interface DatabaseSchemaGroup {
   id: DatabaseSchemaGroupId;
   name: string;
+  icon?: string;
   createTime?: string;
 }
 

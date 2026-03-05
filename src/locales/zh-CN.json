@@ -90,22 +90,12 @@
     "about": {
       "about_software": {
         "button": {
-          "check_update": "检查更新",
-          "copy": "复制",
-          "feedback_issue": "反馈问题"
-        },
-        "hints": {
-          "copy_success": "复制成功",
-          "software_info": "复制软件信息并提供给 Bug Issue"
+          "check_update": "检查更新"
         },
         "label": {
-          "community": "社区交流",
-          "open_source_address": "开源地址",
-          "software_info": "软件信息",
-          "sponsor": "赞助我们",
           "version": "版本："
         },
-        "title": "关于软件"
+        "title": "关于 ClipVault"
       }
     },
     "clipboard": {
@@ -253,7 +243,8 @@
         "clipboard": "剪贴板",
         "general": "通用设置",
         "history": "历史记录",
-        "shortcut": "快捷键"
+        "shortcut": "快捷键",
+        "sync": "同步"
       }
     },
     "settings": {
@@ -335,6 +326,64 @@
           "quick_paste": "快速粘贴"
         },
         "title": "快捷键"
+      }
+    },
+    "sync": {
+      "encryption_settings": {
+        "button": {
+          "copy": "复制",
+          "disable": "禁用加密",
+          "generate": "生成",
+          "save": "保存"
+        },
+        "encryption_disabled": "加密已禁用",
+        "hints": {
+          "encryption_key": "设置 AES-256 加密密钥，用于加密同步数据"
+        },
+        "invalid_key_length": "密钥长度必须为 64 位十六进制字符（32 字节）",
+        "key_copied": "密钥已复制到剪贴板",
+        "key_copy_error": "复制密钥失败",
+        "key_length": "当前长度：{{length}} 字符",
+        "key_save_error": "密钥保存失败",
+        "key_saved_success": "密钥保存成功",
+        "label": {
+          "encryption_key": "加密密钥",
+          "status": "加密状态"
+        },
+        "placeholder": {
+          "key": "请输入 64 位十六进制密钥"
+        },
+        "security_warning_desc": "请妥善保管加密密钥！密钥丢失将无法解密数据，密钥泄露将导致数据被他人访问。建议将密钥保存在安全的地方（如密码管理器）。",
+        "security_warning_title": "安全提醒",
+        "status_disabled": "未启用",
+        "status_enabled": "已启用",
+        "title": "加密设置"
+      },
+      "sync_settings": {
+        "button": {
+          "select_folder": "选择文件夹",
+          "sync_now": "立即同步"
+        },
+        "disabled_success": "同步已禁用",
+        "enabled_success": "同步已启用",
+        "hints": {
+          "enable_sync": "将剪贴板数据同步到本地目录（如云盘文件夹）",
+          "manual_sync": "手动触发同步操作"
+        },
+        "label": {
+          "enable_sync": "启用同步",
+          "manual_sync": "手动同步",
+          "sync_path": "同步目录"
+        },
+        "no_path_selected": "未选择目录",
+        "path_set_error": "设置同步目录失败",
+        "path_set_success": "同步目录设置成功",
+        "please_select_folder_first": "请先选择同步目录",
+        "select_folder_title": "选择同步目录",
+        "sync_error": "同步失败",
+        "sync_success": "同步成功",
+        "title": "同步设置",
+        "toggle_error": "切换同步状态失败"
       }
     },
     "title": "偏好设置"

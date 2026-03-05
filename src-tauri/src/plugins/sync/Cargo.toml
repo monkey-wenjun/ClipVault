@@ -1,0 +1,13 @@
+[package]
+name = "tauri-plugin-eco-sync"
+version = "0.1.0"
+edition = "2021"
+links = "tauri-plugin-eco-sync"
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+tokio = { version = "1", features = ["fs", "rt", "macros"] }
+
+[build-dependencies]
+tauri-plugin = { version = "2", features = ["build"] }

@@ -90,22 +90,12 @@
     "about": {
       "about_software": {
         "button": {
-          "check_update": "アップデートの確認",
-          "copy": "複製します",
-          "feedback_issue": "フィードバックの問題"
-        },
-        "hints": {
-          "copy_success": "コピー成功",
-          "software_info": "ソフトウェアの情報をコピーしてバグ問題に提供すること"
+          "check_update": "アップデートの確認"
         },
         "label": {
-          "community": "コミュニティの交流です",
-          "open_source_address": "オープンソースアドレス",
-          "software_info": "ソフトウェア情報",
-          "sponsor": "スポンサー",
           "version": "バージョン: "
         },
-        "title": "ソフトウェアについて"
+        "title": "ClipVault について"
       }
     },
     "clipboard": {

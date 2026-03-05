@@ -1,0 +1,49 @@
+/* Win11 风格横向卡片列表 */
+
+.container {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 16px;
+}
+
+/* 横向滚动列表 */
+.list {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 4px 12px;
+  scroll-behavior: smooth;
+  align-items: stretch;
+  flex: 1;
+
+  /* 隐藏默认滚动条 */
+  scrollbar-width: thin;
+  scrollbar-color: var(--ant-color-border) transparent;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--ant-color-border);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--ant-color-text-tertiary);
+  }
+}
+
+/* 卡片项包装器 */
+.itemWrapper {
+  flex-shrink: 0;
+  width: 180px;
+  height: 100%;
+}

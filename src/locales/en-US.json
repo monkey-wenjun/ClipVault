@@ -90,22 +90,12 @@
     "about": {
       "about_software": {
         "button": {
-          "check_update": "Check Update",
-          "copy": "Copy",
-          "feedback_issue": "Feedback Issue"
-        },
-        "hints": {
-          "copy_success": "Copy Success",
-          "software_info": "Copying software information and providing it to Bug Issues"
+          "check_update": "Check Update"
         },
         "label": {
-          "community": "Community",
-          "open_source_address": "Open Source Address",
-          "software_info": "Software Information",
-          "sponsor": "Sponsor",
           "version": "Version: "
         },
-        "title": "About Software"
+        "title": "About ClipVault"
       }
     },
     "clipboard": {

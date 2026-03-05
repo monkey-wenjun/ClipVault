@@ -1,32 +1,73 @@
+/* Win11 风格卡片列表 */
+
 .root {
-  --uno: "not-last-of-type:pb-4";
+  --uno: "not-last-of-type:pb-5";
 
   .title {
-    --uno: "pl-4 font-bold";
+    --uno: "pl-4 mb-3 text-sm font-semibold";
+    color: var(--ant-color-text-secondary);
+    letter-spacing: 0.3px;
   }
 
   :global {
     .ant-list {
+      /* Win11 卡片样式 */
       --uno: "bg-color-1 b-color-2";
+      
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 
+        0 1px 2px rgba(0, 0, 0, 0.02),
+        0 2px 4px rgba(0, 0, 0, 0.02),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      
+      /* 深色模式下的调整 */
+      [data-theme="dark"] & {
+        box-shadow: 
+          0 1px 2px rgba(0, 0, 0, 0.2),
+          0 2px 4px rgba(0, 0, 0, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
 
       .ant-list-item {
-        --uno: "px-4!";
+        --uno: "px-4! py-3.5!";
+        border-bottom-color: var(--ant-color-border-secondary);
+        transition: background-color 0.15s ease;
+        
+        /* 最后一项去掉下边框 */
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        /* 悬停效果 */
+        &:hover {
+          background-color: var(--ant-color-fill-quaternary);
+        }
 
         .ant-list-item-meta-title {
-          --uno: "last:m-0!";
+          --uno: "last:m-0! text-sm font-medium";
+          color: var(--ant-color-text);
         }
 
         .ant-list-item-meta-description {
-          --uno: "text-xs!";
+          --uno: "text-xs mt-1";
+          color: var(--ant-color-text-tertiary);
         }
 
         .ant-list-item-action {
-          --uno: "inline-flex items-center";
+          --uno: "inline-flex items-center ml-4";
 
           li {
             --uno: "last:pr-0!";
+            padding: 0 8px;
           }
         }
+      }
+      
+      /* 空状态样式 */
+      .ant-list-empty-text {
+        color: var(--ant-color-text-tertiary);
+        padding: 32px 0;
       }
     }
   }

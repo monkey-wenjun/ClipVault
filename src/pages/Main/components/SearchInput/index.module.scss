@@ -1,0 +1,89 @@
+/* Win11 风格搜索框 */
+
+.container {
+  position: relative;
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--ant-color-text-tertiary);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  height: 36px;
+  border-radius: 18px;
+  border: 1px solid var(--ant-color-border);
+  background: var(--ant-color-fill-quaternary);
+  padding: 0 36px;
+  font-size: 14px;
+  color: var(--ant-color-text);
+  outline: none;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: var(--ant-color-text-tertiary);
+  }
+
+  &:focus {
+    background: var(--ant-color-bg-container);
+    border-color: var(--ant-blue);
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.15);
+  }
+}
+
+/* 清除按钮 */
+.clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: var(--ant-color-text-tertiary);
+  color: var(--ant-color-bg-container);
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+  padding: 0;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .uno-icon {
+    font-size: 12px;
+  }
+}
+
+/* 深色模式 */
+:global(.dark) {
+  .input {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
+
+    &:focus {
+      background: rgba(0, 0, 0, 0.35);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.25);
+    }
+  }
+
+  .clear {
+    background: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.8);
+  }
+}

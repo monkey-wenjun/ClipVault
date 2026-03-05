@@ -3,6 +3,9 @@ use crate::MAIN_WINDOW_LABEL;
 use tauri::{command, AppHandle, Runtime, WebviewWindow};
 use tauri_nspanel::{CollectionBehavior, ManagerExt};
 
+const WINDOW_HEIGHT: f64 = 600.0;
+const WINDOW_WIDTH_RATIO: f64 = 0.85; // 窗口宽度占屏幕宽度的比例
+
 pub enum MacOSPanelStatus {
     Show,
     Hide,
@@ -13,8 +16,36 @@ pub enum MacOSPanelStatus {
 #[command]
 pub async fn show_window<R: Runtime>(app_handle: AppHandle<R>, window: WebviewWindow<R>) {
     if is_main_window(&window) {
+        // 设置窗口大小（工作区域宽度的 85%，两侧保留空隙）
+        if let Some(monitor) = window.current_monitor().ok().flatten() {
+            let work_area = monitor.work_area();
+            let work_size = work_area.size;
+            let work_position = work_area.position;
+            
+            let window_width = (work_size.width as f64 * WINDOW_WIDTH_RATIO) as u32;
+            let window_x = work_position.x + ((work_size.width - window_width) as i32 / 2);
+            let window_y = work_position.y + (work_size.height as i32) - (WINDOW_HEIGHT as i32);
+            
+            let _ = window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
+                width: window_width,
+                height: WINDOW_HEIGHT as u32,
+            }));
+            
+            let _ = window.set_position(tauri::Position::Physical(tauri::PhysicalPosition {
+                x: window_x,
+                y: window_y,
+            }));
+        }
+        
         set_macos_panel(&app_handle, &window, MacOSPanelStatus::Show);
     } else {
+        // 偏好设置窗口：重置为默认尺寸并居中
+        let _ = window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
+            width: 1226,
+            height: 956,
+        }));
+        let _ = window.center();
+        
         shared_show_window(&window);
     }
 }

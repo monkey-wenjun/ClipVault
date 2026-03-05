@@ -17,7 +17,7 @@ export const globalStore = proxy<GlobalStore>({
   env: {},
 
   shortcut: {
-    clipboard: "Alt+C",
+    clipboard: "CommandOrControl+Shift+V",
     pastePlain: "",
     preference: "Alt+X",
     quickPaste: {

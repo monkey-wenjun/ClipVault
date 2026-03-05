@@ -1,0 +1,159 @@
+/* Win11 风格侧边栏 */
+
+.sidebar {
+  width: 180px;
+  min-width: 180px;
+  background: var(--ant-color-fill-quaternary);
+  border-left: 1px solid var(--ant-color-border-secondary);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+/* 空状态 */
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ant-color-text-tertiary);
+  text-align: center;
+  padding: 32px 0;
+
+  .emptyIcon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+  }
+
+  p {
+    font-size: 13px;
+  }
+}
+
+/* 分区 */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.actionsSection {
+  margin-top: auto;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ant-color-text-tertiary);
+}
+
+/* 信息区域 */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.infoRow {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.infoLabel {
+  font-size: 11px;
+  color: var(--ant-color-text-tertiary);
+}
+
+.infoValue {
+  color: var(--ant-color-text);
+  word-break: break-word;
+}
+
+/* 快捷操作按钮 */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--ant-color-text);
+  transition: all 0.15s ease;
+  text-align: left;
+
+  &:hover {
+    background: var(--ant-color-fill-quaternary);
+  }
+
+  /* 图标 */
+  .uno-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* 文字 */
+  span:nth-child(2) {
+    flex: 1;
+  }
+
+  /* 快捷键提示 */
+  .key {
+    margin-left: auto;
+    font-size: 11px;
+    opacity: 0.6;
+    font-family: "Cascadia Code", "Consolas", monospace;
+    padding: 2px 6px;
+    background: var(--ant-color-fill-quaternary);
+    border-radius: 4px;
+  }
+}
+
+/* 主要按钮 */
+.primary {
+  background: #0078d4;
+  color: #fff;
+
+  &:hover {
+    background: #006cbd;
+  }
+
+  .key {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* 收藏图标 */
+.favorite {
+  color: #ffd700;
+}
+
+/* 滚动条样式 */
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--ant-color-border);
+  border-radius: 2px;
+}

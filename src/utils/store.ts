@@ -30,6 +30,11 @@ const initStore = async () => {
     clipboardStore.window.style = "standard";
   }
 
+  // 迁移旧版快捷键设置
+  if (globalStore.shortcut.clipboard === "Alt+C") {
+    globalStore.shortcut.clipboard = "CommandOrControl+Shift+V";
+  }
+
   await mkdir(globalStore.env.saveDataDir, { recursive: true });
 };
 
