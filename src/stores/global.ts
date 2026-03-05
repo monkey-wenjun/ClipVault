@@ -18,13 +18,13 @@ export const globalStore = proxy<GlobalStore>({
 
   shortcut: {
     clipboard: "CommandOrControl+Shift+V",
+    imageHosting: "CommandOrControl+Shift+P",
     pastePlain: "",
     preference: "Alt+X",
     quickPaste: {
       enable: false,
       value: "Command+Shift",
     },
-    imageHosting: "CommandOrControl+Shift+P",
   },
 
   update: {

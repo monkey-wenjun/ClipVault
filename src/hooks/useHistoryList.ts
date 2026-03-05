@@ -1,9 +1,8 @@
 import { copyFile, exists, remove } from "@tauri-apps/plugin-fs";
-import { useReactive, useUpdateEffect } from "ahooks";
-import { useEffect } from "react";
+import { useReactive } from "ahooks";
 import { isString } from "es-toolkit";
 import { unionBy } from "es-toolkit/compat";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { getDefaultSaveImagePath } from "tauri-plugin-clipboard-x-api";
 import { LISTEN_KEY } from "@/constants";
 import { selectHistory } from "@/database/history";
@@ -49,14 +48,19 @@ export const useHistoryList = (options: Options) => {
         const { size } = state;
         const { group, search } = rootState;
         const isFavoriteGroup = group === "favorite";
-        const isNormalGroup = group !== "all" && !isFavoriteGroup && !selectedTagId;
+        const isNormalGroup =
+          group !== "all" && !isFavoriteGroup && !selectedTagId;
         const isTagGroup = !!selectedTagId;
 
         return qb
           .$if(isFavoriteGroup, (eb) => eb.where("favorite", "=", true))
           .$if(isNormalGroup, (eb) => eb.where("group", "=", group))
-          .$if(isTagGroup && historyIds.length > 0, (eb) => eb.where("id", "in", historyIds))
-          .$if(isTagGroup && historyIds.length === 0, (eb) => eb.where("id", "=", "__no_match__")) // 无匹配时返回空
+          .$if(isTagGroup && historyIds.length > 0, (eb) =>
+            eb.where("id", "in", historyIds),
+          )
+          .$if(isTagGroup && historyIds.length === 0, (eb) =>
+            eb.where("id", "=", "__no_match__"),
+          ) // 无匹配时返回空
           .$if(!isBlank(search), (eb) => {
             return eb.where((eb) => {
               return eb.or([

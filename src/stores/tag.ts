@@ -7,8 +7,8 @@ export interface TagStore {
 }
 
 export const tagStore = proxy<TagStore>({
-  tags: [],
   selectedTagId: null,
+  tags: [],
 });
 
 // 加载标签列表
@@ -23,14 +23,17 @@ export const addTag = async (name: string, color: string) => {
   const id = crypto.randomUUID();
   const createTime = new Date().toISOString();
 
-  await insertTag({ id, name, color, createTime });
+  await insertTag({ color, createTime, id, name });
   await loadTags();
 
   return id;
 };
 
 // 更新标签
-export const updateTag = async (id: string, updates: Partial<DatabaseSchemaTag>) => {
+export const updateTag = async (
+  id: string,
+  updates: Partial<DatabaseSchemaTag>,
+) => {
   const { updateTag: updateTagDb } = await import("@/database/tag");
 
   await updateTagDb(id, updates);

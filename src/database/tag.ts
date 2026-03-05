@@ -1,11 +1,16 @@
-import type { DatabaseSchemaTag, DatabaseSchemaHistoryTag } from "@/types/database";
+import type {
+  DatabaseSchemaHistoryTag,
+  DatabaseSchemaTag,
+} from "@/types/database";
 import { getDatabase } from ".";
 
 // 标签操作
 export const selectTags = async () => {
   const db = await getDatabase();
 
-  return db.selectFrom("tag").selectAll().execute() as Promise<DatabaseSchemaTag[]>;
+  return db.selectFrom("tag").selectAll().execute() as Promise<
+    DatabaseSchemaTag[]
+  >;
 };
 
 export const insertTag = async (data: DatabaseSchemaTag) => {
@@ -72,7 +77,10 @@ export const addTagToHistory = async (historyId: string, tagId: string) => {
   return db.insertInto("historyTag").values({ historyId, tagId }).execute();
 };
 
-export const removeTagFromHistory = async (historyId: string, tagId: string) => {
+export const removeTagFromHistory = async (
+  historyId: string,
+  tagId: string,
+) => {
   const db = await getDatabase();
 
   return db

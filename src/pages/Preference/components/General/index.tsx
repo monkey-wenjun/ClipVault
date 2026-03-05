@@ -1,6 +1,10 @@
+import {
+  ExportOutlined,
+  ImportOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import { disable, enable, isEnabled } from "@tauri-apps/plugin-autostart";
-import { ExportOutlined, ImportOutlined, ReloadOutlined } from "@ant-design/icons";
-import { Button, Flex, message } from "antd";
+import { Button, message } from "antd";
 import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 import ProList from "@/components/ProList";
@@ -8,12 +12,12 @@ import ProListItem from "@/components/ProListItem";
 import ProSwitch from "@/components/ProSwitch";
 import { useImmediateKey } from "@/hooks/useImmediateKey";
 import { globalStore } from "@/stores/global";
-import { isMac } from "@/utils/is";
 import {
-	exportAllConfig,
-	importAllConfig,
-	resetAllConfig,
+  exportAllConfig,
+  importAllConfig,
+  resetAllConfig,
 } from "@/utils/configExport";
+import { isMac } from "@/utils/is";
 import Language from "./components/Language";
 import MacosPermissions from "./components/MacosPermissions";
 import ThemeMode from "./components/ThemeMode";

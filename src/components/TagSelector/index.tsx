@@ -1,11 +1,10 @@
 import { useBoolean, useRequest } from "ahooks";
-import { Button, Empty, Form, Input, Modal, Popover, Space } from "antd";
-import { useSnapshot } from "valtio";
+import { Button, Empty, Form, Input, Modal, Space } from "antd";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { DatabaseSchemaTag } from "@/types/database";
-import { tagStore } from "@/stores/tag";
+import { useSnapshot } from "valtio";
 import TagBadge from "@/components/TagBadge";
+import { tagStore } from "@/stores/tag";
 import styles from "./index.module.scss";
 
 // 预设颜色
@@ -35,7 +34,8 @@ const TagSelector = forwardRef<TagSelectorRef>((_, ref) => {
   const [historyId, setHistoryId] = useState<string>("");
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [form] = Form.useForm();
-  const [showAddForm, { toggle: toggleAddForm, setFalse: hideAddForm }] = useBoolean(false);
+  const [showAddForm, { toggle: toggleAddForm, setFalse: hideAddForm }] =
+    useBoolean(false);
   const [selectedColor, setSelectedColor] = useState(PRESET_COLORS[0]);
 
   useImperativeHandle(ref, () => ({
@@ -57,7 +57,9 @@ const TagSelector = forwardRef<TagSelectorRef>((_, ref) => {
 
   const handleToggleTag = async (tagId: string) => {
     const isSelected = selectedTagIds.includes(tagId);
-    const { addTagToHistory, removeTagFromHistory } = await import("@/database/tag");
+    const { addTagToHistory, removeTagFromHistory } = await import(
+      "@/database/tag"
+    );
 
     if (isSelected) {
       await removeTagFromHistory(historyId, tagId);
@@ -109,8 +111,8 @@ const TagSelector = forwardRef<TagSelectorRef>((_, ref) => {
                 return (
                   <TagBadge
                     key={tagId}
-                    removable
                     onRemove={() => handleToggleTag(tagId)}
+                    removable
                     tag={tag}
                   />
                 );
@@ -133,8 +135,10 @@ const TagSelector = forwardRef<TagSelectorRef>((_, ref) => {
             <Space size="small" wrap>
               {tags.map((tag) => (
                 <TagBadge
+                  className={
+                    isSelected(tag.id) ? styles.selected : styles.unselected
+                  }
                   key={tag.id}
-                  className={isSelected(tag.id) ? styles.selected : styles.unselected}
                   onClick={() => handleToggleTag(tag.id)}
                   tag={tag}
                 />
@@ -150,7 +154,12 @@ const TagSelector = forwardRef<TagSelectorRef>((_, ref) => {
               <Form.Item
                 label={t("component.tag_selector.label.tag_name")}
                 name="name"
-                rules={[{ required: true, message: t("component.tag_selector.label.name_required") }]}
+                rules={[
+                  {
+                    message: t("component.tag_selector.label.name_required"),
+                    required: true,
+                  },
+                ]}
               >
                 <Input
                   autoFocus
@@ -168,7 +177,10 @@ const TagSelector = forwardRef<TagSelectorRef>((_, ref) => {
                       onClick={() => setSelectedColor(color)}
                       style={{
                         backgroundColor: color,
-                        boxShadow: selectedColor === color ? `0 0 0 2px ${color}` : undefined,
+                        boxShadow:
+                          selectedColor === color
+                            ? `0 0 0 2px ${color}`
+                            : undefined,
                       }}
                       type="button"
                     />
@@ -177,7 +189,9 @@ const TagSelector = forwardRef<TagSelectorRef>((_, ref) => {
               </Form.Item>
             </Form>
             <Space>
-              <Button onClick={toggleAddForm}>{t("component.tag_selector.label.cancel")}</Button>
+              <Button onClick={toggleAddForm}>
+                {t("component.tag_selector.label.cancel")}
+              </Button>
               <Button onClick={handleCreateTag} type="primary">
                 {t("component.tag_selector.label.create")}
               </Button>

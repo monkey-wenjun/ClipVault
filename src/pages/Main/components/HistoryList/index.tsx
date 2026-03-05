@@ -164,7 +164,7 @@ const HistoryList = () => {
       message.success(t("clipboard.button.context_menu.delete") + t("success"));
 
       // 后台异步删除
-      deleteHistory(item).catch(console.error);
+      deleteHistory(item).catch(() => {});
     } else {
       // 删除所有选中的项
       const confirmed = await deleteModal.confirm({
@@ -192,10 +192,10 @@ const HistoryList = () => {
         .then((results) => {
           const failed = results.filter((r) => r.status === "rejected").length;
           if (failed > 0) {
-            console.warn(`${failed} 项删除失败`);
+            // console.warn(`${failed} 项删除失败`);
           }
         })
-        .catch(console.error);
+        .catch(() => {});
     }
   });
 
@@ -238,7 +238,7 @@ const HistoryList = () => {
     message.success(t("clipboard.button.context_menu.delete") + t("success"));
 
     // 后台异步删除
-    deleteHistory(imageToDelete).catch(console.error);
+    deleteHistory(imageToDelete).catch(() => {});
   };
 
   // 处理标签选择

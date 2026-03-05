@@ -33,7 +33,16 @@ export interface ItemProps {
 }
 
 const Item: FC<ItemProps> = (props) => {
-  const { index, data, deleteModal, handleNote, handleTag, isSelected, isActive, search } = props;
+  const {
+    index,
+    data,
+    deleteModal: _deleteModal,
+    handleNote: _handleNote,
+    handleTag: _handleTag,
+    isSelected,
+    isActive,
+    search,
+  } = props;
   const { id, type, note, favorite, count, createTime } = data;
   const { rootState } = useContext(MainContext);
   const { content } = useSnapshot(clipboardStore);
@@ -117,9 +126,9 @@ const Item: FC<ItemProps> = (props) => {
   // 测试删除功能 - Alt+双击删除
   const handleDoubleClickTest = (e: React.MouseEvent) => {
     if (e.altKey) {
-      console.log("[Item] Alt+DoubleClick delete test, id:", id);
+      // console.log("[Item] Alt+DoubleClick delete test, id:", id);
       rootState.list = rootState.list.filter((item) => item.id !== id);
-      console.log("[Item] after delete, list length:", rootState.list.length);
+      // console.log("[Item] after delete, list length:", rootState.list.length);
     }
   };
 
@@ -166,7 +175,7 @@ const Item: FC<ItemProps> = (props) => {
       )}
       onClick={(e) => handleClick("single", e)}
       onContextMenu={(e) => {
-        console.log("[Item] onContextMenu triggered, id:", id);
+        // console.log("[Item] onContextMenu triggered, id:", id);
         handleContextMenu(e);
       }}
       onDoubleClick={(e) => {

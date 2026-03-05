@@ -2,17 +2,16 @@ import { Menu, MenuItem, type MenuItemOptions } from "@tauri-apps/api/menu";
 import { downloadDir } from "@tauri-apps/api/path";
 import { copyFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { openUrl, revealItemInDir } from "@tauri-apps/plugin-opener";
-import { find, isArray, remove } from "es-toolkit/compat";
+import { find, isArray } from "es-toolkit/compat";
 import { type MouseEvent, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 import { deleteHistory, updateHistory } from "@/database/history";
-import type { DatabaseSchemaTag } from "@/types/database";
 import { MainContext } from "@/pages/Main";
 import type { ItemProps } from "@/pages/Main/components/HistoryList/components/Item";
 import { pasteToClipboard, writeToClipboard } from "@/plugins/clipboard";
-import { clipboardStore } from "@/stores/clipboard";
 import { globalStore } from "@/stores/global";
+import type { DatabaseSchemaTag } from "@/types/database";
 import { isMac } from "@/utils/is";
 import { join } from "@/utils/path";
 
@@ -27,7 +26,15 @@ interface ContextMenuItem extends MenuItemOptions {
 }
 
 export const useContextMenu = (props: UseContextMenuProps) => {
-  const { data, deleteModal, handleNote, handleTag, handleNext, tags = [], onTagsChange } = props;
+  const {
+    data,
+    deleteModal: _deleteModal,
+    handleNote: _handleNote,
+    handleTag: _handleTag,
+    handleNext,
+    tags: _tags = [],
+    onTagsChange: _onTagsChange,
+  } = props;
   const { id, type, value, group, favorite, subtype } = data;
   const { t } = useTranslation();
   const { env } = useSnapshot(globalStore);
@@ -91,21 +98,17 @@ export const useContextMenu = (props: UseContextMenuProps) => {
   };
 
   const handleDelete = () => {
-    console.log("[handleDelete] called, id:", id);
-    
+    // console.log("[handleDelete] called, id:", id);
+
     if (id === rootState.activeId) {
       handleNext();
     }
-
-    // 先从列表移除（更新UI）- 使用 filter 创建新数组触发响应式更新
-    console.log("[handleDelete] filtering list, current length:", rootState.list.length);
     const newList = rootState.list.filter((item) => item.id !== id);
-    console.log("[handleDelete] new list length:", newList.length);
+    // console.log("[handleDelete] new list length:", newList.length);
     rootState.list = newList;
-    console.log("[handleDelete] after assignment, rootState.list.length:", rootState.list.length);
 
     // 后台异步删除数据库和文件
-    deleteHistory(data).catch(console.error);
+    deleteHistory(data).catch(() => {});
   };
 
   const handleManageTags = () => {
@@ -175,7 +178,7 @@ export const useContextMenu = (props: UseContextMenuProps) => {
       },
       {
         action: () => {
-          console.log("[delete] clicked");
+          // console.log("[delete] clicked");
           handleDelete();
         },
         text: t("clipboard.button.context_menu.delete"),
@@ -183,17 +186,17 @@ export const useContextMenu = (props: UseContextMenuProps) => {
     ];
 
     const filteredItems = items.filter(({ hide }) => !hide);
-    console.log("[contextMenu] filtered items count:", filteredItems.length);
-    
+    // console.log("[contextMenu] filtered items count:", filteredItems.length);
+
     const menuItems = await Promise.all(
       filteredItems.map((item) => {
-        console.log("[contextMenu] creating menu item:", item.text);
+        // console.log("[contextMenu] creating menu item:", item.text);
         return MenuItem.new(item);
-      })
+      }),
     );
 
     const menu = await Menu.new({ items: menuItems });
-    console.log("[contextMenu] menu created, popping up");
+    // console.log("[contextMenu] menu created, popping up");
     menu.popup();
   };
 
