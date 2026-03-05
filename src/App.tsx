@@ -11,6 +11,7 @@ import { LISTEN_KEY, PRESET_SHORTCUT } from "./constants";
 import { destroyDatabase } from "./database";
 import { useImmediateKey } from "./hooks/useImmediateKey";
 import { useTauriListen } from "./hooks/useTauriListen";
+import { useTray } from "./hooks/useTray";
 import { useWindowState } from "./hooks/useWindowState";
 import { getAntdLocale, i18n } from "./locales";
 import { hideWindow, showWindow } from "./plugins/window";
@@ -26,11 +27,15 @@ const App = () => {
   const { appearance } = useSnapshot(globalStore);
   const { restoreState } = useWindowState();
   const [ready, { toggle }] = useBoolean();
+  const { createTray } = useTray();
 
   useMount(async () => {
     await restoreState();
 
     await restoreStore();
+
+    // 创建托盘图标
+    await createTray();
 
     toggle();
 
