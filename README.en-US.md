@@ -164,12 +164,57 @@ This project contains code from [EcoPaste](https://github.com/EcoPasteHub/EcoPas
 
 ---
 
+## 💝 Sponsor Support
+
+> **About the Author**: This software was developed during my **period of unemployment**. If you find ClipVault helpful, feel free to buy me a cup of coffee ☕️ - it would be the greatest encouragement for me!
+
+<div align="center">
+
+| WeChat Pay | Alipay |
+|:----------:|:------:|
+| ![WeChat Pay](./wechat.jpg) | ![Alipay](./alipay.jpg) |
+
+</div>
+
+**Your support will be used for:**
+- ☕️ Buying coffee to keep the development going
+- 🚀 Server and domain expenses
+- 💡 Continuing to develop new features
+
+Thank you to every supporter for your encouragement!
+
+---
+
 ## 🙏 Acknowledgements
 
 - [EcoPaste](https://github.com/EcoPasteHub/EcoPaste) - Basic architecture and core functionality
 - [Tauri](https://tauri.app/) - Cross-platform desktop application framework
 - [React](https://react.dev/) - Frontend UI framework
 - [Ant Design](https://ant.design/) - Component library
+
+---
+
+## 🗑️ Periodic Deletion
+
+ClipVault supports automatic cleanup of history records to help you manage storage space:
+
+### Configuration
+
+1. Open Preferences → History
+2. Set retention period (supports days/weeks/months/years)
+3. Set maximum number of items (optional)
+
+### Cleanup Rules
+
+- ⏰ **Time-based**: Records older than the set period are automatically deleted
+- 📊 **Quantity-based**: When exceeding the maximum, oldest items are deleted
+- 🖼️ **Image cleanup**: When deleting history, local stored images are also cleaned
+
+### Notes
+
+- Deleted items cannot be recovered, please ensure important content is backed up
+- Recommended to enable sync to prevent data loss
+- Cleanup runs automatically on app startup
 
 ---
 

@@ -1,163 +1,108 @@
-<a href="https://github.com/EcoPasteHub/EcoPaste">
-  <img src="https://socialify.git.ci/EcoPasteHub/EcoPaste/image?description=1&descriptionEditable=Windows%E3%80%81MacOS%E3%80%81Linux(x11)%20%E7%94%A8%E3%81%AE%E3%82%AA%E3%83%BC%E3%83%97%E3%83%B3%E3%82%BD%E3%83%BC%E3%82%B9%E3%81%AE%E3%82%AF%E3%83%AA%E3%83%83%E3%83%97%E3%83%9C%E3%83%BC%E3%83%89%E7%AE%A1%E7%90%86%E3%83%84%E3%83%BC%E3%83%AB%E3%80%82&font=Source%20Code%20Pro&forks=1&issues=1&logo=https%3A%2F%2Fgithub.com%2FEcoPasteHub%2FEcoPaste%2Fblob%2Fmaster%2Fpublic%2Flogo.png%3Fraw%3Dtrue&name=1&owner=1&pattern=Floating%20Cogs&pulls=1&stargazers=1&theme=Auto" alt="EcoPaste" />
-</a>
-
 <div align="center">
+  <img src="https://socialify.git.ci/monkey-wenjun/ClipVault/image?description=1&descriptionEditable=%E3%82%AF%E3%83%AD%E3%82%B9%E3%83%97%E3%83%A9%E3%83%83%E3%83%88%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E3%81%AE%E8%B8%8A%E5%8A%9B%E7%9A%84%E3%81%AA%E3%82%AF%E3%83%AA%E3%83%83%E3%83%97%E3%83%9C%E3%83%BC%E3%83%89%E7%AE%A1%E7%90%86%E3%83%84%E3%83%BC%E3%83%AB%E3%80%82&font=Jost&forks=1&logo=https%3A%2F%2Fgithub.com%2Fmonkey-wenjun%2FClipVault%2Fblob%2Fmaster%2Fpublic%2Flogo.png%3Fraw%3Dtrue&name=1&pattern=Floating+Cogs&stargazers=1&theme=Auto" alt="ClipVault" width="640" height="320" />
+
   <br/>
 
   <div>
-      日本語 | <a href="./README.md">简体中文</a> | <a href="./README.zh-TW.md">繁體中文</a> | <a href="./README.en-US.md">English</a>
-  </div>
-
-  <br/>
-    
-  <div>
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        alt="Windows"
-        src="https://img.shields.io/badge/-Windows-blue?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB0PSIxNzI2MzA1OTcxMDA2IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE1NDgiIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4Ij48cGF0aCBkPSJNNTI3LjI3NTU1MTYxIDk2Ljk3MTAzMDEzdjM3My45OTIxMDY2N2g0OTQuNTEzNjE5NzVWMTUuMDI2NzU3NTN6TTUyNy4yNzU1NTE2MSA5MjguMzIzNTA4MTVsNDk0LjUxMzYxOTc1IDgwLjUyMDI4MDQ5di00NTUuNjc3NDcxNjFoLTQ5NC41MTM2MTk3NXpNNC42NzA0NTEzNiA0NzAuODMzNjgyOTdINDIyLjY3Njg1OTI1VjExMC41NjM2ODE5N2wtNDE4LjAwNjQwNzg5IDY5LjI1Nzc5NzUzek00LjY3MDQ1MTM2IDg0Ni43Njc1OTcwM0w0MjIuNjc2ODU5MjUgOTE0Ljg2MDMxMDEzVjU1My4xNjYzMTcwM0g0LjY3MDQ1MTM2eiIgcC1pZD0iMTU0OSIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjwvc3ZnPg=="
-      />
-    </a >  
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        alt="MacOS"
-        src="https://img.shields.io/badge/-MacOS-black?style=flat-square&logo=apple&logoColor=white"
-      />
-    </a >
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img 
-        alt="Linux"
-        src="https://img.shields.io/badge/-Linux-yellow?style=flat-square&logo=linux&logoColor=white" 
-      />
+    <a href="https://github.com/monkey-wenjun/ClipVault/releases/latest">
+      <img src="https://img.shields.io/github/package-json/v/monkey-wenjun/ClipVault?style=flat-square&color=0f8bf9" alt="Release" />
+    </a>
+    <a href="./LICENSE">
+      <img src="https://img.shields.io/github/license/monkey-wenjun/ClipVault?style=flat-square&color=0f8bf9" alt="License" />
     </a>
   </div>
 
   <div>
-    <a href="./LICENSE">
-      <img
-        src="https://img.shields.io/github/license/EcoPasteHub/EcoPaste?style=flat-square"
-      />
-    </a >
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        src="https://img.shields.io/github/package-json/v/EcoPasteHub/EcoPaste?style=flat-square"
-      />
-    </a >
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        src="https://img.shields.io/github/downloads/EcoPasteHub/EcoPaste/total?style=flat-square"
-      />  
-    </a >
+    <a href="./README.md">简体中文</a> | <a href="./README.zh-TW.md">繁體中文</a> | 日本語 | <a href="./README.en-US.md">English</a>
   </div>
 
   <br/>
-
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./static/app-dark.ja-JP.png" />
-    <source media="(prefers-color-scheme: light)" srcset="./static/app-light.ja-JP.png" />
-    <img src="./static/app-light.ja-JP.png" />
-  </picture>
 </div>
 
-## ダウンロード
+## 機能概要
 
-### Windows
+ClipVault は、EcoPaste をベースに開発された強力なオープンソースのクリップボード管理ツールで、複数のプラットフォームに対応しています。
 
-手動ダウンロード：[x86](https://api.ecopaste.cn/download?platform=windows-x86) | [x64](https://api.ecopaste.cn/download?platform=windows-x64) | [ARM64](https://api.ecopaste.cn/download?platform=windows-arm)
+### 🚀 主な機能
 
-### MacOS
+- 📋 **クリップボード履歴管理** - テキスト、画像、ファイルの履歴を自動保存
+- 🏷️ **カスタムタグ** - クリップボード項目にカラータグを付けて分類
+- 🖼️ **画像ホスティング** - Aliyun OSS、Qiniu へワンクリックアップロード
+- 🔒 **パスワード保護** - 1Password、KeePass などのパスワードマネージャーを自動除外
+- 🔄 **設定同期** - WebDAV/剪贴板を使用して複数デバイス間で設定を同期
+- 🔐 **暗号化** - AES-256-GCM でデータを暗号化
+- 🌐 **多言語対応** - 简体中文、繁體中文、English、日本語
 
-手動ダウンロード：[Apple Silicon](https://api.ecopaste.cn/download?platform=macos-arm) | [Intel](https://api.ecopaste.cn/download?platform=macos-x64)
+### 📥 ダウンロード
 
-HomeBrew：[クリックして確認する](https://ecopaste.cn/guide/install#%E4%BD%BF%E7%94%A8-homebrew-%E5%AE%89%E8%A3%85)
+| プラットフォーム | ダウンロード |
+|:---:|:---|
+| Windows | [x64](https://github.com/monkey-wenjun/ClipVault/releases/latest/download/ClipVault_1.0.0_x64-setup.exe) |
+| macOS | [x64](https://github.com/monkey-wenjun/ClipVault/releases/latest/download/ClipVault_1.0.0_x64.dmg) \| [aarch64](https://github.com/monkey-wenjun/ClipVault/releases/latest/download/ClipVault_1.0.0_aarch64.dmg) |
+| Linux | [x64](https://github.com/monkey-wenjun/ClipVault/releases/latest/download/ClipVault_1.0.0_amd64.deb) \| [aarch64](https://github.com/monkey-wenjun/ClipVault/releases/latest/download/ClipVault_1.0.0_arm64.deb) |
 
-### Linux(x11)
+### 💝 スポンサー支援
 
-手動ダウンロード：[deb](https://api.ecopaste.cn/download?platform=linux-deb) | [AppImage](https://api.ecopaste.cn/download?platform=linux-appimage) | [rpm](https://api.ecopaste.cn/download?platform=linux-rpm)
+> **作者について**：このソフトウェアは**失業中**に開発されました。ClipVault が役立つと感じた場合は、コーヒー ☕️ をおごっていただけると大変励みになります！
 
-インストールガイド：[クリックして確認する](https://ecopaste.cn/guide/install#linux)
+<div align="center">
 
-## 機能紹介
+| WeChat Pay | Alipay |
+|:----------:|:------:|
+| ![WeChat Pay](./wechat.jpg) | ![Alipay](./alipay.jpg) |
 
-- 🎉 Tauri v2 をもとに開発、軽量で効率的、クロスプラットフォームの体験をさらに向上させる。
-- 💻 Windows、macOS、Linux（x11）とも対応でき、複数デバイス間でシームレスに切り替え可能である。
-- ✨ シンプルで直感的なユーザーインターフェース、敷居が低く簡単に利用可能になる。
-- 📋 テキスト、リッチテキスト、HTML、画像、ファイル形式のクリップボード内容をサポートできる。
-- 🔒 データはローカルに保存され、ユーザーのプライバシーを保護、データはユーザー自身が完全に管理できる。
-- 📝 メモ機能をサポートでき、簡単に分類、管理、検索が可能で作業効率を向上させる。
-- ⚙️ 豊富なカスタマイズ設定で、異なるユーザーのニーズを満たす個別体験を提供できる。
-- 🤝 完善なドキュメントとコミュニティ機能をサポート、開発者と共に成長を目指す。
-- 🧩 継続的な最適化し、もっと驚きの機能があなたの発見を待っている。
+</div>
 
-## 問題のフィードバック
+**あなたの支援は以下に使用されます：**
+- ☕️ コーヒーを買って開発を続けるため
+- 🚀 サーバーとドメイン費用
+- 💡 新機能の継続的な開発
 
-1. 🔍 まず、[よくある質問](https://ecopaste.cn/problem/macos/damage)を確認するか、既存の [issues](https://github.com/EcoPasteHub/EcoPaste/issues) をご覧ください。
+ご支援いただいた皆様に心から感謝申し上げます！
 
-2. ❓ 問題が解決しない場合は、新しい [issue](https://github.com/EcoPasteHub/EcoPaste/issues/new/choose) を提出し、詳細な説明を添えてください。迅速な解決に役立てます。
+---
 
-## 履歴スター
+## 🙏 謝辞
 
-<a href="https://star-history.com/#EcoPasteHub/EcoPaste&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=EcoPasteHub/EcoPaste&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=EcoPasteHub/EcoPaste&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=EcoPasteHub/EcoPaste&type=Date" />
- </picture>
-</a>
+- [EcoPaste](https://github.com/EcoPasteHub/EcoPaste) - 基本アーキテクチャとコア機能
+- [Tauri](https://tauri.app/) - クロスプラットフォームデスクトップアプリケーションフレームワーク
+- [React](https://react.dev/) - フロントエンド UI フレームワーク
+- [Ant Design](https://ant.design/) - コンポーネントライブラリ
 
-## コミュニティ交流
+---
 
-⚠️ ご注意: グループチャットは日常的な議論と経験の共有に限ります。問題のフィードバックや新しい機能のリクエストが必要な場合は、[問題のフィードバック](#問題のフィードバック)をご確認ください。
+## 🗑️ 定期的な削除
 
-<table>
-  <thead>
-    <tr>
-      <th width="33.3%">WeChat Group</th>
-      <th width="33.3%">QQ Group</th>
-      <th width="33.3%">Telegram</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://ecopaste.cn/community/wechat-group-dark.png" />
-          <source media="(prefers-color-scheme: light)" srcset="https://ecopaste.cn/community/wechat-group-light.png" />
-          <img src="https://ecopaste.cn/community/wechat-group-light.png" />
-        </picture>
-      </td>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://ecopaste.cn/community/qq-group-dark.png" />
-          <source media="(prefers-color-scheme: light)" srcset="https://ecopaste.cn/community/qq-group-light.png" />
-          <img src="https://ecopaste.cn/community/qq-group-light.png" />
-        </picture>
-      </td>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://ecopaste.cn/community/telegram-chat-dark.png" />
-          <source media="(prefers-color-scheme: light)" srcset="https://ecopaste.cn/community/telegram-chat-light.png" />
-          <img src="https://ecopaste.cn/community/telegram-chat-light.png" />
-        </picture>
-      </td>
-    </tr>
-  </tbody>
-</table>
+ClipVault はストレージスペースを管理するために、履歴記録の自動クリーンアップをサポートしています：
 
-## 貢献者
+### 設定方法
 
-EcoPaste へ貴重なご貢献をいただいた皆様に感謝します！もし EcoPaste にご協力のご希望があれば、[貢献ガイド](./.github/CONTRIBUTING/ja-JP.md)をご覧ください。
+1. 設定 → 履歴 を開く
+2. 保持期間を設定（日/週/月/年をサポート）
+3. 最大項目数を設定（オプション）
 
-<a href="https://openomy.com/EcoPasteHub/EcoPaste" target="_blank" style="display: block; width: 100%;" align="center">
-  <img src="https://openomy.com/svg?repo=EcoPasteHub/EcoPaste&chart=bubble" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
-</a>
+### クリーンアップルール
 
-## 寄付
+- ⏰ **時間ベース**：設定された期間より古い記録は自動的に削除されます
+- 📊 **数量ベース**：最大数を超えた場合、最も古い項目が削除されます
+- 🖼️ **画像クリーンアップ**：履歴を削除するとき、ローカルに保存された画像もクリーンアップされます
 
-このプロジェクトがお役に立てば光栄に思い、応援しいただければ助かります！貴重なご寄付を頂戴していただければ，プロジェクトの維持と発展に活用させていただい、EcoPaste はコミュニティに価値を提供し続けるようになります。
+### 注意事項
 
-ご寄付の場合には必ずメッセージしていただき、[寄附者名簿](https://ecopaste.cn/sponsor/list)に記載させていただきます。ご支援とご協力を賜り御礼申し上げます。
+- 削除された項目は復元できません。重要なコンテンツはバックアップしてください
+- データ損失を防ぐために同期機能を有効にすることをお勧めします
+- クリーンアップはアプリ起動時に自動的に実行されます
 
-|                        WeChat Pay                         |                       Alipay                        |
-| :-------------------------------------------------------: | :-------------------------------------------------: |
-| ![wehcat-pay](https://ecopaste.cn/sponsor/wechat-pay.png) | ![ali-pay](https://ecopaste.cn/sponsor/ali-pay.png) |
+---
+
+## 📄 ライセンス
+
+このプロジェクトは [Apache-2.0](./LICENSE) ライセンスの下でライセンスされています。
+
+このプロジェクトには [EcoPaste](https://github.com/EcoPasteHub/EcoPaste) のコードが含まれており、著作権は EcoPasteHub とその貢献者に帰属します。
+
+---
+
+<p align="center">
+  Made with ❤️ by ClipVault Team
+</p>

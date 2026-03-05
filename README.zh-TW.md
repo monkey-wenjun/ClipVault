@@ -1,163 +1,108 @@
-<a href="https://github.com/EcoPasteHub/EcoPaste">
-  <img src="https://socialify.git.ci/EcoPasteHub/EcoPaste/image?description=1&descriptionEditable=%E9%81%A9%E7%94%A8%E6%96%BC%20Windows%E3%80%81MacOS%20%E5%92%8C%20Linux(x11)%20%E7%9A%84%E9%96%8B%E6%BA%90%E5%89%AA%E8%B2%BC%E6%9D%BF%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E3%80%82&font=Source%20Code%20Pro&forks=1&issues=1&logo=https%3A%2F%2Fgithub.com%2FEcoPasteHub%2FEcoPaste%2Fblob%2Fmaster%2Fpublic%2Flogo.png%3Fraw%3Dtrue&name=1&owner=1&pattern=Floating%20Cogs&pulls=1&stargazers=1&theme=Auto" alt="EcoPaste" />
-</a>
-
 <div align="center">
+  <img src="https://socialify.git.ci/monkey-wenjun/ClipVault/image?description=1&descriptionEditable=%E8%B7%A8%E5%B9%B3%E8%87%BA%E5%89%AA%E8%B2%BC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%9C%96%E5%BA%8A%E4%B8%8A%E5%82%B3%E3%80%81%E8%A8%AD%E5%AE%9A%E5%90%8C%E6%AD%A5%E3%80%82&font=Jost&forks=1&logo=https%3A%2F%2Fgithub.com%2Fmonkey-wenjun%2FClipVault%2Fblob%2Fmaster%2Fpublic%2Flogo.png%3Fraw%3Dtrue&name=1&pattern=Floating+Cogs&stargazers=1&theme=Auto" alt="ClipVault" width="640" height="320" />
+
   <br/>
 
   <div>
-    繁體中文 | <a href="./README.md">简体中文</a> | <a href="./README.en-US.md">English</a> | <a href="./README.ja-JP.md">日本語</a>
-  </div>
-  
-  <br/>
-
-  <div>
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        alt="Windows"
-        src="https://img.shields.io/badge/-Windows-blue?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB0PSIxNzI2MzA1OTcxMDA2IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE1NDgiIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4Ij48cGF0aCBkPSJNNTI3LjI3NTU1MTYxIDk2Ljk3MTAzMDEzdjM3My45OTIxMDY2N2g0OTQuNTEzNjE5NzVWMTUuMDI2NzU3NTN6TTUyNy4yNzU1NTE2MSA5MjguMzIzNTA4MTVsNDk0LjUxMzYxOTc1IDgwLjUyMDI4MDQ5di00NTUuNjc3NDcxNjFoLTQ5NC41MTM2MTk3NXpNNC42NzA0NTEzNiA0NzAuODMzNjgyOTdINDIyLjY3Njg1OTI1VjExMC41NjM2ODE5N2wtNDE4LjAwNjQwNzg5IDY5LjI1Nzc5NzUzek00LjY3MDQ1MTM2IDg0Ni43Njc1OTcwM0w0MjIuNjc2ODU5MjUgOTE0Ljg2MDMxMDEzVjU1My4xNjYzMTcwM0g0LjY3MDQ1MTM2eiIgcC1pZD0iMTU0OSIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjwvc3ZnPg=="
-      />
-    </a >  
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        alt="MacOS"
-        src="https://img.shields.io/badge/-MacOS-black?style=flat-square&logo=apple&logoColor=white"
-      />
-    </a >
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img 
-        alt="Linux"
-        src="https://img.shields.io/badge/-Linux-yellow?style=flat-square&logo=linux&logoColor=white" 
-      />
+    <a href="https://github.com/monkey-wenjun/ClipVault/releases/latest">
+      <img src="https://img.shields.io/github/package-json/v/monkey-wenjun/ClipVault?style=flat-square&color=0f8bf9" alt="Release" />
+    </a>
+    <a href="./LICENSE">
+      <img src="https://img.shields.io/github/license/monkey-wenjun/ClipVault?style=flat-square&color=0f8bf9" alt="License" />
     </a>
   </div>
 
   <div>
-    <a href="./LICENSE">
-      <img
-        src="https://img.shields.io/github/license/EcoPasteHub/EcoPaste?style=flat-square"
-      />
-    </a >
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        src="https://img.shields.io/github/package-json/v/EcoPasteHub/EcoPaste?style=flat-square"
-      />
-    </a >
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        src="https://img.shields.io/github/downloads/EcoPasteHub/EcoPaste/total?style=flat-square"
-      />  
-    </a >
+    <a href="./README.md">简体中文</a> | 繁體中文 | <a href="./README.ja-JP.md">日本語</a> | <a href="./README.en-US.md">English</a>
   </div>
 
   <br/>
-
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./static/app-dark.zh-TW.png" />
-    <source media="(prefers-color-scheme: light)" srcset="./static/app-light.zh-TW.png" />
-    <img src="./static/app-light.zh-TW.png" />
-  </picture>
 </div>
 
-## 下載
+## 功能概述
 
-### Windows
+ClipVault 是一款基於 EcoPaste 開發的強大開源剪貼簿管理工具，支持多平台。
 
-手動下載：[x86](https://api.ecopaste.cn/download?platform=windows-x86) | [x64](https://api.ecopaste.cn/download?platform=windows-x64) | [ARM64](https://api.ecopaste.cn/download?platform=windows-arm)
+### 🚀 主要功能
 
-### MacOS
+- 📋 **剪貼簿歷史管理** - 自動保存文本、圖片、文件歷史
+- 🏷️ **自訂標籤** - 為剪貼簿項目添加彩色標籤進行分類
+- 🖼️ **圖床功能** - 一鍵上傳至阿里雲 OSS、七牛雲
+- 🔒 **密碼保護** - 自動排除 1Password、KeePass 等密碼管理器
+- 🔄 **設定同步** - 使用 WebDAV/剪貼板在多台設備間同步設定
+- 🔐 **數據加密** - 使用 AES-256-GCM 加密數據
+- 🌐 **多語言支持** - 簡體中文、繁體中文、English、日本語
 
-手動下載：[Apple Silicon](https://api.ecopaste.cn/download?platform=macos-arm) | [Intel](https://api.ecopaste.cn/download?platform=macos-x64)
+### 📥 下載安裝
 
-HomeBrew：[點擊查看](https://ecopaste.cn/guide/install#%E4%BD%BF%E7%94%A8-homebrew-%E5%AE%89%E8%A3%85)
+| 平台 | 下載 |
+|:---:|:---|
+| Windows | [x64](https://github.com/monkey-wenjun/ClipVault/releases/latest/download/ClipVault_1.0.0_x64-setup.exe) |
+| macOS | [x64](https://github.com/monkey-wenjun/ClipVault/releases/latest/download/ClipVault_1.0.0_x64.dmg) \| [aarch64](https://github.com/monkey-wenjun/ClipVault/releases/latest/download/ClipVault_1.0.0_aarch64.dmg) |
+| Linux | [x64](https://github.com/monkey-wenjun/ClipVault/releases/latest/download/ClipVault_1.0.0_amd64.deb) \| [aarch64](https://github.com/monkey-wenjun/ClipVault/releases/latest/download/ClipVault_1.0.0_arm64.deb) |
 
-### Linux(x11)
+### 💝 贊助支持
 
-手動下載：[deb](https://api.ecopaste.cn/download?platform=linux-deb) | [AppImage](https://api.ecopaste.cn/download?platform=linux-appimage) | [rpm](https://api.ecopaste.cn/download?platform=linux-rpm)
+> **關於作者**：這款軟體是我在**失業期間**完成的。如果你發現 ClipVault 對你有幫助，歡迎請我喝杯咖啡 ☕️，這將是對我最大的鼓勵！
 
-安裝指南：[點擊查看](https://ecopaste.cn/guide/install#linux)
+<div align="center">
 
-## 功能介紹
+| 微信支付 | 支付寶 |
+|:--------:|:------:|
+| ![微信支付](./wechat.jpg) | ![支付寶](./alipay.jpg) |
 
-- 🎉 基於 Tauri v2 開發，輕量高效，跨平臺體驗更進一步。
-- 💻 支持 Windows、macOS 和 Linux（x11），在多設備間無縫切換。
-- ✨ 簡潔直觀的使用者介面，操作簡單，零門檻上手，開箱即用。
-- 📋 支持純文字、富文字、HTML、圖片和檔案類型的剪貼板內容。
-- 🔒 數據本地存儲，確保用戶隱私安全，數據完全掌控在用戶手中。
-- 📝 支持備註功能，輕鬆分類、管理和檢索，讓工作更高效。
-- ⚙️ 豐富的個性化設定，滿足不同用戶需求，打造專屬體驗。
-- 🤝 完善的檔案與社區支持，與開發者共同探索與成長。
-- 🧩 持續優化中，更多驚喜功能等你發現。
+</div>
 
-## 問題迴響
+**你的支持將用於：**
+- ☕️ 買杯咖啡保持開發動力
+- 🚀 伺服器和域名費用
+- 💡 持續開發新功能
 
-1. 🔍 優先查閱[常見問題](https://ecopaste.cn/problem/macos/damage)或瀏覽已有 [issues](https://github.com/EcoPasteHub/EcoPaste/issues)。
+感謝每一位支持者的鼓勵！
 
-2. ❓ 如果問題仍未解决，請提交新的 [issue](https://github.com/EcoPasteHub/EcoPaste/issues/new/choose)，並附上詳細描述，方便我們快速定位和解决。
+---
 
-## 歷史星標
+## 🙏 致謝
 
-<a href="https://star-history.com/#EcoPasteHub/EcoPaste&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=EcoPasteHub/EcoPaste&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=EcoPasteHub/EcoPaste&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=EcoPasteHub/EcoPaste&type=Date" />
- </picture>
-</a>
+- [EcoPaste](https://github.com/EcoPasteHub/EcoPaste) - 基礎架構和核心功能
+- [Tauri](https://tauri.app/) - 跨平台桌面應用程式框架
+- [React](https://react.dev/) - 前端 UI 框架
+- [Ant Design](https://ant.design/) - 組件庫
 
-## 社區交流
+---
 
-⚠️ 溫馨提示：群聊僅限日常討論和經驗分享，如需迴響問題或提交新需求，請查看[問題迴響](#問題迴響)。
+## 🗑️ 週期刪除說明
 
-<table>
-  <thead>
-    <tr>
-      <th width="33.3%">微信群</th>
-      <th width="33.3%">QQ 群</th>
-      <th width="33.3%">Telegram</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://ecopaste.cn/community/wechat-group-dark.png" />
-          <source media="(prefers-color-scheme: light)" srcset="https://ecopaste.cn/community/wechat-group-light.png" />
-          <img src="https://ecopaste.cn/community/wechat-group-light.png" />
-        </picture>
-      </td>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://ecopaste.cn/community/qq-group-dark.png" />
-          <source media="(prefers-color-scheme: light)" srcset="https://ecopaste.cn/community/qq-group-light.png" />
-          <img src="https://ecopaste.cn/community/qq-group-light.png" />
-        </picture>
-      </td>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://ecopaste.cn/community/telegram-chat-dark.png" />
-          <source media="(prefers-color-scheme: light)" srcset="https://ecopaste.cn/community/telegram-chat-light.png" />
-          <img src="https://ecopaste.cn/community/telegram-chat-light.png" />
-        </picture>
-      </td>
-    </tr>
-  </tbody>
-</table>
+ClipVault 支援自動清理歷史記錄，幫助你管理儲存空間：
 
-## 貢獻者
+### 配置方法
 
-感謝大家為 EcoPaste 做出的寶貴貢獻！如果你也希望為 EcoPaste 做出貢獻，請查閱[貢獻指南](./.github/CONTRIBUTING/zh-TW.md)。
+1. 打開偏好設定 → 歷史記錄
+2. 設定保留時長（支援天/週/月/年）
+3. 設定最大條數限制（可選）
 
-<a href="https://openomy.com/EcoPasteHub/EcoPaste" target="_blank" style="display: block; width: 100%;" align="center">
-  <img src="https://openomy.com/svg?repo=EcoPasteHub/EcoPaste&chart=bubble" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
-</a>
+### 清理規則
 
-## 贊助
+- ⏰ **時間清理**：超過設定時長的歷史記錄自動刪除
+- 📊 **數量清理**：超過最大條數時，自動刪除最舊的內容
+- 🖼️ **圖片清理**：刪除歷史記錄時，同時清理本地儲存的圖片檔案
 
-如果您覺得這個項目對您有幫助，可以考慮贊助支持我們！您的支持將幫助我們更好地維護和發展項目，讓 EcoPaste 持續為社區創造價值。
+### 注意事項
 
-贊助時請務必填寫留言，以便我們收錄到[贊助名單](https://ecopaste.cn/sponsor/index)中，感謝您的支持與鼓勵！
+- 刪除操作不可恢復，請確保已備份重要內容
+- 建議開啟同步功能，防止資料遺失
+- 清理操作在應用程式啟動時自動執行
 
-|                           微信                            |                       支付寶                        |
-| :-------------------------------------------------------: | :-------------------------------------------------: |
-| ![wehcat-pay](https://ecopaste.cn/sponsor/wechat-pay.png) | ![ali-pay](https://ecopaste.cn/sponsor/ali-pay.png) |
+---
+
+## 📄 授權
+
+本專案採用 [Apache-2.0](./LICENSE) 授權。
+
+本專案包含來自 [EcoPaste](https://github.com/EcoPasteHub/EcoPaste) 的程式碼，版權屬於 EcoPasteHub 及其貢獻者。
+
+---
+
+<p align="center">
+  Made with ❤️ by ClipVault Team
+</p>
