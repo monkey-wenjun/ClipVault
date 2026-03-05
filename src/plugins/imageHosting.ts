@@ -5,6 +5,28 @@ import { imageHostingStore } from "@/stores/imageHosting";
 import type { ImageHostingConfig, UploadResult } from "@/types/imageHosting";
 
 /**
+ * 加密图床配置
+ */
+export const encryptConfig = async (
+	config: ImageHostingConfig,
+): Promise<ImageHostingConfig> => {
+	return invoke("plugin:eco-image-hosting|encrypt_image_hosting_config", {
+		config,
+	});
+};
+
+/**
+ * 解密图床配置
+ */
+export const decryptConfig = async (
+	config: ImageHostingConfig,
+): Promise<ImageHostingConfig> => {
+	return invoke("plugin:eco-image-hosting|decrypt_image_hosting_config", {
+		config,
+	});
+};
+
+/**
  * 上传图片到指定图床
  */
 export const uploadImage = async (

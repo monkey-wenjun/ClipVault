@@ -5,6 +5,8 @@ description = "Default permissions for the image hosting plugin"
 permissions = [
     "allow-upload-image",
     "allow-upload-image-to-default",
+    "allow-encrypt-config",
+    "allow-decrypt-config",
 ]
 
 [[permission]]
@@ -16,3 +18,13 @@ commands.allow = ["upload_image"]
 identifier = "allow-upload-image-to-default"
 description = "Allows uploading images to default image hosting"
 commands.allow = ["upload_image_to_default"]
+
+[[permission]]
+identifier = "allow-encrypt-config"
+description = "Allows encrypting image hosting config"
+commands.allow = ["encrypt_image_hosting_config"]
+
+[[permission]]
+identifier = "allow-decrypt-config"
+description = "Allows decrypting image hosting config"
+commands.allow = ["decrypt_image_hosting_config"]

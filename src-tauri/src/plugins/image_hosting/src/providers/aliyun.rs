@@ -44,7 +44,13 @@ fn get_endpoint(config: &ImageHostingConfig) -> String {
         }
     }
     // 默认使用外网 Endpoint
-    format!("{}.oss-{}.aliyuncs.com", config.bucket, config.region)
+    // Region 可能是 "oss-cn-shanghai" 或 "cn-shanghai"
+    let region = if config.region.starts_with("oss-") {
+        config.region.clone()
+    } else {
+        format!("oss-{}", config.region)
+    };
+    format!("{}.{}.aliyuncs.com", config.bucket, region)
 }
 
 pub async fn upload(

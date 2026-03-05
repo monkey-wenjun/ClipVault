@@ -22,7 +22,11 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 import ProList from "@/components/ProList";
-import { uploadImage } from "@/plugins/imageHosting";
+import {
+	decryptConfig,
+	encryptConfig,
+	uploadImage,
+} from "@/plugins/imageHosting";
 import { imageHostingStore } from "@/stores/imageHosting";
 import {
 	exportAsEnv,
@@ -105,26 +109,34 @@ const ImageHosting = () => {
 		try {
 			const values = await form.validateFields();
 
+			let configToSave: ImageHostingConfig;
+
 			if (editingConfig) {
 				// 编辑模式
+				configToSave = { ...editingConfig, ...values };
+				if (!values.secretKey) {
+					configToSave.secretKey = editingConfig.secretKey; // 保留原密钥
+				}
+				// 加密配置
+				configToSave = await encryptConfig(configToSave);
+
 				const index = configs.findIndex((c) => c.id === editingConfig.id);
 				if (index !== -1) {
-					const updated = { ...configs[index], ...values };
-					if (!values.secretKey) {
-						updated.secretKey = configs[index].secretKey; // 保留原密钥
-					}
-					imageHostingStore.configs[index] = updated;
+					imageHostingStore.configs[index] = configToSave;
 				}
 			} else {
 				// 新增模式
-				const newConfig: ImageHostingConfig = {
+				configToSave = {
 					...values,
 					id: Date.now().toString(),
 					createdAt: Date.now(),
-				};
-				imageHostingStore.configs.push(newConfig);
+				} as ImageHostingConfig;
+				// 加密配置
+				configToSave = await encryptConfig(configToSave);
+
+				imageHostingStore.configs.push(configToSave);
 				if (!defaultId) {
-					imageHostingStore.defaultId = newConfig.id;
+					imageHostingStore.defaultId = configToSave.id;
 				}
 			}
 
@@ -412,7 +424,7 @@ const ImageHosting = () => {
 						]}
 					>
 						<Input.Password
-							placeholder={editingConfig ? "留空表示不修改" : ""}
+							placeholder={editingConfig ? "留空表示不修改（已加密存储）" : ""}
 						/>
 					</Form.Item>
 
@@ -428,8 +440,9 @@ const ImageHosting = () => {
 						label="存储区域 (Region)"
 						name="region"
 						rules={[{ required: true, message: "请输入存储区域" }]}
+						help="例如：cn-shanghai、cn-beijing、oss-cn-hangzhou"
 					>
-						<Input placeholder="例如：oss-cn-hangzhou、ap-guangzhou" />
+						<Input placeholder="例如：cn-shanghai" />
 					</Form.Item>
 
 					<Form.Item label="自定义域名 (可选)" name="customDomain">
