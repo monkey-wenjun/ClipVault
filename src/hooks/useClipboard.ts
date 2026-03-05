@@ -5,12 +5,11 @@ import { isEmpty, remove } from "es-toolkit/compat";
 import { nanoid } from "nanoid";
 import {
   type ClipboardChangeOptions,
-  getDefaultSaveImagePath,
   onClipboardChange,
   startListening,
   writeText,
 } from "tauri-plugin-clipboard-x-api";
-import { fullName } from "tauri-plugin-fs-pro-api";
+
 import {
   insertHistory,
   selectHistory,
@@ -97,9 +96,6 @@ export const useClipboard = (
         // 处理图片上传
         const localPath = image.value;
 
-        // 获取默认保存路径用于调试
-        const defaultPath = await getDefaultSaveImagePath();
-
         // 检查文件是否存在
         let fileExists = false;
         try {
@@ -108,13 +104,7 @@ export const useClipboard = (
         } catch (_e) {}
 
         if (!fileExists) {
-          // 文件确实不存在，尝试查找文件
-          // 有时插件返回的路径和实际保存路径不一致
-          const fs = await import("@tauri-apps/plugin-fs");
-          try {
-            // 尝试列出目录中的文件
-            const _entries = await fs.readDir(defaultPath);
-          } catch (_e) {}
+          // 文件不存在，跳过
           return;
         }
 
@@ -169,22 +159,9 @@ export const useClipboard = (
       const { type, value, group, createTime } = data;
 
       if (type === "image") {
-        // 截图插件返回的路径已经是完整路径，不需要转换
-        // 但如果是相对路径，需要转换为完整路径
-        const isAbsolutePath =
-          value.startsWith("/") ||
-          value.startsWith("\\") ||
-          /^[a-zA-Z]:/.test(value);
-
-        if (!isAbsolutePath) {
-          // 相对路径才需要转换
-          const fullPath = await fullName(value);
-          sqlData.value = fullPath;
-          data.value = fullPath;
-        } else {
-          // 已经是完整路径，直接使用
-          sqlData.value = value;
-        }
+        // 截图插件返回的路径已经是完整路径，直接使用
+        // 不需要调用 fullName 转换
+        sqlData.value = value;
       }
 
       if (type === "files") {
