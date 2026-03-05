@@ -1,163 +1,149 @@
-<a href="https://github.com/EcoPasteHub/EcoPaste">
-  <img src="https://socialify.git.ci/EcoPasteHub/EcoPaste/image?description=1&descriptionEditable=Open%20source%20clipboard%20management%20tools%20for%20Windows%2C%20MacOS%20and%20Linux(x11).&font=Source%20Code%20Pro&forks=1&issues=1&logo=https%3A%2F%2Fgithub.com%2FEcoPasteHub%2FEcoPaste%2Fblob%2Fmaster%2Fpublic%2Flogo.png%3Fraw%3Dtrue&name=1&owner=1&pattern=Floating%20Cogs&pulls=1&stargazers=1&theme=Auto" alt="EcoPaste" />
-</a>
+# ClipVault
 
-<div align="center">
-  <br/>
-  
-  <div>
-      English | <a href="./README.md">简体中文</a> | <a href="./README.zh-TW.md">繁體中文</a> | <a href="./README.ja-JP.md">日本語</a>
-  </div>
+<p align="center">
+  <img src="./public/logo.png" width="120" alt="ClipVault Logo" />
+</p>
 
-  <br/>
-    
-  <div>
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        alt="Windows"
-        src="https://img.shields.io/badge/-Windows-blue?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB0PSIxNzI2MzA1OTcxMDA2IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE1NDgiIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4Ij48cGF0aCBkPSJNNTI3LjI3NTU1MTYxIDk2Ljk3MTAzMDEzdjM3My45OTIxMDY2N2g0OTQuNTEzNjE5NzVWMTUuMDI2NzU3NTN6TTUyNy4yNzU1NTE2MSA5MjguMzIzNTA4MTVsNDk0LjUxMzYxOTc1IDgwLjUyMDI4MDQ5di00NTUuNjc3NDcxNjFoLTQ5NC41MTM2MTk3NXpNNC42NzA0NTEzNiA0NzAuODMzNjgyOTdINDIyLjY3Njg1OTI1VjExMC41NjM2ODE5N2wtNDE4LjAwNjQwNzg5IDY5LjI1Nzc5NzUzek00LjY3MDQ1MTM2IDg0Ni43Njc1OTcwM0w0MjIuNjc2ODU5MjUgOTE0Ljg2MDMxMDEzVjU1My4xNjYzMTcwM0g0LjY3MDQ1MTM2eiIgcC1pZD0iMTU0OSIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjwvc3ZnPg=="
-      />
-    </a >  
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        alt="MacOS"
-        src="https://img.shields.io/badge/-MacOS-black?style=flat-square&logo=apple&logoColor=white"
-      />
-    </a >
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img 
-        alt="Linux"
-        src="https://img.shields.io/badge/-Linux-yellow?style=flat-square&logo=linux&logoColor=white" 
-      />
-    </a>
-  </div>
+<p align="center">
+  <b>Clipboard + Image Hosting Management Tool</b>
+</p>
 
-  <div>
-    <a href="./LICENSE">
-      <img
-        src="https://img.shields.io/github/license/EcoPasteHub/EcoPaste?style=flat-square"
-      />
-    </a >
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        src="https://img.shields.io/github/package-json/v/EcoPasteHub/EcoPaste?style=flat-square"
-      />
-    </a >
-    <a href="https://github.com/EcoPasteHub/EcoPaste/releases">
-      <img
-        src="https://img.shields.io/github/downloads/EcoPasteHub/EcoPaste/total?style=flat-square"
-      />  
-    </a >
-  </div>
-  
-  <br/>
+<p align="center">
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square" alt="License" />
+  </a>
+  <img src="https://img.shields.io/badge/version-1.0.0--beta.1-green?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square" alt="Platform" />
+</p>
 
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./static/app-dark.en-US.png" />
-    <source media="(prefers-color-scheme: light)" srcset="./static/app-light.en-US.png" />
-    <img src="./static/app-light.en-US.png" />
- </picture>
-</div>
+> **Note**: This project is based on [EcoPaste](https://github.com/EcoPasteHub/EcoPaste) and is licensed under Apache-2.0. Thanks to the EcoPasteHub team for their open source contribution!
 
-## Download
+---
+
+## ✨ Features
+
+- 🎨 **Modern UI** - Windows 11 style design, clean and beautiful
+- 🏷️ **Custom Tags** - Quickly create tags to categorize clipboard content
+- 🖼️ **Image Hosting** - Support Aliyun OSS, Qiniu Cloud, etc. Upload screenshots to cloud with one click
+- 🔒 **Encrypted Sync** - AES-256 end-to-end encryption, sync across devices via cloud storage
+- ⌨️ **Shortcut Support** - Quick access, navigation, paste, and image hosting upload
+- 🚫 **Exclude Apps** - Support setting apps to ignore (e.g., password managers)
+- 🌙 **Dark Mode** - Auto-follow system theme
+- 🌍 **Multi-language** - Simplified Chinese, Traditional Chinese, English, Japanese
+
+---
+
+## 📥 Download
+
+Download the latest version from the [Releases](https://github.com/yourusername/ClipVault/releases) page.
 
 ### Windows
+- `.exe` - Installer
+- `.msi` - Windows Installer
 
-Manual Download: [x86](https://api.ecopaste.cn/download?platform=windows-x86) | [x64](https://api.ecopaste.cn/download?platform=windows-x64) | [ARM64](https://api.ecopaste.cn/download?platform=windows-arm)
+### macOS
+- `.dmg` - Intel
+- `.dmg` - Apple Silicon
 
-### MacOS
+### Linux
+- `.AppImage` - Universal format
+- `.deb` - Debian/Ubuntu
+- `.rpm` - Fedora/RHEL
 
-Manual Download: [Apple Silicon](https://api.ecopaste.cn/download?platform=macos-arm) | [Intel](https://api.ecopaste.cn/download?platform=macos-x64)
+---
 
-HomeBrew: [Click here](https://ecopaste.cn/guide/install#%E4%BD%BF%E7%94%A8-homebrew-%E5%AE%89%E8%A3%85)
+## 🚀 Quick Start
 
-### Linux(x11)
+### Default Shortcuts
 
-Manual Download: [deb](https://api.ecopaste.cn/download?platform=linux-deb) | [AppImage](https://api.ecopaste.cn/download?platform=linux-appimage) | [rpm](https://api.ecopaste.cn/download?platform=linux-rpm)
+| Function | Windows/Linux | macOS |
+|----------|--------------|-------|
+| Open Clipboard | `Ctrl + Shift + V` | `Cmd + Shift + V` |
+| Open Settings | `Alt + X` | `Option + X` |
+| Upload to Image Hosting | `Ctrl + Shift + P` | `Cmd + Shift + P` |
+| Select Item | `Tab` / `↑↓` | `Tab` / `↑↓` |
+| Switch Group | `← / →` | `← / →` |
 
-Installation Guide: [Click here](https://ecopaste.cn/guide/install#linux)
+### Image Hosting Settings
 
-## Features
+1. Open Preferences → Image Hosting
+2. Enable "Enable Image Hosting"
+3. Click "Add Image Hosting" to configure your cloud storage
+4. Supports: Aliyun OSS, Qiniu Cloud, Tencent Cloud COS, etc.
+5. Press `Ctrl + Shift + P` to quickly upload the latest screenshot
 
-- 🎉 Built with Tauri v2, lightweight and efficient, taking cross-platform experience to the next level.
-- 💻 Compatible with Windows, macOS, and Linux (X11), enabling seamless switching between devices.
-- ✨ Simple and intuitive user interface, easy to operate, zero learning curve, ready to use out of the box.
-- 📋 Supports clipboard content types like plain text, rich text, HTML, images, and files.
-- 🔒 Local data storage ensures user privacy and gives users full control over their data.
-- 📝 Notes feature allows easy categorization, management, and retrieval to boost productivity.
-- ⚙️ Rich personalization settings to meet diverse user needs and create a tailored experience.
-- 🤝 Comprehensive documentation and community support to explore and grow with developers.
-- 🧩 Continuously optimized with more exciting features waiting to be discovered.
+### Exclude Settings
 
-## Feedback
+1. Open Preferences → Clipboard → Exclusion Settings
+2. Add app names to exclude (e.g., 1Password, KeePass)
+3. Content copied from these apps will not be recorded
 
-1. 🔍 First, check out the [FAQ](https://ecopaste.cn/problem/macos/damage) or browse through the existing [issues](https://github.com/EcoPasteHub/EcoPaste/issues)。
+### Sync Settings
 
-2. ❓ If your issue remains unresolved, please submit a new [issue](https://github.com/EcoPasteHub/EcoPaste/issues/new/choose) with a detailed description to help us quickly identify and address the problem.
+1. Open Preferences → Sync
+2. Enable "Enable Sync"
+3. Select sync directory (recommended to use cloud storage sync folder)
+4. Optional: Enable AES-256 encryption
 
-## Star History
+### Tags
 
-<a href="https://star-history.com/#EcoPasteHub/EcoPaste&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=EcoPasteHub/EcoPaste&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=EcoPasteHub/EcoPaste&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=EcoPasteHub/EcoPaste&type=Date" />
- </picture>
-</a>
+1. Click the **+** button on the right side of the top tabs
+2. Enter the tag name and press Enter to create
+3. Click the tag to filter related content
 
-## Community
+---
 
-⚠️ Friendly Reminder: Group chats are for casual discussions and experience sharing only. For issue reporting or submitting new feature requests, please refer to [Feedback](#Feedback).
+## 🛠️ Development
 
-<table>
-  <thead>
-    <tr>
-      <th width="33.3%">WeChat Group</th>
-      <th width="33.3%">QQ Group</th>
-      <th width="33.3%">Telegram</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://ecopaste.cn/community/wechat-group-dark.png" />
-          <source media="(prefers-color-scheme: light)" srcset="https://ecopaste.cn/community/wechat-group-light.png" />
-          <img src="https://ecopaste.cn/community/wechat-group-light.png" />
-        </picture>
-      </td>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://ecopaste.cn/community/qq-group-dark.png" />
-          <source media="(prefers-color-scheme: light)" srcset="https://ecopaste.cn/community/qq-group-light.png" />
-          <img src="https://ecopaste.cn/community/qq-group-light.png" />
-        </picture>
-      </td>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://ecopaste.cn/community/telegram-chat-dark.png" />
-          <source media="(prefers-color-scheme: light)" srcset="https://ecopaste.cn/community/telegram-chat-light.png" />
-          <img src="https://ecopaste.cn/community/telegram-chat-light.png" />
-        </picture>
-      </td>
-    </tr>
-  </tbody>
-</table>
+### Tech Stack
 
-## Contributors
+- **Frontend**: React + TypeScript + Ant Design + UnoCSS
+- **Backend**: Rust + Tauri v2
+- **State Management**: Valtio
+- **i18n**: i18next
 
-Thank you to everyone who has contributed to EcoPaste! If you’d like to contribute, check out the [Contributing Guide](./.github/CONTRIBUTING/en-US.md).
+### Requirements
 
-<a href="https://openomy.com/EcoPasteHub/EcoPaste" target="_blank" style="display: block; width: 100%;" align="center">
-  <img src="https://openomy.com/svg?repo=EcoPasteHub/EcoPaste&chart=bubble" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
-</a>
+- Node.js 18+
+- Rust 1.70+
+- pnpm
 
-## Sponsors
+### Local Development
 
-If you find this project helpful, consider sponsoring us! Your support helps us maintain and improve EcoPaste, bringing more value to the community.
+```bash
+# Clone repository
+git clone https://github.com/yourusername/ClipVault.git
+cd ClipVault
 
-Please leave a message when sponsoring so we can include you in our [Sponsors List](https://ecopaste.cn/sponsor/list). Thank you for your support and encouragement!
+# Install dependencies
+pnpm install
 
-|                        WeChat Pay                         |                       Alipay                        |
-| :-------------------------------------------------------: | :-------------------------------------------------: |
-| ![wehcat-pay](https://ecopaste.cn/sponsor/wechat-pay.png) | ![ali-pay](https://ecopaste.cn/sponsor/ali-pay.png) |
+# Start development server
+pnpm dev
+
+# Build production version
+pnpm build
+```
+
+---
+
+## 📄 License
+
+This project is licensed under [Apache-2.0](./LICENSE).
+
+This project contains code from [EcoPaste](https://github.com/EcoPasteHub/EcoPaste), copyright belongs to EcoPasteHub and its contributors.
+
+---
+
+## 🙏 Acknowledgements
+
+- [EcoPaste](https://github.com/EcoPasteHub/EcoPaste) - Basic architecture and core functionality
+- [Tauri](https://tauri.app/) - Cross-platform desktop application framework
+- [React](https://react.dev/) - Frontend UI framework
+- [Ant Design](https://ant.design/) - Component library
+
+---
+
+<p align="center">
+  Made with ❤️ by ClipVault Team
+</p>
