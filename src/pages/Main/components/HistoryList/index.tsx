@@ -128,14 +128,20 @@ const HistoryList = () => {
   useKeyPress("downarrow", selectNextItem);
   useKeyPress("tab", selectNextItem);
 
-  // Ctrl+A 全选
+  // Ctrl+A 全选（只选当前列表中的项目）
   useKeyPress("ctrl.a", (event) => {
     event?.preventDefault();
     if (rootState.list.length === 0) return;
-    rootState.selectedIds = rootState.list.map((item) => item.id);
+    // 只选择当前列表（当前选项卡）中的项目
+    const currentListIds = rootState.list.map((item) => item.id);
+    // 保留其他已选中的不在当前列表的项目（如果有的话），但通常切换选项卡时会清空
+    const otherSelectedIds = rootState.selectedIds.filter(
+      (id) => !currentListIds.includes(id),
+    );
+    rootState.selectedIds = [...otherSelectedIds, ...currentListIds];
   });
 
-  // Delete 键删除选中的历史记录
+  // Delete 键删除选中的历史记录（异步删除，先更新UI）
   useKeyPress("delete", async () => {
     if (rootState.selectedIds.length === 0) {
       // 如果没有选中项，删除当前激活项
@@ -152,10 +158,13 @@ const HistoryList = () => {
 
       if (!confirmed) return;
 
-      await deleteHistory(item);
+      // 先更新UI
       rootState.list = rootState.list.filter((i) => i.id !== activeId);
       rootState.activeId = rootState.list[0]?.id;
       message.success(t("clipboard.button.context_menu.delete") + t("success"));
+
+      // 后台异步删除
+      deleteHistory(item).catch(console.error);
     } else {
       // 删除所有选中的项
       const confirmed = await deleteModal.confirm({
@@ -169,16 +178,24 @@ const HistoryList = () => {
         rootState.selectedIds.includes(item.id),
       );
 
-      for (const item of itemsToDelete) {
-        await deleteHistory(item);
-      }
-
+      // 先更新UI
       rootState.list = rootState.list.filter(
         (item) => !rootState.selectedIds.includes(item.id),
       );
+      const deletedCount = rootState.selectedIds.length;
       rootState.selectedIds = [];
       rootState.activeId = rootState.list[0]?.id;
-      message.success("删除成功");
+      message.success(`成功删除 ${deletedCount} 项`);
+
+      // 后台异步删除
+      Promise.allSettled(itemsToDelete.map((item) => deleteHistory(item)))
+        .then((results) => {
+          const failed = results.filter((r) => r.status === "rejected").length;
+          if (failed > 0) {
+            console.warn(`${failed} 项删除失败`);
+          }
+        })
+        .catch(console.error);
     }
   });
 
@@ -201,7 +218,7 @@ const HistoryList = () => {
     setPreviewImage(null);
   };
 
-  // 删除预览的图片
+  // 删除预览的图片（异步删除，先更新UI）
   const handleDeletePreviewImage = async () => {
     if (!previewImage) return;
 
@@ -212,11 +229,16 @@ const HistoryList = () => {
 
     if (!confirmed) return;
 
-    await deleteHistory(previewImage);
-    rootState.list = rootState.list.filter((i) => i.id !== previewImage.id);
+    const imageToDelete = previewImage;
+
+    // 先更新UI
+    rootState.list = rootState.list.filter((i) => i.id !== imageToDelete.id);
     rootState.activeId = rootState.list[0]?.id;
     handleClosePreview();
     message.success(t("clipboard.button.context_menu.delete") + t("success"));
+
+    // 后台异步删除
+    deleteHistory(imageToDelete).catch(console.error);
   };
 
   // 处理标签选择
@@ -227,9 +249,25 @@ const HistoryList = () => {
     tagSelectorRef.current?.open(historyId, tagIds);
   };
 
+  // 点击列表空白区域时取消全选
+  const handleListClick = (e: React.MouseEvent) => {
+    // 如果点击的是列表本身（不是卡片项），则清空选中
+    if (e.target === e.currentTarget) {
+      rootState.selectedIds = [];
+    }
+  };
+
+  // 使用 Set 优化选中状态查找
+  const selectedSet = new Set(rootState.selectedIds);
+
   return (
     <div className={styles.container}>
-      <div className={styles.list} onWheel={handleWheel} ref={scrollerRef}>
+      <div
+        className={styles.list}
+        onClick={handleListClick}
+        onWheel={handleWheel}
+        ref={scrollerRef}
+      >
         {rootState.list.map((item, index) => (
           <div
             className={clsx(styles.itemWrapper)}
@@ -242,6 +280,9 @@ const HistoryList = () => {
               handleNote={() => noteModelRef.current?.open(item.id)}
               handleTag={() => handleTag(item.id)}
               index={index}
+              isActive={rootState.activeId === item.id}
+              isSelected={selectedSet.has(item.id)}
+              search={rootState.search}
             />
           </div>
         ))}

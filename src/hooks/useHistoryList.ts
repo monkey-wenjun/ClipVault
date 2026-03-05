@@ -1,5 +1,6 @@
 import { copyFile, exists, remove } from "@tauri-apps/plugin-fs";
-import { useAsyncEffect, useReactive } from "ahooks";
+import { useReactive, useUpdateEffect } from "ahooks";
+import { useEffect } from "react";
 import { isString } from "es-toolkit";
 import { unionBy } from "es-toolkit/compat";
 import { useContext } from "react";
@@ -69,28 +70,32 @@ export const useHistoryList = (options: Options) => {
           .orderBy("createTime", "desc");
       });
 
-      for (const item of list) {
-        const { type, value } = item;
+      // 图片路径处理改为异步，不阻塞列表渲染
+      const processImagesAsync = async () => {
+        for (const item of list) {
+          const { type, value } = item;
 
-        if (!isString(value)) continue;
+          if (!isString(value)) continue;
 
-        if (type === "image") {
-          const oldPath = join(getSaveImagePath(), value);
-          const newPath = join(await getDefaultSaveImagePath(), value);
+          if (type === "image") {
+            const oldPath = join(getSaveImagePath(), value);
+            const newPath = join(await getDefaultSaveImagePath(), value);
 
-          if (await exists(oldPath)) {
-            await copyFile(oldPath, newPath);
-
-            remove(oldPath);
+            if (await exists(oldPath)) {
+              await copyFile(oldPath, newPath);
+              remove(oldPath);
+              item.value = newPath;
+            }
           }
 
-          item.value = newPath;
+          if (type === "files") {
+            item.value = JSON.parse(value);
+          }
         }
+      };
 
-        if (type === "files") {
-          item.value = JSON.parse(value);
-        }
-      }
+      // 启动异步处理，不等待完成
+      processImagesAsync();
 
       state.noMore = list.length === 0;
 
@@ -125,10 +130,19 @@ export const useHistoryList = (options: Options) => {
 
   useTauriListen(LISTEN_KEY.REFRESH_CLIPBOARD_LIST, reload);
 
-  useAsyncEffect(async () => {
-    await reload();
+  // 切换选项卡或搜索时重新加载
+  useEffect(() => {
+    // 清空选中状态和列表，立即响应切换
+    rootState.selectedIds = [];
+    rootState.list = [];
 
-    rootState.activeId = rootState.list[0]?.id;
+    // 使用 setTimeout 让出主线程，让 UI 先完成切换动画
+    const timer = setTimeout(() => {
+      reload();
+    }, 0);
+
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rootState.group, rootState.search, tagStore.selectedTagId]);
 
   return {

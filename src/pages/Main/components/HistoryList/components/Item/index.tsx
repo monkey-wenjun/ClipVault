@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import type { FC } from "react";
-import { useContext, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { Marker } from "react-mark.js";
 import { useSnapshot } from "valtio";
 import SafeHtml from "@/components/SafeHtml";
@@ -27,15 +27,16 @@ export interface ItemProps {
   deleteModal: any;
   handleNote: () => void;
   handleTag?: () => void;
+  isSelected: boolean;
+  isActive: boolean;
+  search?: string;
 }
 
 const Item: FC<ItemProps> = (props) => {
-  const { index, data } = props;
+  const { index, data, deleteModal, handleNote, handleTag, isSelected, isActive, search } = props;
   const { id, type, note, favorite, count, createTime } = data;
   const { rootState } = useContext(MainContext);
   const { content } = useSnapshot(clipboardStore);
-  const isActive = rootState.activeId === id;
-  const isSelected = rootState.selectedIds.includes(id);
   const [tags, setTags] = useState<DatabaseSchemaTag[]>([]);
 
   // 加载历史记录的标签
@@ -76,9 +77,50 @@ const Item: FC<ItemProps> = (props) => {
       return;
     }
 
+    // Shift+Click 范围选择
+    if (event?.shiftKey) {
+      const { list, selectedIds } = rootState;
+      if (selectedIds.length === 0) {
+        // 如果没有选中项，只选中当前项
+        rootState.selectedIds = [id];
+      } else {
+        // 找到最后一个选中项的索引
+        const lastSelectedId = selectedIds[selectedIds.length - 1];
+        const lastIndex = list.findIndex((item) => item.id === lastSelectedId);
+        const currentIndex = index;
+
+        if (lastIndex !== -1) {
+          // 选择从 lastIndex 到 currentIndex 之间的所有项
+          const start = Math.min(lastIndex, currentIndex);
+          const end = Math.max(lastIndex, currentIndex);
+          const rangeIds = list.slice(start, end + 1).map((item) => item.id);
+
+          // 合并已选中的和范围选择的（去重）
+          const newSelectedIds = [...new Set([...selectedIds, ...rangeIds])];
+          rootState.selectedIds = newSelectedIds;
+        }
+      }
+      rootState.activeId = id;
+      return;
+    }
+
+    // 普通点击：如果有选中项，清空选中；否则只设置 activeId
+    if (rootState.selectedIds.length > 0) {
+      rootState.selectedIds = [];
+    }
+
     rootState.activeId = id;
     if (content.autoPaste !== clickType) return;
     pasteToClipboard(data);
+  };
+
+  // 测试删除功能 - Alt+双击删除
+  const handleDoubleClickTest = (e: React.MouseEvent) => {
+    if (e.altKey) {
+      console.log("[Item] Alt+DoubleClick delete test, id:", id);
+      rootState.list = rootState.list.filter((item) => item.id !== id);
+      console.log("[Item] after delete, list length:", rootState.list.length);
+    }
   };
 
   const renderContent = () => {
@@ -123,8 +165,14 @@ const Item: FC<ItemProps> = (props) => {
         isSelected && styles.selected,
       )}
       onClick={(e) => handleClick("single", e)}
-      onContextMenu={handleContextMenu}
-      onDoubleClick={(e) => handleClick("double", e)}
+      onContextMenu={(e) => {
+        console.log("[Item] onContextMenu triggered, id:", id);
+        handleContextMenu(e);
+      }}
+      onDoubleClick={(e) => {
+        handleClick("double", e);
+        handleDoubleClickTest(e);
+      }}
     >
       {/* 序号标记 */}
       <span className={styles.key}>{index + 1}</span>
@@ -143,7 +191,7 @@ const Item: FC<ItemProps> = (props) => {
         {note && (
           <div className={styles.note}>
             <UnoIcon name="i-hugeicons:task-edit-01" />
-            <Marker mark={rootState.search}>{note}</Marker>
+            <Marker mark={search}>{note}</Marker>
           </div>
         )}
         <div
@@ -177,4 +225,15 @@ const Item: FC<ItemProps> = (props) => {
   );
 };
 
-export default Item;
+export default memo(Item, (prevProps, nextProps) => {
+  // 自定义比较函数，只在必要时重渲染
+  return (
+    prevProps.isSelected === nextProps.isSelected &&
+    prevProps.isActive === nextProps.isActive &&
+    prevProps.index === nextProps.index &&
+    prevProps.search === nextProps.search &&
+    prevProps.data.id === nextProps.data.id &&
+    prevProps.data.favorite === nextProps.data.favorite &&
+    prevProps.data.note === nextProps.data.note
+  );
+});

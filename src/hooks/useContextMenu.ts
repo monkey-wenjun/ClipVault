@@ -90,33 +90,22 @@ export const useContextMenu = (props: UseContextMenuProps) => {
     revealItemInDir(file);
   };
 
-  const handleDelete = async () => {
-    const matched = find(rootState.list, { id });
-
-    if (!matched) return;
-
-    let confirmed = true;
-
-    if (clipboardStore.content.deleteConfirm) {
-      confirmed = await deleteModal.confirm({
-        afterClose() {
-          // 关闭确认框后焦点还在，需要手动取消焦点
-          (document.activeElement as HTMLElement)?.blur();
-        },
-        centered: true,
-        content: t("clipboard.hints.delete_modal_content"),
-      });
-    }
-
-    if (!confirmed) return;
-
+  const handleDelete = () => {
+    console.log("[handleDelete] called, id:", id);
+    
     if (id === rootState.activeId) {
       handleNext();
     }
 
-    remove(rootState.list, { id });
+    // 先从列表移除（更新UI）- 使用 filter 创建新数组触发响应式更新
+    console.log("[handleDelete] filtering list, current length:", rootState.list.length);
+    const newList = rootState.list.filter((item) => item.id !== id);
+    console.log("[handleDelete] new list length:", newList.length);
+    rootState.list = newList;
+    console.log("[handleDelete] after assignment, rootState.list.length:", rootState.list.length);
 
-    deleteHistory(data);
+    // 后台异步删除数据库和文件
+    deleteHistory(data).catch(console.error);
   };
 
   const handleManageTags = () => {
@@ -185,19 +174,26 @@ export const useContextMenu = (props: UseContextMenuProps) => {
           : t("clipboard.button.context_menu.show_in_file_explorer"),
       },
       {
-        action: handleDelete,
+        action: () => {
+          console.log("[delete] clicked");
+          handleDelete();
+        },
         text: t("clipboard.button.context_menu.delete"),
       },
     ];
 
-    const menu = await Menu.new();
+    const filteredItems = items.filter(({ hide }) => !hide);
+    console.log("[contextMenu] filtered items count:", filteredItems.length);
+    
+    const menuItems = await Promise.all(
+      filteredItems.map((item) => {
+        console.log("[contextMenu] creating menu item:", item.text);
+        return MenuItem.new(item);
+      })
+    );
 
-    for await (const item of items.filter(({ hide }) => !hide)) {
-      const menuItem = await MenuItem.new(item);
-
-      await menu.append(menuItem);
-    }
-
+    const menu = await Menu.new({ items: menuItems });
+    console.log("[contextMenu] menu created, popping up");
     menu.popup();
   };
 
