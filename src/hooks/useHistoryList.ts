@@ -1,16 +1,13 @@
-import { copyFile, exists, remove } from "@tauri-apps/plugin-fs";
 import { useReactive } from "ahooks";
 import { isString } from "es-toolkit";
 import { unionBy } from "es-toolkit/compat";
 import { useContext, useEffect } from "react";
-import { getDefaultSaveImagePath } from "tauri-plugin-clipboard-x-api";
 import { LISTEN_KEY } from "@/constants";
 import { selectHistory } from "@/database/history";
 import { selectHistoryByTagId } from "@/database/tag";
 import { MainContext } from "@/pages/Main";
 import { tagStore } from "@/stores/tag";
 import { isBlank } from "@/utils/is";
-import { getSaveImagePath, join } from "@/utils/path";
 import { useTauriListen } from "./useTauriListen";
 
 interface Options {
@@ -74,32 +71,13 @@ export const useHistoryList = (options: Options) => {
           .orderBy("createTime", "desc");
       });
 
-      // 图片路径处理改为异步，不阻塞列表渲染
-      const processImagesAsync = async () => {
-        for (const item of list) {
-          const { type, value } = item;
-
-          if (!isString(value)) continue;
-
-          if (type === "image") {
-            const oldPath = join(getSaveImagePath(), value);
-            const newPath = join(await getDefaultSaveImagePath(), value);
-
-            if (await exists(oldPath)) {
-              await copyFile(oldPath, newPath);
-              remove(oldPath);
-              item.value = newPath;
-            }
-          }
-
-          if (type === "files") {
-            item.value = JSON.parse(value);
-          }
+      // 同步处理 files 类型，确保路径数据正确
+      for (const item of list) {
+        const { type, value } = item;
+        if (type === "files" && isString(value)) {
+          item.value = JSON.parse(value);
         }
-      };
-
-      // 启动异步处理，不等待完成
-      processImagesAsync();
+      }
 
       state.noMore = list.length === 0;
 

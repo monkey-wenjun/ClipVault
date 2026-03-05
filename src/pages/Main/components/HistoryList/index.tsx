@@ -129,17 +129,39 @@ const HistoryList = () => {
   useKeyPress("tab", selectNextItem);
 
   // Ctrl+A 全选（只选当前列表中的项目）
-  useKeyPress("ctrl.a", (event) => {
-    event?.preventDefault();
-    if (rootState.list.length === 0) return;
-    // 只选择当前列表（当前选项卡）中的项目
-    const currentListIds = rootState.list.map((item) => item.id);
-    // 保留其他已选中的不在当前列表的项目（如果有的话），但通常切换选项卡时会清空
-    const otherSelectedIds = rootState.selectedIds.filter(
-      (id) => !currentListIds.includes(id),
-    );
-    rootState.selectedIds = [...otherSelectedIds, ...currentListIds];
-  });
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // 检查是否为 Ctrl+A 或 Cmd+A (Mac)
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "a") {
+        // 如果当前焦点在输入框中，不执行全选
+        const target = event.target as HTMLElement;
+        if (
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+        if (rootState.list.length === 0) {
+          return;
+        }
+
+        // 只选择当前列表（当前选项卡）中的项目
+        const currentListIds = rootState.list.map((item) => item.id);
+        // 保留其他已选中的不在当前列表的项目（如果有的话），但通常切换选项卡时会清空
+        const otherSelectedIds = rootState.selectedIds.filter(
+          (id) => !currentListIds.includes(id),
+        );
+        rootState.selectedIds = [...otherSelectedIds, ...currentListIds];
+      }
+    };
+
+    // 使用 window 监听，确保全局捕获
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [rootState.list.length, rootState.selectedIds.length]);
 
   // Delete 键删除选中的历史记录（异步删除，先更新UI）
   useKeyPress("delete", async () => {
@@ -278,6 +300,10 @@ const HistoryList = () => {
               data={item}
               deleteModal={deleteModal}
               handleNote={() => noteModelRef.current?.open(item.id)}
+              handlePreviewImage={() => {
+                setPreviewImage(item as DatabaseSchemaHistory<"image">);
+                setPreviewVisible(true);
+              }}
               handleTag={() => handleTag(item.id)}
               index={index}
               isActive={rootState.activeId === item.id}

@@ -109,13 +109,21 @@ const Main = () => {
   const setQuickPasteKeys = () => {
     const { enable, value } = globalStore.shortcut.quickPaste;
 
-    if (!enable) {
+    if (!enable || !value) {
       state.quickPasteKeys = [];
-
       return;
     }
 
-    state.quickPasteKeys = range(1, 10).map((item) => [value, item].join("+"));
+    // 确保 value 不以 + 结尾，避免生成无效快捷键
+    const cleanValue = value.replace(/\+$/, "");
+    if (!cleanValue) {
+      state.quickPasteKeys = [];
+      return;
+    }
+
+    state.quickPasteKeys = range(1, 10).map((item) =>
+      [cleanValue, item].join("+"),
+    );
   };
 
   // 监听快速粘贴的启用状态变更

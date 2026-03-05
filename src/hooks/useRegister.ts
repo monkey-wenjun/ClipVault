@@ -4,45 +4,75 @@ import {
   type ShortcutHandler,
   unregister,
 } from "@tauri-apps/plugin-global-shortcut";
-import { useAsyncEffect, useUnmount } from "ahooks";
+import { useUnmount } from "ahooks";
 import { castArray } from "es-toolkit/compat";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 
 export const useRegister = (
   handler: ShortcutHandler,
   deps: Array<string | string[] | undefined>,
 ) => {
-  const [oldShortcuts, setOldShortcuts] = useState(deps[0]);
+  const registeredShortcutsRef = useRef<string[]>([]);
 
-  useAsyncEffect(async () => {
-    const [shortcuts] = deps;
+  useEffect(() => {
+    const registerShortcuts = async () => {
+      const [shortcuts] = deps;
+      const newShortcuts = castArray(shortcuts).filter(Boolean) as string[];
 
-    for await (const shortcut of castArray(oldShortcuts)) {
-      if (!shortcut) continue;
+      // 如果快捷键没有变化，跳过
+      const currentRegistered = registeredShortcutsRef.current;
+      const hasChanged =
+        newShortcuts.length !== currentRegistered.length ||
+        newShortcuts.some((s, i) => s !== currentRegistered[i]);
 
-      const registered = await isRegistered(shortcut);
+      if (!hasChanged) return;
 
-      if (registered) {
-        await unregister(shortcut);
+      // 注销旧的快捷键
+      for (const shortcut of currentRegistered) {
+        try {
+          const registered = await isRegistered(shortcut);
+          if (registered) {
+            await unregister(shortcut);
+          }
+        } catch (_e) {
+          // 忽略注销错误
+        }
       }
-    }
+      registeredShortcutsRef.current = [];
 
-    if (!shortcuts) return;
+      if (newShortcuts.length === 0) return;
 
-    await register(shortcuts, (event) => {
-      if (event.state === "Released") return;
+      // 注册新的快捷键
+      const successfullyRegistered: string[] = [];
+      for (const shortcut of newShortcuts) {
+        try {
+          const registered = await isRegistered(shortcut);
+          if (!registered) {
+            await register(shortcut, (event) => {
+              if (event.state === "Released") return;
+              handler(event);
+            });
+            successfullyRegistered.push(shortcut);
+          } else {
+          }
+        } catch (_e) {}
+      }
 
-      handler(event);
-    });
+      registeredShortcutsRef.current = successfullyRegistered;
+    };
 
-    setOldShortcuts(shortcuts);
+    registerShortcuts();
   }, deps);
 
   useUnmount(() => {
-    const [shortcuts] = deps;
-
-    if (!shortcuts) return;
-
-    unregister(shortcuts);
+    const shortcuts = registeredShortcutsRef.current;
+    for (const shortcut of shortcuts) {
+      try {
+        unregister(shortcut);
+      } catch (_e) {
+        // 忽略注销错误
+      }
+    }
+    registeredShortcutsRef.current = [];
   });
 };

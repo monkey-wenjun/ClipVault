@@ -27,6 +27,7 @@ export interface ItemProps {
   deleteModal: any;
   handleNote: () => void;
   handleTag?: () => void;
+  handlePreviewImage?: () => void;
   isSelected: boolean;
   isActive: boolean;
   search?: string;
@@ -63,9 +64,15 @@ const Item: FC<ItemProps> = (props) => {
     rootState.activeId = nextItem?.id;
   };
 
+  const handlePreviewImage = () => {
+    if (type !== "image") return;
+    props.handlePreviewImage?.();
+  };
+
   const { handleContextMenu } = useContextMenu({
     ...props,
     handleNext,
+    handlePreviewImage,
     onTagsChange: setTags,
     tags,
   });
