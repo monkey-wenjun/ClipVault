@@ -4,14 +4,17 @@ import { useContext, useEffect, useState } from "react";
 import { Marker } from "react-mark.js";
 import { useSnapshot } from "valtio";
 import SafeHtml from "@/components/SafeHtml";
-import UnoIcon from "@/components/UnoIcon";
 import TagBadge from "@/components/TagBadge";
+import UnoIcon from "@/components/UnoIcon";
+import { getHistoryTags } from "@/database/tag";
 import { useContextMenu } from "@/hooks/useContextMenu";
 import { MainContext } from "@/pages/Main";
 import { pasteToClipboard } from "@/plugins/clipboard";
 import { clipboardStore } from "@/stores/clipboard";
-import type { DatabaseSchemaHistory, DatabaseSchemaTag } from "@/types/database";
-import { getHistoryTags } from "@/database/tag";
+import type {
+  DatabaseSchemaHistory,
+  DatabaseSchemaTag,
+} from "@/types/database";
 import Files from "../Files";
 import Image from "../Image";
 import Rtf from "../Rtf";
@@ -27,11 +30,12 @@ export interface ItemProps {
 }
 
 const Item: FC<ItemProps> = (props) => {
-  const { index, data, handleTag } = props;
+  const { index, data } = props;
   const { id, type, note, favorite, count, createTime } = data;
   const { rootState } = useContext(MainContext);
   const { content } = useSnapshot(clipboardStore);
   const isActive = rootState.activeId === id;
+  const isSelected = rootState.selectedIds.includes(id);
   const [tags, setTags] = useState<DatabaseSchemaTag[]>([]);
 
   // 加载历史记录的标签
@@ -52,11 +56,26 @@ const Item: FC<ItemProps> = (props) => {
   const { handleContextMenu } = useContextMenu({
     ...props,
     handleNext,
-    tags,
     onTagsChange: setTags,
+    tags,
   });
 
-  const handleClick = (clickType: typeof content.autoPaste) => {
+  const handleClick = (
+    clickType: typeof content.autoPaste,
+    event?: React.MouseEvent,
+  ) => {
+    // Ctrl+Click 切换选中状态
+    if (event?.ctrlKey || event?.metaKey) {
+      const selectedIndex = rootState.selectedIds.indexOf(id);
+      if (selectedIndex === -1) {
+        rootState.selectedIds.push(id);
+      } else {
+        rootState.selectedIds.splice(selectedIndex, 1);
+      }
+      rootState.activeId = id;
+      return;
+    }
+
     rootState.activeId = id;
     if (content.autoPaste !== clickType) return;
     pasteToClipboard(data);
@@ -98,10 +117,14 @@ const Item: FC<ItemProps> = (props) => {
 
   return (
     <div
-      className={clsx(styles.card, isActive && styles.active)}
-      onClick={() => handleClick("single")}
+      className={clsx(
+        styles.card,
+        isActive && styles.active,
+        isSelected && styles.selected,
+      )}
+      onClick={(e) => handleClick("single", e)}
       onContextMenu={handleContextMenu}
-      onDoubleClick={() => handleClick("double")}
+      onDoubleClick={(e) => handleClick("double", e)}
     >
       {/* 序号标记 */}
       <span className={styles.key}>{index + 1}</span>

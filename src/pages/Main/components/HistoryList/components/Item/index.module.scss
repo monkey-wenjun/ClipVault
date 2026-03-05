@@ -55,6 +55,25 @@
   }
 }
 
+/* 多选选中状态 */
+.selected {
+  background: rgba(82, 196, 26, 0.1);
+  border-color: #52c41a;
+  box-shadow: 0 0 0 1px #52c41a, 0 4px 12px rgba(82, 196, 26, 0.2);
+
+  &:hover {
+    background: rgba(82, 196, 26, 0.15);
+    border-color: #52c41a;
+    box-shadow: 0 0 0 1px #52c41a, 0 4px 12px rgba(82, 196, 26, 0.25);
+  }
+
+  :global(.dark) & {
+    background: rgba(82, 196, 26, 0.2);
+    border-color: rgba(82, 196, 26, 0.6);
+    box-shadow: 0 0 0 1px rgba(82, 196, 26, 0.6), 0 4px 12px rgba(82, 196, 26, 0.2);
+  }
+}
+
 /* 序号标记 */
 .key {
   position: absolute;

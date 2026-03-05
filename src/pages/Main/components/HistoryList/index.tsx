@@ -1,27 +1,30 @@
 import { useKeyPress, useUpdateEffect } from "ahooks";
-import { Modal } from "antd";
+import { Modal, message } from "antd";
 import clsx from "clsx";
 import { findIndex } from "es-toolkit/compat";
 import { useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import TagSelector, { type TagSelectorRef } from "@/components/TagSelector";
 import { LISTEN_KEY } from "@/constants";
+import { deleteHistory } from "@/database/history";
+import { selectHistoryTagIds } from "@/database/tag";
 import { useHistoryList } from "@/hooks/useHistoryList";
 import { useKeyboard } from "@/hooks/useKeyboard";
 import { useTauriListen } from "@/hooks/useTauriListen";
-import TagSelector, { type TagSelectorRef } from "@/components/TagSelector";
 import { MainContext } from "../..";
 import Item from "./components/Item";
 import NoteModal, { type NoteModalRef } from "./components/NoteModal";
 import styles from "./index.module.scss";
-import { selectHistoryTagIds } from "@/database/tag";
 
 const HistoryList = () => {
   const { rootState } = useContext(MainContext);
+  const { t } = useTranslation();
   const noteModelRef = useRef<NoteModalRef>(null);
   const tagSelectorRef = useRef<TagSelectorRef>(null);
   const [deleteModal, contextHolder] = Modal.useModal();
   const scrollerRef = useRef<HTMLDivElement>(null);
-  const [currentHistoryId, setCurrentHistoryId] = useState<string>("");
-  const [currentTagIds, setCurrentTagIds] = useState<string[]>([]);
+  const [, setCurrentHistoryId] = useState<string>("");
+  const [, setCurrentTagIds] = useState<string[]>([]);
 
   const scrollToIndex = (index: number) => {
     const container = scrollerRef.current;
@@ -117,6 +120,60 @@ const HistoryList = () => {
   useKeyPress("uparrow", selectPrevItem);
   useKeyPress("downarrow", selectNextItem);
   useKeyPress("tab", selectNextItem);
+
+  // Ctrl+A 全选
+  useKeyPress("ctrl.a", (event) => {
+    event?.preventDefault();
+    if (rootState.list.length === 0) return;
+    rootState.selectedIds = rootState.list.map((item) => item.id);
+  });
+
+  // Delete 键删除选中的历史记录
+  useKeyPress("delete", async () => {
+    if (rootState.selectedIds.length === 0) {
+      // 如果没有选中项，删除当前激活项
+      const { activeId } = rootState;
+      if (!activeId) return;
+
+      const item = rootState.list.find((i) => i.id === activeId);
+      if (!item) return;
+
+      const confirmed = await deleteModal.confirm({
+        content: t("clipboard.hints.delete_modal_content"),
+        title: t("clipboard.button.context_menu.delete"),
+      });
+
+      if (!confirmed) return;
+
+      await deleteHistory(item);
+      rootState.list = rootState.list.filter((i) => i.id !== activeId);
+      rootState.activeId = rootState.list[0]?.id;
+      message.success(t("clipboard.button.context_menu.delete") + t("success"));
+    } else {
+      // 删除所有选中的项
+      const confirmed = await deleteModal.confirm({
+        content: `确定要删除选中的 ${rootState.selectedIds.length} 项吗？`,
+        title: "批量删除",
+      });
+
+      if (!confirmed) return;
+
+      const itemsToDelete = rootState.list.filter((item) =>
+        rootState.selectedIds.includes(item.id),
+      );
+
+      for (const item of itemsToDelete) {
+        await deleteHistory(item);
+      }
+
+      rootState.list = rootState.list.filter(
+        (item) => !rootState.selectedIds.includes(item.id),
+      );
+      rootState.selectedIds = [];
+      rootState.activeId = rootState.list[0]?.id;
+      message.success("删除成功");
+    }
+  });
 
   // 处理标签选择
   const handleTag = async (historyId: string) => {

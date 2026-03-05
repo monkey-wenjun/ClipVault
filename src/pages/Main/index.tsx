@@ -44,12 +44,14 @@ export interface State {
   list: DatabaseSchemaHistory[];
   eventBus?: EventEmitter<EventBusPayload>;
   quickPasteKeys: string[];
+  selectedIds: string[]; // 选中的历史记录 ID
 }
 
 const INITIAL_STATE: State = {
   group: "all",
   list: [],
   quickPasteKeys: [],
+  selectedIds: [],
 };
 
 interface MainContextValue {
