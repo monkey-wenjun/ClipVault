@@ -83,7 +83,8 @@ export const useContextMenu = (props: UseContextMenuProps) => {
   const downloadImage = async () => {
     if (type !== "image") return;
 
-    const fileName = `${env.appName}_${id}.png`;
+    // 使用时间戳生成唯一文件名，避免重复
+    const fileName = `${env.appName}_${Date.now()}.png`;
     const path = join(await downloadDir(), fileName);
 
     await copyFile(value, path);
