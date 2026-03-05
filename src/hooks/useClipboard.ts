@@ -1,3 +1,4 @@
+import { readFile } from "@tauri-apps/plugin-fs";
 import { useMount } from "ahooks";
 import { cloneDeep } from "es-toolkit";
 import { isEmpty, remove } from "es-toolkit/compat";
@@ -79,11 +80,8 @@ export const useClipboard = (
           imageHostingStore.configs.length > 0
         ) {
           try {
-            // 读取图片文件
-            const response = await fetch(localPath);
-            const blob = await response.blob();
-            const arrayBuffer = await blob.arrayBuffer();
-            const imageData = new Uint8Array(arrayBuffer);
+            // 读取图片文件（使用 Tauri 的 fs API）
+            const imageData = await readFile(localPath);
 
             // 生成文件名
             const fileName = generateFileName(localPath);

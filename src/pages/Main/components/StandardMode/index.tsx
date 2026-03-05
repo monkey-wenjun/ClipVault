@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useContext } from "react";
 import { useSnapshot } from "valtio";
 import UnoIcon from "@/components/UnoIcon";
-import { showWindow } from "@/plugins/window";
+import { hideWindow, showWindow } from "@/plugins/window";
 import { clipboardStore } from "@/stores/clipboard";
 import { isLinux } from "@/utils/is";
 import { MainContext } from "../..";
@@ -78,7 +78,7 @@ const StandardMode = () => {
               hoverable
               name="i-lucide:x"
               onClick={() => {
-                // 关闭窗口
+                hideWindow();
               }}
             />
           </Flex>
