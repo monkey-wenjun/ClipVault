@@ -2,7 +2,7 @@ import { useKeyPress, useUpdateEffect } from "ahooks";
 import { Modal, message } from "antd";
 import clsx from "clsx";
 import { findIndex } from "es-toolkit/compat";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ImagePreview from "@/components/ImagePreview";
 import TagSelector, { type TagSelectorRef } from "@/components/TagSelector";
@@ -89,14 +89,20 @@ const HistoryList = () => {
     scrollToIndex(index);
   }, [rootState.activeId]);
 
-  // 横向滚轮支持
-  const handleWheel = (e: React.WheelEvent) => {
-    if (e.deltaY === 0) return;
-    e.preventDefault();
+  // 横向滚轮支持（使用原生事件监听器以支持 preventDefault）
+  useEffect(() => {
     const container = scrollerRef.current;
     if (!container) return;
-    container.scrollLeft += e.deltaY;
-  };
+
+    const handleWheel = (e: WheelEvent) => {
+      if (e.deltaY === 0) return;
+      e.preventDefault();
+      container.scrollLeft += e.deltaY;
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => container.removeEventListener("wheel", handleWheel);
+  }, []);
 
   // 上下键切换条目（在横向布局中，上下键映射为左右移动）
   const selectPrevItem = () => {
@@ -304,17 +310,21 @@ const HistoryList = () => {
   };
 
   // 使用 Set 优化选中状态查找
-  const selectedSet = new Set(rootState.selectedIds);
+  const selectedSet = useMemo(
+    () => new Set(rootState.selectedIds),
+    [rootState.selectedIds],
+  );
+
+  // 限制同时渲染的项数，提高性能
+  const visibleItems = useMemo(() => {
+    // 只渲染前 50 项，避免过多渲染导致卡顿
+    return rootState.list.slice(0, 50);
+  }, [rootState.list]);
 
   return (
     <div className={styles.container}>
-      <div
-        className={styles.list}
-        onClick={handleListClick}
-        onWheel={handleWheel}
-        ref={scrollerRef}
-      >
-        {rootState.list.map((item, index) => (
+      <div className={styles.list} onClick={handleListClick} ref={scrollerRef}>
+        {visibleItems.map((item, index) => (
           <div
             className={clsx(styles.itemWrapper)}
             data-item-index={index}

@@ -172,7 +172,6 @@ const GroupList = () => {
         return (
           <button
             className={clsx(styles.tab, isActive && styles.active)}
-            data-tauri-drag-region
             id={id}
             key={id}
             onClick={() => handlePresetGroupClick(id)}
@@ -194,7 +193,6 @@ const GroupList = () => {
         return (
           <button
             className={clsx(styles.tagTab, isActive && styles.activeTagTab)}
-            data-tauri-drag-region
             id={tag.id}
             key={tag.id}
             onClick={() => handleTagClick(tag)}
@@ -228,7 +226,6 @@ const GroupList = () => {
       ) : (
         <button
           className={styles.addTagButton}
-          data-tauri-drag-region
           onClick={startAdding}
           title={t("clipboard.label.tab.add_tag")}
           type="button"

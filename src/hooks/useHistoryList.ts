@@ -118,12 +118,11 @@ export const useHistoryList = (options: Options) => {
     rootState.selectedIds = [];
     rootState.list = [];
 
-    // 使用 setTimeout 让出主线程，让 UI 先完成切换动画
-    const timer = setTimeout(() => {
+    // 使用 requestAnimationFrame 确保 UI 先完成切换动画
+    requestAnimationFrame(() => {
       reload();
-    }, 0);
+    });
 
-    return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rootState.group, rootState.search, tagStore.selectedTagId]);
 

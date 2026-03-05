@@ -3,6 +3,7 @@ import { useMount } from "ahooks";
 import { cloneDeep } from "es-toolkit";
 import { isEmpty, remove } from "es-toolkit/compat";
 import { nanoid } from "nanoid";
+import { useRef } from "react";
 import {
   type ClipboardChangeOptions,
   onClipboardChange,
@@ -29,10 +30,19 @@ export const useClipboard = (
   state: State,
   options?: ClipboardChangeOptions,
 ) => {
+  // 使用 ref 防止热重载导致的重复处理
+  const processingRef = useRef<Set<string>>(new Set());
+  const unlistenRef = useRef<(() => void) | null>(null);
+
   useMount(async () => {
     await startListening();
 
-    onClipboardChange(async (result) => {
+    // 如果已经有监听器，先清理（防止热重载导致的重复监听）
+    if (unlistenRef.current) {
+      unlistenRef.current();
+    }
+
+    const unlisten = await onClipboardChange(async (result) => {
       // 检查当前应用是否在排除列表中
       if (await isAppExcluded()) {
         return;
@@ -71,12 +81,18 @@ export const useClipboard = (
         // 处理图片上传
         const localPath = image.value;
 
-        // 检查内存列表中是否已存在相同路径的图片（防止热更新导致的重复添加）
+        // 使用 ref 检查是否正在处理此图片（防止热重载导致的重复）
+        if (processingRef.current.has(localPath)) {
+          return;
+        }
+        processingRef.current.add(localPath);
+
+        // 检查内存列表中是否已存在相同路径的图片
         const existingItem = state.list.find(
           (item) => item.type === "image" && item.value === localPath,
         );
         if (existingItem) {
-          // 已存在相同路径的图片，跳过
+          processingRef.current.delete(localPath);
           return;
         }
 
@@ -157,6 +173,10 @@ export const useClipboard = (
         (item) => item.type === sqlData.type && item.value === sqlData.value,
       );
       if (existingInList) {
+        // 清理处理标记
+        if (type === "image") {
+          processingRef.current.delete(value as string);
+        }
         return;
       }
 
@@ -189,6 +209,18 @@ export const useClipboard = (
 
       // 触发自动同步
       triggerAutoSync();
+
+      // 处理完成，清理标记
+      if (type === "image") {
+        processingRef.current.delete(value as string);
+      }
     }, options);
+
+    unlistenRef.current = unlisten;
+
+    return () => {
+      unlistenRef.current?.();
+      unlistenRef.current = null;
+    };
   });
 };

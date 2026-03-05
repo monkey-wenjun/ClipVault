@@ -243,13 +243,14 @@ const Item: FC<ItemProps> = (props) => {
 
 export default memo(Item, (prevProps, nextProps) => {
   // 自定义比较函数，只在必要时重渲染
-  return (
+  const shouldSkipRender =
     prevProps.isSelected === nextProps.isSelected &&
     prevProps.isActive === nextProps.isActive &&
     prevProps.index === nextProps.index &&
     prevProps.search === nextProps.search &&
     prevProps.data.id === nextProps.data.id &&
     prevProps.data.favorite === nextProps.data.favorite &&
-    prevProps.data.note === nextProps.data.note
-  );
+    prevProps.data.note === nextProps.data.note;
+
+  return shouldSkipRender;
 });
