@@ -1,0 +1,37 @@
+# GitHub Actions 自动修复配置
+# 当构建失败时，尝试自动修复常见问题
+
+auto_fix:
+  enabled: true
+  
+  # 自动修复的规则
+  rules:
+    # 规则1: 签名密钥错误
+    - name: "updater-signing-key"
+      pattern: "Missing comment in secret key"
+      action: "report"
+      suggestion: |
+        Tauri 签名密钥格式错误。
+        解决方案:
+        1. 重新生成密钥: pnpm tauri signer generate -w .tauri/key
+        2. 确保 GitHub Secret TAURI_PRIVATE_KEY 包含完整的私钥内容（包括 untrusted comment: 行）
+    
+    # 规则2: 依赖安装失败
+    - name: "pnpm-install-failed"
+      pattern: "ERR_PNPM_|pnpm install failed"
+      action: "retry"
+      max_retries: 2
+    
+    # 规则3: Rust 编译错误
+    - name: "rust-compile-error"
+      pattern: "error\[E[0-9]+\]| Compiling .* failed"
+      action: "report"
+      suggestion: "需要检查 Rust 代码错误"
+    
+    # 规则4: 磁盘空间不足
+    - name: "disk-space"
+      pattern: "No space left on device"
+      action: "cleanup"
+      cleanup_commands:
+        - "rm -rf target/release/build"
+        - "rm -rf node_modules/.cache"
