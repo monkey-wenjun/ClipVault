@@ -178,7 +178,28 @@ const GroupList = () => {
         );
       })}
 
-      {/* 添加标签按钮或输入框 */}
+      {/* 分隔线 */}
+      {tags.length > 0 && <div className={styles.divider} />}
+
+      {/* 自定义标签 */}
+      {tags.map((tag) => {
+        const isActive = tag.id === selectedTagId;
+
+        return (
+          <button
+            className={clsx(styles.tagTab, isActive && styles.activeTagTab)}
+            data-tauri-drag-region
+            id={tag.id}
+            key={tag.id}
+            onClick={() => handleTagClick(tag)}
+            type="button"
+          >
+            <TagBadge size="medium" tag={tag} />
+          </button>
+        );
+      })}
+
+      {/* 添加标签按钮或输入框 - 始终在所有标签后面 */}
       {isAdding ? (
         <div className={styles.addTagInputWrapper}>
           <span className={styles.addTagIcon}>+</span>
@@ -205,27 +226,6 @@ const GroupList = () => {
           <span className={styles.addTagIcon}>+</span>
         </button>
       )}
-
-      {/* 分隔线 */}
-      {tags.length > 0 && <div className={styles.divider} />}
-
-      {/* 自定义标签 */}
-      {tags.map((tag) => {
-        const isActive = tag.id === selectedTagId;
-
-        return (
-          <button
-            className={clsx(styles.tagTab, isActive && styles.activeTagTab)}
-            data-tauri-drag-region
-            id={tag.id}
-            key={tag.id}
-            onClick={() => handleTagClick(tag)}
-            type="button"
-          >
-            <TagBadge size="small" tag={tag} />
-          </button>
-        );
-      })}
     </div>
   );
 };
