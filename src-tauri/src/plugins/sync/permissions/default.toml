@@ -8,6 +8,18 @@ permissions = [
     "allow-enable-sync",
     "allow-is-sync-enabled",
     "allow-sync-now",
+    "allow-restore-from-sync",
     "allow-set-encryption-key",
     "allow-is-encryption-enabled",
+    "allow-get-sync-status",
 ]
+
+[[permission]]
+identifier = "allow-restore-from-sync"
+description = "Allows restoring data from sync directory"
+commands.allow = ["restore_from_sync"]
+
+[[permission]]
+identifier = "allow-get-sync-status"
+description = "Allows getting sync status"
+commands.allow = ["get_sync_status"]

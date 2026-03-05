@@ -15,6 +15,7 @@ import {
 } from "@/database/history";
 import type { State } from "@/pages/Main";
 import { getClipboardTextSubtype } from "@/plugins/clipboard";
+import { triggerAutoSync } from "@/plugins/sync";
 import { clipboardStore } from "@/stores/clipboard";
 import type { DatabaseSchemaHistory } from "@/types/database";
 import { formatDate } from "@/utils/dayjs";
@@ -100,7 +101,10 @@ export const useClipboard = (
         state.list.unshift(data);
       }
 
-      insertHistory(sqlData);
+      await insertHistory(sqlData);
+
+      // 触发自动同步
+      triggerAutoSync();
     }, options);
   });
 };

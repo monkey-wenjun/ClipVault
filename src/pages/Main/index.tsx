@@ -13,6 +13,7 @@ import { useRegister } from "@/hooks/useRegister";
 import { useSubscribeKey } from "@/hooks/useSubscribeKey";
 import { useTauriListen } from "@/hooks/useTauriListen";
 import { pasteToClipboard } from "@/plugins/clipboard";
+import { startPeriodicSync } from "@/plugins/sync";
 import {
   showTaskbarIcon,
   showWindow,
@@ -67,6 +68,13 @@ const Main = () => {
 
   useMount(() => {
     state.eventBus = eventBus;
+
+    // 启动定时同步（每 5 分钟检查一次）
+    const stopPeriodicSync = startPeriodicSync(5);
+
+    return () => {
+      stopPeriodicSync();
+    };
   });
 
   useClipboard(state, {
