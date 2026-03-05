@@ -54,7 +54,7 @@ jobs:
         if: ${{ github.event_name != 'schedule' && !inputs.updater }}
         run: |
           cp src-tauri/tauri.conf.json tauri.conf.json
-          yq -i '.bundle.createUpdaterArtifacts = false' tauri.conf.json
+          jq '.bundle.createUpdaterArtifacts = false' tauri.conf.json > tauri.conf.json.tmp && mv tauri.conf.json.tmp tauri.conf.json
 
       - name: Upload tauri-config
         if: ${{ github.event_name != 'schedule' && !inputs.updater }}
@@ -67,11 +67,16 @@ jobs:
       - name: Get file name
         id: filename
         run: |
-          productName=$(yq e -r '.productName' src-tauri/tauri.conf.json)
-          # build_time=$(TZ=UTC-8 date +%y%m%d%H)
-          git_des=$(git describe --long --tags --always --dirty | sed 's/-g/-/')
+          productName=$(jq -r '.productName' src-tauri/tauri.conf.json)
+          if [ -z "$productName" ]; then
+            productName="ClipVault"
+          fi
+          git_des=$(git describe --long --tags --always --dirty 2>/dev/null | sed 's/-g/-/')
+          if [ -z "$git_des" ]; then
+            git_des=$(git rev-parse --short HEAD)
+          fi
           echo "file_prefix=${productName}_${git_des}" >> "$GITHUB_OUTPUT"
-          # echo "build_time=${build_time}" >> "$GITHUB_OUTPUT"
+          echo "file_prefix=${productName}_${git_des}"
 
       - name: Setting variable
         id: setting
