@@ -31,7 +31,14 @@ jobs:
       # 发布 Release，使用自定义名称
       - name: Generate changelog
         id: create_release
-        run: npx changelogithub --draft --name ${{ steps.vars.outputs.tag }}
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            TAG=${GITHUB_REF#refs/*/}
+          else
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          fi
+          echo "Using tag: $TAG"
+          npx changelogithub --draft --name "$TAG"
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
 
