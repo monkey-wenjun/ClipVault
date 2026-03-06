@@ -1,0 +1,6 @@
+﻿[build]
+rustflags = ["-C", "link-arg=/FORCE:MULTIPLE", "-C", "prefer-dynamic"]
+
+[profile.release]
+strip = true
+lto = true
