@@ -1,22 +1,16 @@
-[build]
-rustflags = ["-C", "prefer-dynamic"]
-
 # Windows 目标需要 /FORCE:MULTIPLE 链接器选项
 [target.x86_64-pc-windows-msvc]
-rustflags = ["-C", "link-arg=/FORCE:MULTIPLE", "-C", "prefer-dynamic"]
+rustflags = ["-C", "link-arg=/FORCE:MULTIPLE"]
 
 [target.i686-pc-windows-msvc]
-rustflags = ["-C", "link-arg=/FORCE:MULTIPLE", "-C", "prefer-dynamic"]
+rustflags = ["-C", "link-arg=/FORCE:MULTIPLE"]
 
 [target.aarch64-pc-windows-msvc]
-rustflags = ["-C", "link-arg=/FORCE:MULTIPLE", "-C", "prefer-dynamic"]
+rustflags = ["-C", "link-arg=/FORCE:MULTIPLE"]
 
 # Linux ARM 目标配置
 [target.aarch64-unknown-linux-gnu]
 linker = "aarch64-linux-gnu-gcc"
-
-[target.armv7-unknown-linux-gnueabihf]
-linker = "arm-linux-gnueabihf-gcc"
 
 [profile.release]
 strip = true
