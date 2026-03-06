@@ -139,6 +139,6 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: "ClipVault ${{ github.ref_name }}"
           releaseBody: ""
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
           args: --target ${{ matrix.target }}
