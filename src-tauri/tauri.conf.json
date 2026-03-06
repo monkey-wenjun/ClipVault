@@ -81,7 +81,7 @@
     },
     "updater": {
       "endpoints": ["https://clipvault.awen.me/api/v1/update"],
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDZERUJEMTUzMzkyREUzMjcKUldRbjR5MDVVOUhyYlRiN3hNb2ZmYXJtN3NvYmxWY2JVeWQwa2wxcHIzQW1lbTQwVlZ1RE96QnYK"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDUxRTdFNzE2Njc2NzdFQ0EKUldUS2ZtZG5GdWZuVVZkb1NLYnRQd3VhMS9wcUFQdzZkYjM1ekQvdjZmdVY1VEpIeHo4c2pndG4K"
     }
   },
   "productName": "ClipVault",
