@@ -1,5 +1,14 @@
-﻿[build]
-rustflags = ["-C", "link-arg=/FORCE:MULTIPLE", "-C", "prefer-dynamic"]
+[build]
+rustflags = ["-C", "prefer-dynamic"]
+
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "link-arg=/FORCE:MULTIPLE"]
+
+[target.i686-pc-windows-msvc]
+rustflags = ["-C", "link-arg=/FORCE:MULTIPLE"]
+
+[target.aarch64-pc-windows-msvc]
+rustflags = ["-C", "link-arg=/FORCE:MULTIPLE"]
 
 [profile.release]
 strip = true
