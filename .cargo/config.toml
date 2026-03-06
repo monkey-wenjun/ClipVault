@@ -12,6 +12,16 @@ rustflags = ["-C", "link-arg=/FORCE:MULTIPLE"]
 [target.aarch64-unknown-linux-gnu]
 linker = "aarch64-linux-gnu-gcc"
 
+# macOS 目标配置（确保使用正确的 SDK）
+[target.aarch64-apple-darwin]
+linker = "clang"
+rustflags = ["-C", "link-arg=-arch", "-C", "link-arg=arm64"]
+
+[target.x86_64-apple-darwin]
+linker = "clang"
+rustflags = ["-C", "link-arg=-arch", "-C", "link-arg=x86_64"]
+
 [profile.release]
 strip = true
 lto = "thin"
+opt-level = 3
