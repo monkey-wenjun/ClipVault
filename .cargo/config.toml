@@ -14,4 +14,4 @@ linker = "aarch64-linux-gnu-gcc"
 
 [profile.release]
 strip = true
-lto = true
+lto = "thin"
