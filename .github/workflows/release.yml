@@ -1,4 +1,4 @@
-# 可选，将显示在 GitHub 存储库的“操作”选项卡中的工作流名称
+# 可选，将显示在 GitHub 存储库的"操作"选项卡中的工作流名称
 name: Release CI
 
 # 指定此工作流的触发器
@@ -12,6 +12,8 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.vars.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,16 +63,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
       - uses: pnpm/action-setup@v3
         with:
           version: latest
 
-      - name: Install rust target
-        run: rustup target add ${{ matrix.target }}
+      # 安装 Rust（必须先于添加 target）
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
 
       - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
@@ -78,15 +85,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-      # 安装 Rust
-      - name: Install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-
       # 使用 Rust 缓存，加快安装速度
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: target
+          workspaces: src-tauri/target
 
       # 获取 pnpm 缓存
       - name: Sync node version and setup cache
@@ -95,9 +98,15 @@ jobs:
           node-version: 20
           cache: pnpm
 
-      # 安装依赖, 前端打包
-      - name: Install app dependencies and build web
+      # 安装依赖
+      - name: Install app dependencies
         run: pnpm install --frozen-lockfile
+
+      # 构建前端（添加环境变量避免内存问题）
+      - name: Build frontend
+        run: pnpm run build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
 
       # 执行构建，以及推送 github release
       - name: Build the app
@@ -110,7 +119,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: ClipVault ${{ needs.create-release.outputs.APP_VERSION }}
+          releaseName: "ClipVault ${{ github.ref_name }}"
           releaseBody: ""
           releaseDraft: true
           prerelease: false
