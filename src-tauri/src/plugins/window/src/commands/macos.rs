@@ -21,10 +21,20 @@ pub async fn show_window<R: Runtime>(app_handle: AppHandle<R>, window: WebviewWi
             let work_area = monitor.work_area();
             let work_size = work_area.size;
             let work_position = work_area.position;
+            let monitor_size = monitor.size();
+            let monitor_position = monitor.position();
             
             let window_width = (work_size.width as f64 * WINDOW_WIDTH_RATIO) as u32;
             let window_x = work_position.x + ((work_size.width - window_width) as i32 / 2);
-            let window_y = work_position.y + (work_size.height as i32) - (WINDOW_HEIGHT as i32);
+            
+            // 获取屏幕总高度（包含菜单栏/程序坞区域）
+            let screen_height = monitor_size.height as i32;
+            let screen_bottom = monitor_position.y + screen_height;
+            // 工作区底部（程序坞上方，如果程序坞隐藏则等于屏幕底部）
+            let work_area_bottom = work_position.y + work_size.height as i32;
+            
+            // 计算窗口 Y 位置：紧贴工作区底部（程序坞上方）或屏幕底部（程序坞隐藏时）
+            let window_y = work_area_bottom - WINDOW_HEIGHT as i32;
             
             let _ = window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
                 width: window_width.max(1000), // 最小宽度 1000
@@ -33,7 +43,7 @@ pub async fn show_window<R: Runtime>(app_handle: AppHandle<R>, window: WebviewWi
             
             let _ = window.set_position(tauri::Position::Physical(tauri::PhysicalPosition {
                 x: window_x,
-                y: window_y.max(work_position.y + 20), // 确保不会贴顶
+                y: window_y.max(monitor_position.y), // 确保不会超出屏幕顶部
             }));
         }
         

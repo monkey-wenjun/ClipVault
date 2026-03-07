@@ -29,12 +29,20 @@ pub async fn show_window<R: Runtime>(_app_handle: AppHandle<R>, window: WebviewW
                 height: WINDOW_HEIGHT as u32,
             }));
             
-            // 设置窗口位置：屏幕中央偏下
-            let window_y = work_position.y + ((work_size.height as i32) - (WINDOW_HEIGHT as i32)) / 2;
+            // 获取屏幕总高度（包含任务栏区域）
+            let screen_height = _size.height as i32;
+            let screen_bottom = _position.y + screen_height;
+            // 工作区底部（任务栏上方，如果任务栏隐藏则等于屏幕底部）
+            let work_area_bottom = work_position.y + work_size.height as i32;
+            
+            // 计算窗口 Y 位置：紧贴工作区底部（任务栏上方）或屏幕底部（任务栏隐藏时）
+            // 如果 work_area_bottom < screen_bottom，说明任务栏在底部
+            // 如果 work_area_bottom == screen_bottom，说明任务栏隐藏
+            let window_y = work_area_bottom - WINDOW_HEIGHT as i32;
             
             let _ = window.set_position(tauri::Position::Physical(tauri::PhysicalPosition {
                 x: window_x,
-                y: window_y.max(work_position.y + 20), // 确保不会贴顶
+                y: window_y.max(_position.y), // 确保不会超出屏幕顶部
             }));
         }
     } else {
