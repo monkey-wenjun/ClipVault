@@ -5,7 +5,7 @@
 		"name": "阿文",
 		"email": "hi@awen.me"
 	},
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"type": "module",
 	"scripts": {
 		"dev": "run-s build:icon dev:vite",
