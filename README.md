@@ -37,27 +37,37 @@
 
 ### 主界面
 <p align="center">
-  <img src="https://file.awen.me/clip_1772685982052_78asyk.png" width="80%" alt="主界面" />
+  <img src="./images/ScreenShot_2026-03-06_205202_577.png" width="80%" alt="主界面" />
+</p>
+
+### 偏好设置 - 通用设置
+<p align="center">
+  <img src="./images/ScreenShot_2026-03-06_205310_241.png" width="80%" alt="通用设置" />
+</p>
+
+### 偏好设置 - 剪贴板设置
+<p align="center">
+  <img src="./images/ScreenShot_2026-03-06_205354_271.png" width="80%" alt="剪贴板设置" />
 </p>
 
 ### 偏好设置 - 图床配置
 <p align="center">
-  <img src="https://file.awen.me/clip_1772685998478_uztcr8.png" width="80%" alt="图床配置" />
+  <img src="./images/ScreenShot_2026-03-06_205554_304.png" width="80%" alt="图床配置" />
 </p>
 
-### 偏好设置 - 排除应用
+### 偏好设置 - 同步设置
 <p align="center">
-  <img src="https://file.awen.me/clip_1772686025427_5317n4.png" width="80%" alt="排除应用" />
+  <img src="./images/ScreenShot_2026-03-06_205615_525.png" width="80%" alt="同步设置" />
 </p>
 
-### 偏好设置 - 快捷键
+### 偏好设置 - 标签管理
 <p align="center">
-  <img src="https://file.awen.me/clip_1772686033435_k5seac.png" width="80%" alt="快捷键设置" />
+  <img src="./images/ScreenShot_2026-03-06_205627_789.png" width="80%" alt="标签管理" />
 </p>
 
-### 标签管理
+### 偏好设置 - 关于
 <p align="center">
-  <img src="https://file.awen.me/clip_1772686046576_p7msnn.png" width="80%" alt="标签管理" />
+  <img src="./images/ScreenShot_2026-03-06_205641_363.png" width="80%" alt="关于" />
 </p>
 
 ---
