@@ -105,10 +105,12 @@ jobs:
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
           # 安装 OpenSSL 和 ARM64 库
           sudo apt-get install -y libssl-dev:arm64 libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf || true
-          # 创建 OpenSSL 配置文件目录链接
+          # 创建 OpenSSL 头文件目录结构
           sudo mkdir -p /usr/aarch64-linux-gnu/include
-          sudo ln -sf /usr/include/openssl /usr/aarch64-linux-gnu/include/openssl || true
-          sudo ln -sf /usr/include/aarch64-linux-gnu/openssl/opensslconf.h /usr/include/openssl/opensslconf.h || true
+          # 复制 openssl 头文件到交叉编译目录
+          sudo cp -r /usr/include/openssl /usr/aarch64-linux-gnu/include/ || true
+          # 复制架构特定的 opensslconf.h
+          sudo cp /usr/include/aarch64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/ || true
 
       # 使用 Rust 缓存，加快安装速度
       - name: Rust cache
@@ -144,10 +146,13 @@ jobs:
           echo "PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
           echo "PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig" >> $GITHUB_ENV
           echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
-          # 设置 OpenSSL 环境变量
-          echo "OPENSSL_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
-          echo "OPENSSL_INCLUDE_DIR=/usr/aarch64-linux-gnu/include" >> $GITHUB_ENV
+          # 设置 OpenSSL 环境变量 - 使用系统路径
+          echo "OPENSSL_DIR=/usr" >> $GITHUB_ENV
+          echo "OPENSSL_INCLUDE_DIR=/usr/include" >> $GITHUB_ENV
           echo "OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
+          # 验证 OpenSSL 头文件位置
+          ls -la /usr/include/openssl/ || true
+          ls -la /usr/include/aarch64-linux-gnu/openssl/ || true
 
       # 执行构建，以及推送 github release
       - name: Build the app
