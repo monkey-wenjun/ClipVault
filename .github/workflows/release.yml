@@ -98,10 +98,15 @@ jobs:
         if: matrix.target == 'aarch64-unknown-linux-gnu'
         run: |
           sudo dpkg --add-architecture arm64
-          # 为 ARM64 配置 ports.ubuntu.com 源
+          # 为 ARM64 配置 ports.ubuntu.com 源 (同时处理 http 和 https)
           sudo sed -i 's|http://archive.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
+          sudo sed -i 's|https://archive.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
           sudo sed -i 's|http://security.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
-          sudo apt-get update
+          sudo sed -i 's|https://security.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
+          # 显示替换后的 sources.list 用于调试
+          echo "=== /etc/apt/sources.list contents ==="
+          cat /etc/apt/sources.list
+          sudo apt-get update || true  # 允许部分失败
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
           # 安装 OpenSSL 和 ARM64 库 (关键！不能失败)
           sudo apt-get install -y libssl-dev:arm64
