@@ -100,37 +100,61 @@ jobs:
           sudo apt-get update
           # 安装交叉编译工具链
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-          # 安装 OpenSSL 开发包 (用于头文件)
+          # 安装 OpenSSL 开发包 (用于头文件和库)
           sudo apt-get install -y libssl-dev
           
-          # 设置 OpenSSL 交叉编译目录
+          # 查找系统上所有的 OpenSSL 相关文件
+          echo "=== Searching for OpenSSL files ==="
+          find /usr -name "opensslconf.h" 2>/dev/null
+          find /usr -name "configuration.h" 2>/dev/null
+          find /usr -name "libssl.so*" 2>/dev/null
+          find /usr -name "libcrypto.so*" 2>/dev/null
+          
+          # 创建交叉编译目录结构
           sudo mkdir -p /usr/aarch64-linux-gnu/include/openssl
           sudo mkdir -p /usr/aarch64-linux-gnu/lib
           
-          # 复制头文件
-          sudo cp -r /usr/include/openssl/* /usr/aarch64-linux-gnu/include/openssl/
-          # 查找并复制架构特定的 opensslconf.h
-          if [ -f /usr/include/x86_64-linux-gnu/openssl/opensslconf.h ]; then
-            sudo cp /usr/include/x86_64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/
-          elif [ -f /usr/include/aarch64-linux-gnu/openssl/opensslconf.h ]; then
-            sudo cp /usr/include/aarch64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/
+          # 方法1: 尝试使用 pkg-config 获取正确的路径
+          PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig pkg-config --cflags openssl 2>/dev/null || true
+          PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig pkg-config --libs openssl 2>/dev/null || true
+          
+          # 方法2: 手动设置 - 复制所有 OpenSSL 头文件
+          # 首先复制主头文件目录
+          if [ -d /usr/include/openssl ]; then
+            sudo cp -r /usr/include/openssl/* /usr/aarch64-linux-gnu/include/openssl/
+            echo "Copied main OpenSSL headers"
           fi
           
-          # 查找 ARM64 库文件并复制
-          find /usr -name "libssl.so*" -path "*aarch64-linux-gnu*" 2>/dev/null | head -5
-          find /usr -name "libcrypto.so*" -path "*aarch64-linux-gnu*" 2>/dev/null | head -5
+          # 查找并复制架构特定的头文件 (包括 configuration.h)
+          # 这些文件可能在不同位置
+          for arch_dir in x86_64-linux-gnu aarch64-linux-gnu; do
+            if [ -d /usr/include/$arch_dir/openssl ]; then
+              echo "Copying arch-specific headers from /usr/include/$arch_dir/openssl/"
+              sudo cp -r /usr/include/$arch_dir/openssl/* /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || true
+            fi
+          done
           
-          # 尝试从系统安装位置复制
+          # 查找并复制任何生成的 configuration.h
+          for conf_file in $(find /usr -name "configuration.h" -path "*openssl*" 2>/dev/null); do
+            echo "Found configuration.h at: $conf_file"
+            sudo cp "$conf_file" /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || true
+          done
+          
+          # 复制库文件
           if [ -d /usr/lib/aarch64-linux-gnu ]; then
             sudo cp /usr/lib/aarch64-linux-gnu/libssl.so* /usr/aarch64-linux-gnu/lib/ 2>/dev/null || true
             sudo cp /usr/lib/aarch64-linux-gnu/libcrypto.so* /usr/aarch64-linux-gnu/lib/ 2>/dev/null || true
           fi
           
-          # 验证
-          echo "=== /usr/aarch64-linux-gnu/include/openssl/ ==="
-          ls -la /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || echo "Not found"
-          echo "=== /usr/aarch64-linux-gnu/lib/ ==="
-          ls -la /usr/aarch64-linux-gnu/lib/ 2>/dev/null || echo "Not found"
+          # 验证关键文件
+          echo "=== Verifying OpenSSL setup ==="
+          echo "Headers in /usr/aarch64-linux-gnu/include/openssl/:"
+          ls -la /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || echo "Directory empty or not found"
+          
+          echo "Checking for critical files:"
+          ls -la /usr/aarch64-linux-gnu/include/openssl/opensslconf.h 2>/dev/null || echo "opensslconf.h missing!"
+          ls -la /usr/aarch64-linux-gnu/include/openssl/configuration.h 2>/dev/null || echo "configuration.h missing!"
+          ls -la /usr/aarch64-linux-gnu/include/openssl/opensslv.h 2>/dev/null || echo "opensslv.h missing!"
 
       # 使用 Rust 缓存，加快安装速度
       - name: Rust cache
