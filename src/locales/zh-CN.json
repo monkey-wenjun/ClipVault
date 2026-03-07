@@ -296,6 +296,82 @@
         "title": "历史记录"
       }
     },
+    "imageHosting": {
+      "button": {
+        "add": "添加图床",
+        "cancel": "取消",
+        "delete": "删除",
+        "export": "导出配置",
+        "import": "导入配置",
+        "save": "保存",
+        "set_default": "设为默认",
+        "test": "测试连接"
+      },
+      "columns": {
+        "action": "操作",
+        "bucket": "存储空间",
+        "customDomain": "自定义域名",
+        "name": "名称",
+        "provider": "服务商"
+      },
+      "confirm": {
+        "delete_content": "删除后无法恢复，是否继续？",
+        "delete_title": "确认删除"
+      },
+      "default_tag": "默认",
+      "hints": {
+        "auto_upload": "复制图片时自动上传到图床",
+        "enable": "启用图床功能",
+        "generate_markdown": "上传成功后自动生成 Markdown 图片链接"
+      },
+      "label": {
+        "accessKey": "Access Key (AK)",
+        "auto_upload": "自动上传",
+        "bucket": "存储空间名称",
+        "customDomain": "自定义域名（可选）",
+        "enable": "启用图床",
+        "endpoint": "Endpoint（可选）",
+        "generate_markdown": "生成 Markdown 链接",
+        "pathPrefix": "路径前缀（可选）",
+        "provider": "云存储服务商",
+        "region": "地域（如 cn-shanghai）",
+        "secretKey": "Secret Key (SK)"
+      },
+      "message": {
+        "add_success": "添加成功",
+        "delete_success": "删除成功",
+        "export_error": "导出失败",
+        "export_success": "导出成功",
+        "import_error": "导入失败",
+        "import_success": "导入成功",
+        "set_default_success": "已设为默认",
+        "test_error": "测试失败",
+        "test_success": "测试成功！URL: {{url}}",
+        "update_success": "更新成功"
+      },
+      "modal": {
+        "add_title": "添加图床",
+        "edit_title": "编辑图床"
+      },
+      "no_config": "暂无图床配置，点击右上角添加按钮",
+      "placeholder": {
+        "customDomain": "如：https://img.example.com",
+        "endpoint": "自定义 API 端点地址",
+        "name": "如：我的阿里云图床",
+        "pathPrefix": "如：images/ 或 clips/",
+        "region": "如：cn-shanghai"
+      },
+      "providers": {
+        "aliyun": "阿里云 OSS",
+        "aws": "AWS S3",
+        "github": "GitHub",
+        "qiniu": "七牛云",
+        "tencent": "腾讯云 COS",
+        "upyun": "又拍云"
+      },
+      "secretKey_placeholder": "留空表示保持不变（已加密存储）",
+      "title": "图床设置"
+    },
     "menu": {
       "title": {
         "about": "关于",
