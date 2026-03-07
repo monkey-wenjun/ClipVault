@@ -65,23 +65,23 @@ const StandardMode = () => {
           >
             <WindowPin />
 
-            <UnoIcon
+            <div
               className={styles.iconBtn}
-              hoverable
-              name="i-lets-icons:setting-alt-line"
               onClick={() => {
                 showWindow("preference");
               }}
-            />
+            >
+              <UnoIcon name="i-lets-icons:setting-alt-line" />
+            </div>
 
-            <UnoIcon
+            <div
               className={styles.iconBtn}
-              hoverable
-              name="i-lucide:x"
               onClick={() => {
                 hideWindow();
               }}
-            />
+            >
+              <UnoIcon name="i-lucide:x" />
+            </div>
           </Flex>
         </Flex>
 
