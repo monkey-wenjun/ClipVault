@@ -332,6 +332,7 @@
         "enable": "Enable Image Hosting",
         "endpoint": "Endpoint (Optional)",
         "generate_markdown": "Generate Markdown Link",
+        "name": "Configuration Name",
         "pathPrefix": "Path Prefix (Optional)",
         "provider": "Cloud Storage Provider",
         "region": "Region (e.g., cn-shanghai)",

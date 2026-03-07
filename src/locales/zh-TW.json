@@ -333,6 +333,7 @@
         "enable": "啟用圖床功能",
         "endpoint": "Endpoint（可選）",
         "generate_markdown": "生成 Markdown 鏈接",
+        "name": "配置名稱",
         "pathPrefix": "存儲路徑前綴（可選）",
         "provider": "雲存儲平台",
         "region": "存儲區域（如 cn-shanghai）",

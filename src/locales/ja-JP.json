@@ -333,6 +333,7 @@
         "enable": "画像ホスティングを有効にする",
         "endpoint": "Endpoint（オプション）",
         "generate_markdown": "Markdownリンクを生成",
+        "name": "設定名",
         "pathPrefix": "パスプレフィックス（オプション）",
         "provider": "クラウドストレージプロバイダー",
         "region": "リージョン（例：cn-shanghai）",

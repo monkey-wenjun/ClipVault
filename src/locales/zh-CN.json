@@ -332,6 +332,7 @@
         "enable": "启用图床",
         "endpoint": "Endpoint（可选）",
         "generate_markdown": "生成 Markdown 链接",
+        "name": "配置名称",
         "pathPrefix": "路径前缀（可选）",
         "provider": "云存储服务商",
         "region": "地域（如 cn-shanghai）",
