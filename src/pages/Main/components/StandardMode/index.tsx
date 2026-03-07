@@ -1,6 +1,7 @@
 import { Flex } from "antd";
 import clsx from "clsx";
 import { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import UnoIcon from "@/components/UnoIcon";
 import { hideWindow, showWindow } from "@/plugins/window";
 import { isLinux } from "@/utils/is";
@@ -14,6 +15,7 @@ import styles from "./index.module.scss";
 
 const StandardMode = () => {
   const { rootState } = useContext(MainContext);
+  const { t } = useTranslation();
 
   // 统计数据
   const totalCount = rootState.list.length;
@@ -90,23 +92,25 @@ const StandardMode = () => {
         <div className={styles.statusbar} data-tauri-drag-region>
           <div className={styles.statusItem}>
             <span>📋</span>
-            <span>{totalCount} 条记录</span>
+            <span>{t("clipboard.status.total", { count: totalCount })}</span>
           </div>
           <div className={styles.statusItem}>
             <span>⭐</span>
-            <span>{favoriteCount} 条收藏</span>
+            <span>
+              {t("clipboard.status.favorite", { count: favoriteCount })}
+            </span>
           </div>
           <div className={clsx(styles.statusItem, styles.right)}>
             <span>← →</span>
-            <span>导航</span>
+            <span>{t("clipboard.status.navigate")}</span>
           </div>
           <div className={styles.statusItem}>
             <span>↵</span>
-            <span>粘贴</span>
+            <span>{t("clipboard.status.paste")}</span>
           </div>
           <div className={styles.statusItem}>
             <span>ESC</span>
-            <span>关闭</span>
+            <span>{t("clipboard.status.close")}</span>
           </div>
         </div>
       </Flex>

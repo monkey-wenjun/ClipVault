@@ -43,6 +43,13 @@
         "new_tag": "新标签",
         "text": "文本"
       }
+    },
+    "status": {
+      "close": "关闭",
+      "favorite": "{{count}} 条收藏",
+      "navigate": "导航",
+      "paste": "粘贴",
+      "total": "{{count}} 条记录"
     }
   },
   "component": {

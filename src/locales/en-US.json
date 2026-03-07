@@ -43,6 +43,13 @@
         "new_tag": "New Tag",
         "text": "Text"
       }
+    },
+    "status": {
+      "close": "Close",
+      "favorite": "{{count}} favorites",
+      "navigate": "Navigate",
+      "paste": "Paste",
+      "total": "{{count}} items"
     }
   },
   "component": {

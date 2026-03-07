@@ -43,6 +43,13 @@
         "new_tag": "新規タグ",
         "text": "テキスト"
       }
+    },
+    "status": {
+      "close": "閉じる",
+      "favorite": "{{count}} 件のお気に入り",
+      "navigate": "ナビゲーション",
+      "paste": "貼り付け",
+      "total": "{{count}} 件"
     }
   },
   "component": {
