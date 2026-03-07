@@ -97,50 +97,40 @@ jobs:
       - name: Install ARM cross-compile dependencies (ubuntu only)
         if: matrix.target == 'aarch64-unknown-linux-gnu'
         run: |
-          sudo dpkg --add-architecture arm64
-          # 为 ARM64 配置 ports.ubuntu.com 源 (同时处理 http 和 https)
-          sudo sed -i 's|http://archive.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
-          sudo sed -i 's|https://archive.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
-          sudo sed -i 's|http://security.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
-          sudo sed -i 's|https://security.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
           sudo apt-get update
           # 安装交叉编译工具链
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-          # 安装宿主架构的 OpenSSL 开发包 (用于头文件)
+          # 安装 OpenSSL 开发包 (用于头文件)
           sudo apt-get install -y libssl-dev
-          # 安装 ARM64 架构的库文件
-          sudo apt-get install -y libssl3:arm64 || true
-          # 安装其他 ARM64 依赖
-          sudo apt-get install -y libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf || true
           
           # 设置 OpenSSL 交叉编译目录
           sudo mkdir -p /usr/aarch64-linux-gnu/include/openssl
           sudo mkdir -p /usr/aarch64-linux-gnu/lib
           
-          # 复制头文件 (使用宿主架构的头文件，因为它们是通用的)
-          sudo cp -r /usr/include/openssl/* /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || true
-          # 生成 opensslconf.h (如果架构特定的文件不存在)
-          if [ ! -f /usr/aarch64-linux-gnu/include/openssl/opensslconf.h ]; then
-            # 尝试从 dpkg 列表中找到它
-            dpkg -L libssl-dev:arm64 2>/dev/null | grep opensslconf.h || true
-            # 或者从 libssl-dev 包中找到它
-            if [ -f /usr/include/aarch64-linux-gnu/openssl/opensslconf.h ]; then
-              sudo cp /usr/include/aarch64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/
-            elif [ -f /usr/include/x86_64-linux-gnu/openssl/opensslconf.h ]; then
-              # 使用 x86_64 的配置文件作为基础 (通常足够通用)
-              sudo cp /usr/include/x86_64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/
-            fi
+          # 复制头文件
+          sudo cp -r /usr/include/openssl/* /usr/aarch64-linux-gnu/include/openssl/
+          # 查找并复制架构特定的 opensslconf.h
+          if [ -f /usr/include/x86_64-linux-gnu/openssl/opensslconf.h ]; then
+            sudo cp /usr/include/x86_64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/
+          elif [ -f /usr/include/aarch64-linux-gnu/openssl/opensslconf.h ]; then
+            sudo cp /usr/include/aarch64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/
           fi
           
-          # 复制库文件
-          sudo cp /usr/lib/aarch64-linux-gnu/libssl.so* /usr/aarch64-linux-gnu/lib/ 2>/dev/null || true
-          sudo cp /usr/lib/aarch64-linux-gnu/libcrypto.so* /usr/aarch64-linux-gnu/lib/ 2>/dev/null || true
+          # 查找 ARM64 库文件并复制
+          find /usr -name "libssl.so*" -path "*aarch64-linux-gnu*" 2>/dev/null | head -5
+          find /usr -name "libcrypto.so*" -path "*aarch64-linux-gnu*" 2>/dev/null | head -5
+          
+          # 尝试从系统安装位置复制
+          if [ -d /usr/lib/aarch64-linux-gnu ]; then
+            sudo cp /usr/lib/aarch64-linux-gnu/libssl.so* /usr/aarch64-linux-gnu/lib/ 2>/dev/null || true
+            sudo cp /usr/lib/aarch64-linux-gnu/libcrypto.so* /usr/aarch64-linux-gnu/lib/ 2>/dev/null || true
+          fi
           
           # 验证
           echo "=== /usr/aarch64-linux-gnu/include/openssl/ ==="
           ls -la /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || echo "Not found"
-          echo "=== Checking opensslconf.h ==="
-          ls -la /usr/aarch64-linux-gnu/include/openssl/opensslconf.h 2>/dev/null || echo "Not found"
+          echo "=== /usr/aarch64-linux-gnu/lib/ ==="
+          ls -la /usr/aarch64-linux-gnu/lib/ 2>/dev/null || echo "Not found"
 
       # 使用 Rust 缓存，加快安装速度
       - name: Rust cache
