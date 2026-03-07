@@ -204,10 +204,7 @@
         },
         "label": {
           "auto_clear": "Auto Clear",
-          "default_focus": "Default Focus",
-          "position": "Search Box Position",
-          "position_bottom": "Bottom",
-          "position_top": "Top"
+          "default_focus": "Default Focus"
         },
         "title": "Search Settings"
       },

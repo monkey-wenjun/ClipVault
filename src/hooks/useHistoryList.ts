@@ -82,7 +82,8 @@ export const useHistoryList = (options: Options) => {
       state.noMore = list.length === 0;
 
       if (page === 1) {
-        rootState.list = list;
+        // 合并现有列表和新查询的列表，保留可能已添加但未保存到数据库的新内容
+        rootState.list = unionBy(list, rootState.list, "id");
 
         if (state.noMore) return;
 
@@ -114,14 +115,10 @@ export const useHistoryList = (options: Options) => {
 
   // 切换选项卡或搜索时重新加载
   useEffect(() => {
-    // 清空选中状态和列表，立即响应切换
+    // 清空选中状态，保留列表避免闪烁，立即重新加载
     rootState.selectedIds = [];
-    rootState.list = [];
 
-    // 使用 requestAnimationFrame 确保 UI 先完成切换动画
-    requestAnimationFrame(() => {
-      reload();
-    });
+    reload();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rootState.group, rootState.search, tagStore.selectedTagId]);

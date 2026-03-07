@@ -30,7 +30,6 @@ export const clipboardStore = proxy<ClipboardStore>({
   search: {
     autoClear: false,
     defaultFocus: false,
-    position: "top",
   },
   window: {
     backTop: false,

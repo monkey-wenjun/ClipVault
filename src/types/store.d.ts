@@ -78,7 +78,6 @@ export interface ClipboardStore {
 
   // 搜索框设置
   search: {
-    position: "top" | "bottom";
     defaultFocus: boolean;
     autoClear: boolean;
   };

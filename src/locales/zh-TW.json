@@ -205,9 +205,7 @@
         "label": {
           "auto_clear": "自動清除",
           "default_focus": "預設焦點",
-          "position": "搜尋框位置",
-          "position_bottom": "底部",
-          "position_top": "頂部"
+          "position": "搜尋框位置"
         },
         "title": "搜尋設定"
       },

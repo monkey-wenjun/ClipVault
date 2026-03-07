@@ -7,7 +7,6 @@ import AudioSettings from "./components/AudioSettings";
 import AutoPaste from "./components/AutoPaste";
 import ExcludedApps from "./components/ExcludedApps";
 import OperationButton from "./components/OperationButton";
-import SearchPosition from "./components/SearchPosition";
 import WindowPosition from "./components/WindowPosition";
 
 const ClipboardSettings = () => {
@@ -40,8 +39,6 @@ const ClipboardSettings = () => {
       <AudioSettings />
 
       <ProList header={t("preference.clipboard.search_box_settings.title")}>
-        <SearchPosition key={1} />
-
         <ProSwitch
           description={t(
             "preference.clipboard.search_box_settings.hints.default_focus",

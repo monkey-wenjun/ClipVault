@@ -204,10 +204,7 @@
         },
         "label": {
           "auto_clear": "自动清除",
-          "default_focus": "默认聚焦",
-          "position": "搜索框位置",
-          "position_bottom": "底部",
-          "position_top": "顶部"
+          "default_focus": "默认聚焦"
         },
         "title": "搜索设置"
       },

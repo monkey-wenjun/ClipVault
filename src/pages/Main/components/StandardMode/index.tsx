@@ -1,10 +1,8 @@
 import { Flex } from "antd";
 import clsx from "clsx";
 import { useContext } from "react";
-import { useSnapshot } from "valtio";
 import UnoIcon from "@/components/UnoIcon";
 import { hideWindow, showWindow } from "@/plugins/window";
-import { clipboardStore } from "@/stores/clipboard";
 import { isLinux } from "@/utils/is";
 import { MainContext } from "../..";
 import GroupList from "../GroupList";
@@ -16,7 +14,6 @@ import styles from "./index.module.scss";
 
 const StandardMode = () => {
   const { rootState } = useContext(MainContext);
-  const { search } = useSnapshot(clipboardStore);
 
   // 统计数据
   const totalCount = rootState.list.length;
@@ -24,11 +21,13 @@ const StandardMode = () => {
 
   return (
     <Flex
-      className={clsx(styles.container, "h-screen overflow-hidden bg-color-1", {
-        "b b-color-1": isLinux,
-        "flex-col-reverse": search.position === "bottom",
-        "rounded-2.5": true,
-      })}
+      className={clsx(
+        styles.container,
+        "h-screen overflow-hidden rounded-2.5 bg-color-1",
+        {
+          "b b-color-1": isLinux,
+        },
+      )}
       data-tauri-drag-region
       gap={0}
     >

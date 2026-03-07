@@ -3,7 +3,7 @@ import type { FC } from "react";
 import styles from "./index.module.scss";
 
 const ProList: FC<ListProps<unknown>> = (props) => {
-  const { header, children, ...rest } = props;
+  const { header, children, bordered = true, ...rest } = props;
 
   return (
     <Flex className={styles.root} data-tauri-drag-region gap="small" vertical>
@@ -13,7 +13,7 @@ const ProList: FC<ListProps<unknown>> = (props) => {
         </div>
       )}
 
-      <List bordered {...rest}>
+      <List bordered={bordered} {...rest}>
         {children}
       </List>
     </Flex>

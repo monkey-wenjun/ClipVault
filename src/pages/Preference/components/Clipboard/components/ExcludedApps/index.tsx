@@ -90,6 +90,7 @@ const ExcludedApps = () => {
 
       {exclusion.apps.length > 0 ? (
         <ProList
+          bordered={false}
           className={styles.appList}
           header={t(
             "preference.clipboard.exclusion_settings.label.excluded_apps_list",

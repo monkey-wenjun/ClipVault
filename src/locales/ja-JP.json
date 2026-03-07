@@ -205,9 +205,7 @@
         "label": {
           "auto_clear": "自動削除",
           "default_focus": "デフォルトフォーカス",
-          "position": "検索ボックス位置",
-          "position_bottom": "ボトム",
-          "position_top": "トップ"
+          "position": "検索ボックス位置"
         },
         "title": "検索設定"
       },
