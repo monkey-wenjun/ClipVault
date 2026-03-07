@@ -492,6 +492,29 @@
         "status_enabled": "Enabled",
         "title": "Encryption Settings"
       },
+      "restore_settings": {
+        "button": {
+          "restore": "Restore Data"
+        },
+        "hints": {
+          "description": "Restore data from sync directory (will overwrite current data)"
+        },
+        "label": {
+          "last_sync": "Last Sync: ",
+          "restore_data": "Restore from Backup",
+          "restore_error": "Restore failed: {{error}}",
+          "restore_success": "Data restored successfully, please restart the application"
+        },
+        "title": "Data Restore"
+      },
+      "sync_help": {
+        "item_1": "<b>Auto Sync</b>: Automatically sync 3 seconds after clipboard content changes",
+        "item_2": "<b>Scheduled Sync</b>: Automatically sync every 5 minutes",
+        "item_3": "<b>Manual Sync</b>: Click \"Sync Now\" button to execute immediately",
+        "item_4": "<b>Sync Files</b>: Generates clipvault_sync.db when unencrypted, clipvault_sync_encrypted.bin when encrypted",
+        "item_5": "<b>Multi-device Sync</b>: Set sync directory to cloud drive sync folder for multi-device synchronization",
+        "title": "Sync Instructions"
+      },
       "sync_settings": {
         "button": {
           "select_folder": "Select Folder",

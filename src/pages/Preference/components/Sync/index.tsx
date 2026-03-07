@@ -178,10 +178,16 @@ const Sync = () => {
       }
       startRestoreLoading();
       await restoreFromSync();
-      message.success("数据恢复成功，请重启应用");
+      message.success(
+        t("preference.sync.restore_settings.label.restore_success"),
+      );
     } catch (error) {
       void error;
-      message.error(`恢复失败：${String(error)}`);
+      message.error(
+        t("preference.sync.restore_settings.label.restore_error", {
+          error: String(error),
+        }),
+      );
     } finally {
       stopRestoreLoading();
     }
@@ -225,7 +231,7 @@ const Sync = () => {
               {t("preference.sync.sync_settings.hints.manual_sync")}
               {lastSync && (
                 <span className="ml-2">
-                  上次同步:
+                  {t("preference.sync.restore_settings.label.last_sync")}
                   <Tag className="ml-1" color="blue">
                     {lastSync}
                   </Tag>
@@ -245,9 +251,11 @@ const Sync = () => {
 
         <div className="flex items-center justify-between px-4 py-3">
           <div>
-            <div className="font-medium">从备份恢复</div>
+            <div className="font-medium">
+              {t("preference.sync.restore_settings.label.restore_data")}
+            </div>
             <div className="text-color-3 text-xs">
-              从同步目录恢复数据（会覆盖当前数据）
+              {t("preference.sync.restore_settings.hints.description")}
             </div>
           </div>
           <Button
@@ -257,7 +265,7 @@ const Sync = () => {
             loading={restoreLoading}
             onClick={handleRestore}
           >
-            恢复数据
+            {t("preference.sync.restore_settings.button.restore")}
           </Button>
         </div>
       </ProList>
@@ -341,26 +349,34 @@ const Sync = () => {
         className="mx-4 mt-4"
         description={
           <div className="text-xs">
-            <p>
-              1. <b>自动同步</b>：剪贴板内容变化后 3 秒自动同步
-            </p>
-            <p>
-              2. <b>定时同步</b>：每 5 分钟自动同步一次
-            </p>
-            <p>
-              3. <b>手动同步</b>：点击"立即同步"按钮立即执行
-            </p>
-            <p>
-              4. <b>同步文件</b>：未加密时生成 clipvault_sync.db，加密时生成
-              clipvault_sync_encrypted.bin
-            </p>
-            <p>
-              5. <b>多设备同步</b>
-              ：将同步目录设置为云盘同步文件夹即可实现多设备同步
-            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: t("preference.sync.sync_help.item_1"),
+              }}
+            />
+            <p
+              dangerouslySetInnerHTML={{
+                __html: t("preference.sync.sync_help.item_2"),
+              }}
+            />
+            <p
+              dangerouslySetInnerHTML={{
+                __html: t("preference.sync.sync_help.item_3"),
+              }}
+            />
+            <p
+              dangerouslySetInnerHTML={{
+                __html: t("preference.sync.sync_help.item_4"),
+              }}
+            />
+            <p
+              dangerouslySetInnerHTML={{
+                __html: t("preference.sync.sync_help.item_5"),
+              }}
+            />
           </div>
         }
-        message="同步说明"
+        message={t("preference.sync.sync_help.title")}
         showIcon
         type="info"
       />

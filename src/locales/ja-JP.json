@@ -493,6 +493,29 @@
         "status_enabled": "有効",
         "title": "暗号化設定"
       },
+      "restore_settings": {
+        "button": {
+          "restore": "データを復元"
+        },
+        "hints": {
+          "description": "同期ディレクトリからデータを復元します（現在のデータが上書きされます）"
+        },
+        "label": {
+          "last_sync": "最後の同期: ",
+          "restore_data": "バックアップから復元",
+          "restore_error": "復元に失敗しました：{{error}}",
+          "restore_success": "データを復元しました。アプリケーションを再起動してください"
+        },
+        "title": "データ復元"
+      },
+      "sync_help": {
+        "item_1": "<b>自動同期</b>：クリップボードの内容が変更されてから 3 秒後に自動同期",
+        "item_2": "<b>定期同期</b>：5 分ごとに自動同期",
+        "item_3": "<b>手動同期</b>：\"今すぐ同期\"ボタンをクリックしてすぐに実行",
+        "item_4": "<b>同期ファイル</b>：暗号化されていない場合は clipvault_sync.db、暗号化されている場合は clipvault_sync_encrypted.bin を生成",
+        "item_5": "<b>複数デバイス同期</b>：同期ディレクトリをクラウドストレージの同期フォルダに設定すると複数デバイス間で同期できます",
+        "title": "同期説明"
+      },
       "sync_settings": {
         "button": {
           "select_folder": "フォルダを選択",
