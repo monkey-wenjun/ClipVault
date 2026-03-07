@@ -16,6 +16,7 @@ import { isAutostart } from "@/plugins/autostart";
 import { showWindow, toggleWindowVisible } from "@/plugins/window";
 import { clipboardStore } from "@/stores/clipboard";
 import { globalStore } from "@/stores/global";
+import { imageHostingStore } from "@/stores/imageHosting";
 import { raf } from "@/utils/bom";
 import { isMac } from "@/utils/is";
 import { saveStore } from "@/utils/store";
@@ -56,9 +57,16 @@ const Preference = () => {
   // 监听快捷键切换窗口显隐
   useRegister(toggleWindowVisible, [shortcut.preference]);
 
+  // 监听图床配置项变化
+  useSubscribe(imageHostingStore, () => handleStoreChanged());
+
   // 配置项变化通知其它窗口和本地存储
   const handleStoreChanged = () => {
-    emit(LISTEN_KEY.STORE_CHANGED, { clipboardStore, globalStore });
+    emit(LISTEN_KEY.STORE_CHANGED, {
+      clipboardStore,
+      globalStore,
+      imageHostingStore,
+    });
 
     saveStore();
   };

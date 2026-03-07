@@ -22,6 +22,7 @@ import {
 } from "@/plugins/window";
 import { clipboardStore } from "@/stores/clipboard";
 import { globalStore } from "@/stores/global";
+import { imageHostingStore } from "@/stores/imageHosting";
 import type {
   DatabaseSchemaGroupId,
   DatabaseSchemaHistory,
@@ -95,6 +96,9 @@ const Main = () => {
   useTauriListen<Store>(LISTEN_KEY.STORE_CHANGED, ({ payload }) => {
     deepAssign(globalStore, payload.globalStore);
     deepAssign(clipboardStore, payload.clipboardStore);
+    if (payload.imageHostingStore) {
+      deepAssign(imageHostingStore, payload.imageHostingStore);
+    }
   });
 
   // 窗口显示与隐藏
