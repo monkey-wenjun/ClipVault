@@ -113,7 +113,7 @@ const Preference = () => {
         content: <ImageHosting />,
         icon: "i-lucide:image",
         key: "imageHosting",
-        label: "图床",
+        label: t("preference.menu.title.imageHosting"),
       },
       {
         content: <About />,
