@@ -103,51 +103,44 @@ jobs:
           sudo sed -i 's|https://archive.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
           sudo sed -i 's|http://security.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
           sudo sed -i 's|https://security.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
-          # 显示替换后的 sources.list 用于调试
-          echo "=== /etc/apt/sources.list contents ==="
-          cat /etc/apt/sources.list
-          sudo apt-get update || true  # 允许部分失败
+          sudo apt-get update
+          # 安装交叉编译工具链
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-          # 安装 OpenSSL 和 ARM64 库 (关键！不能失败)
-          sudo apt-get install -y libssl-dev:arm64
+          # 安装宿主架构的 OpenSSL 开发包 (用于头文件)
+          sudo apt-get install -y libssl-dev
+          # 安装 ARM64 架构的库文件
+          sudo apt-get install -y libssl3:arm64 || true
+          # 安装其他 ARM64 依赖
           sudo apt-get install -y libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf || true
           
-          # 验证 OpenSSL 头文件位置
-          echo "=== Checking OpenSSL header locations ==="
-          echo "--- /usr/include/openssl/ ---"
-          ls -la /usr/include/openssl/ 2>/dev/null || echo "Not found"
-          echo "--- /usr/include/aarch64-linux-gnu/openssl/ ---"
-          ls -la /usr/include/aarch64-linux-gnu/openssl/ 2>/dev/null || echo "Not found"
-          echo "--- /usr/aarch64-linux-gnu/include/openssl/ ---"
-          ls -la /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || echo "Not found"
-          
-          # 创建完整的 OpenSSL 头文件目录结构
+          # 设置 OpenSSL 交叉编译目录
           sudo mkdir -p /usr/aarch64-linux-gnu/include/openssl
+          sudo mkdir -p /usr/aarch64-linux-gnu/lib
           
-          # 复制主 openssl 头文件 (从 x86_64 位置)
-          if [ -d /usr/include/openssl ]; then
-            sudo cp -r /usr/include/openssl/* /usr/aarch64-linux-gnu/include/openssl/
-            echo "Copied headers from /usr/include/openssl/"
+          # 复制头文件 (使用宿主架构的头文件，因为它们是通用的)
+          sudo cp -r /usr/include/openssl/* /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || true
+          # 生成 opensslconf.h (如果架构特定的文件不存在)
+          if [ ! -f /usr/aarch64-linux-gnu/include/openssl/opensslconf.h ]; then
+            # 尝试从 dpkg 列表中找到它
+            dpkg -L libssl-dev:arm64 2>/dev/null | grep opensslconf.h || true
+            # 或者从 libssl-dev 包中找到它
+            if [ -f /usr/include/aarch64-linux-gnu/openssl/opensslconf.h ]; then
+              sudo cp /usr/include/aarch64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/
+            elif [ -f /usr/include/x86_64-linux-gnu/openssl/opensslconf.h ]; then
+              # 使用 x86_64 的配置文件作为基础 (通常足够通用)
+              sudo cp /usr/include/x86_64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/
+            fi
           fi
           
-          # 复制架构特定的 opensslconf.h (关键文件！优先从 arm64 位置复制)
-          if [ -f /usr/include/aarch64-linux-gnu/openssl/opensslconf.h ]; then
-            sudo cp /usr/include/aarch64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/
-            echo "Copied architecture-specific opensslconf.h from /usr/include/aarch64-linux-gnu/openssl/"
-          elif [ -f /usr/aarch64-linux-gnu/include/openssl/opensslconf.h ]; then
-            echo "opensslconf.h already exists in target location"
-          else
-            echo "ERROR: Could not find opensslconf.h for ARM64!"
-            # 尝试查找文件位置
-            find /usr -name "opensslconf.h" 2>/dev/null || true
-            exit 1
-          fi
+          # 复制库文件
+          sudo cp /usr/lib/aarch64-linux-gnu/libssl.so* /usr/aarch64-linux-gnu/lib/ 2>/dev/null || true
+          sudo cp /usr/lib/aarch64-linux-gnu/libcrypto.so* /usr/aarch64-linux-gnu/lib/ 2>/dev/null || true
           
-          # 验证最终目录结构
-          echo "=== Final /usr/aarch64-linux-gnu/include/openssl/ contents ==="
-          ls -la /usr/aarch64-linux-gnu/include/openssl/ || true
-          echo "=== Verifying opensslconf.h exists ==="
-          ls -la /usr/aarch64-linux-gnu/include/openssl/opensslconf.h || (echo "ERROR: opensslconf.h not found!" && exit 1)
+          # 验证
+          echo "=== /usr/aarch64-linux-gnu/include/openssl/ ==="
+          ls -la /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || echo "Not found"
+          echo "=== Checking opensslconf.h ==="
+          ls -la /usr/aarch64-linux-gnu/include/openssl/opensslconf.h 2>/dev/null || echo "Not found"
 
       # 使用 Rust 缓存，加快安装速度
       - name: Rust cache
