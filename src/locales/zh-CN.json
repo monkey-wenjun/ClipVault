@@ -332,6 +332,20 @@
         },
         "title": "外观设置"
       },
+      "config_management": {
+        "export_button": "导出",
+        "export_description": "将所有配置导出为 JSON 文件，包括偏好设置、剪贴板设置、图床配置等",
+        "export_success": "配置导出成功",
+        "export_title": "导出配置",
+        "import_button": "导入",
+        "import_description": "从 JSON 文件导入配置，将覆盖当前所有设置",
+        "import_title": "导入配置",
+        "reset_button": "重置",
+        "reset_description": "将所有配置恢复为默认值，此操作不可撤销",
+        "reset_success": "配置已重置为默认值，请重启应用以生效",
+        "reset_title": "重置配置",
+        "title": "配置管理"
+      },
       "permission_settings": {
         "button": {
           "authorize": "去授权",

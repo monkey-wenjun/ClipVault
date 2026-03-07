@@ -105,27 +105,33 @@ const General = () => {
         />
       </ProList>
 
-      <ProList header="配置管理">
+      <ProList header={t("preference.settings.config_management.title")}>
         <ProListItem
-          description="将所有配置导出为 JSON 文件，包括偏好设置、剪贴板设置、图床配置等"
-          title="导出配置"
+          description={t(
+            "preference.settings.config_management.export_description",
+          )}
+          title={t("preference.settings.config_management.export_title")}
         >
           <Button
             icon={<ExportOutlined />}
             onClick={async () => {
               const success = await exportAllConfig();
               if (success) {
-                message.success("配置导出成功");
+                message.success(
+                  t("preference.settings.config_management.export_success"),
+                );
               }
             }}
           >
-            导出
+            {t("preference.settings.config_management.export_button")}
           </Button>
         </ProListItem>
 
         <ProListItem
-          description="从 JSON 文件导入配置，将覆盖当前所有设置"
-          title="导入配置"
+          description={t(
+            "preference.settings.config_management.import_description",
+          )}
+          title={t("preference.settings.config_management.import_title")}
         >
           <Button
             icon={<ImportOutlined />}
@@ -138,13 +144,15 @@ const General = () => {
               }
             }}
           >
-            导入
+            {t("preference.settings.config_management.import_button")}
           </Button>
         </ProListItem>
 
         <ProListItem
-          description="将所有配置恢复为默认值，此操作不可撤销"
-          title="重置配置"
+          description={t(
+            "preference.settings.config_management.reset_description",
+          )}
+          title={t("preference.settings.config_management.reset_title")}
         >
           <Button
             danger
@@ -152,11 +160,13 @@ const General = () => {
             onClick={async () => {
               const success = await resetAllConfig();
               if (success) {
-                message.success("配置已重置为默认值，请重启应用以生效");
+                message.success(
+                  t("preference.settings.config_management.reset_success"),
+                );
               }
             }}
           >
-            重置
+            {t("preference.settings.config_management.reset_button")}
           </Button>
         </ProListItem>
       </ProList>

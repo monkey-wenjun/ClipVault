@@ -409,6 +409,20 @@
         },
         "title": "外観設定"
       },
+      "config_management": {
+        "export_button": "エクスポート",
+        "export_description": "すべての設定をJSONファイルにエクスポートします（環境設定、クリップボード設定、画像ホスティング設定など）",
+        "export_success": "設定をエクスポートしました",
+        "export_title": "設定をエクスポート",
+        "import_button": "インポート",
+        "import_description": "JSONファイルから設定をインポートします。現在のすべての設定が上書きされます",
+        "import_title": "設定をインポート",
+        "reset_button": "リセット",
+        "reset_description": "すべての設定をデフォルト値に戻します。この操作は元に戻せません",
+        "reset_success": "設定をデフォルト値にリセットしました。変更を適用するにはアプリケーションを再起動してください",
+        "reset_title": "設定をリセット",
+        "title": "設定管理"
+      },
       "permission_settings": {
         "button": {
           "authorize": "許可する",

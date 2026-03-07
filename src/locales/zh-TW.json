@@ -409,6 +409,20 @@
         },
         "title": "外觀設定"
       },
+      "config_management": {
+        "export_button": "導出",
+        "export_description": "將所有配置導出為 JSON 文件，包括偏好設置、剪貼簿設置、圖床配置等",
+        "export_success": "配置導出成功",
+        "export_title": "導出配置",
+        "import_button": "導入",
+        "import_description": "從 JSON 文件導入配置，將覆蓋當前所有設置",
+        "import_title": "導入配置",
+        "reset_button": "重置",
+        "reset_description": "將所有配置恢復為默認值，此操作不可撤銷",
+        "reset_success": "配置已重置為默認值，請重啟應用以生效",
+        "reset_title": "重置配置",
+        "title": "配置管理"
+      },
       "permission_settings": {
         "button": {
           "authorize": "前往授權",

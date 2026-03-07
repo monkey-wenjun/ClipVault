@@ -408,6 +408,20 @@
         },
         "title": "Appearance Settings"
       },
+      "config_management": {
+        "export_button": "Export",
+        "export_description": "Export all configurations to JSON file, including preference settings, clipboard settings, image hosting settings, etc.",
+        "export_success": "Configuration exported successfully",
+        "export_title": "Export Configuration",
+        "import_button": "Import",
+        "import_description": "Import configuration from JSON file, will overwrite all current settings",
+        "import_title": "Import Configuration",
+        "reset_button": "Reset",
+        "reset_description": "Reset all configurations to default values, this action cannot be undone",
+        "reset_success": "Configuration has been reset to default values, please restart the application to take effect",
+        "reset_title": "Reset Configuration",
+        "title": "Configuration Management"
+      },
       "permission_settings": {
         "button": {
           "authorize": "Authorize Now",
