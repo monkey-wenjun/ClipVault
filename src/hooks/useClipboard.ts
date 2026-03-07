@@ -33,6 +33,10 @@ export const useClipboard = (
   // 使用 ref 防止热重载导致的重复处理
   const processingRef = useRef<Set<string>>(new Set());
   const unlistenRef = useRef<(() => void) | null>(null);
+  // 使用 ref 保存 state 引用，避免闭包问题
+  const stateRef = useRef(state);
+  // 立即更新 ref
+  stateRef.current = state;
 
   useMount(async () => {
     await startListening();
@@ -43,6 +47,8 @@ export const useClipboard = (
     }
 
     const unlisten = await onClipboardChange(async (result) => {
+      // 获取最新的 state
+      const currentState = stateRef.current;
       // 检查当前应用是否在排除列表中
       if (await isAppExcluded()) {
         return;
@@ -55,6 +61,7 @@ export const useClipboard = (
       const { copyPlain } = clipboardStore.content;
 
       const data = {
+        count: text?.value?.length || 0,
         createTime: formatDate(),
         favorite: false,
         group: "text",
@@ -64,17 +71,23 @@ export const useClipboard = (
 
       if (files) {
         Object.assign(data, files, {
+          count: files.value.length,
           group: "files",
           search: files.value.join(" "),
         });
       } else if (html && !copyPlain) {
-        Object.assign(data, html);
+        Object.assign(data, html, {
+          count: html.value?.length || 0,
+        });
       } else if (rtf && !copyPlain) {
-        Object.assign(data, rtf);
+        Object.assign(data, rtf, {
+          count: rtf.value?.length || 0,
+        });
       } else if (text) {
         const subtype = await getClipboardTextSubtype(text.value);
 
         Object.assign(data, text, {
+          count: text.value?.length || 0,
           subtype,
         });
       } else if (image) {
@@ -88,7 +101,7 @@ export const useClipboard = (
         processingRef.current.add(localPath);
 
         // 检查内存列表中是否已存在相同路径的图片
-        const existingItem = state.list.find(
+        const existingItem = currentState.list.find(
           (item) => item.type === "image" && item.value === localPath,
         );
         if (existingItem) {
@@ -148,6 +161,7 @@ export const useClipboard = (
         }
 
         Object.assign(data, image, {
+          count: image.value?.length || 0,
           group: "image",
           search: search,
           value: imageUrl,
@@ -156,7 +170,7 @@ export const useClipboard = (
 
       const sqlData = cloneDeep(data);
 
-      const { type, value, group, createTime } = data;
+      const { type, value, createTime } = data;
 
       if (type === "image") {
         // 截图插件返回的路径已经是完整路径，直接使用
@@ -169,7 +183,7 @@ export const useClipboard = (
       }
 
       // 先检查内存列表中是否已存在相同的图片（避免短时间内重复添加）
-      const existingInList = state.list.find(
+      const existingInList = currentState.list.find(
         (item) => item.type === sqlData.type && item.value === sqlData.value,
       );
       if (existingInList) {
@@ -186,24 +200,23 @@ export const useClipboard = (
         return qb.where("type", "=", type).where("value", "=", value);
       });
 
-      const visible = state.group === "all" || state.group === group;
+      // 检查是否已存在（用于更新排序）
+
       if (matched) {
         if (!clipboardStore.content.autoSort) return;
 
         const { id } = matched;
 
-        if (visible) {
-          remove(state.list, { id });
-
-          state.list.unshift({ ...data, id });
-        }
+        // 总是更新内存列表中的位置（无论当前在哪个选项卡）
+        remove(currentState.list, { id });
+        currentState.list.unshift({ ...data, id });
 
         return updateHistory(id, { createTime });
       }
 
-      if (visible) {
-        state.list.unshift(data);
-      }
+      // 总是添加到内存列表（新内容应该出现在"全部"中）
+      // 使用数组解构创建新引用，确保 React 检测到变化
+      currentState.list = [data, ...currentState.list];
 
       await insertHistory(sqlData);
 

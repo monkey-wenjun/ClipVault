@@ -3,8 +3,8 @@ use crate::MAIN_WINDOW_LABEL;
 use tauri::{command, AppHandle, Runtime, WebviewWindow};
 use tauri_nspanel::{CollectionBehavior, ManagerExt};
 
-const WINDOW_HEIGHT: f64 = 600.0;
-const WINDOW_WIDTH_RATIO: f64 = 0.85; // 窗口宽度占屏幕宽度的比例
+const WINDOW_HEIGHT: f64 = 720.0;
+const WINDOW_WIDTH_RATIO: f64 = 0.88; // 窗口宽度占屏幕宽度的比例
 
 pub enum MacOSPanelStatus {
     Show,
@@ -27,13 +27,13 @@ pub async fn show_window<R: Runtime>(app_handle: AppHandle<R>, window: WebviewWi
             let window_y = work_position.y + (work_size.height as i32) - (WINDOW_HEIGHT as i32);
             
             let _ = window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-                width: window_width,
+                width: window_width.max(1000), // 最小宽度 1000
                 height: WINDOW_HEIGHT as u32,
             }));
             
             let _ = window.set_position(tauri::Position::Physical(tauri::PhysicalPosition {
                 x: window_x,
-                y: window_y,
+                y: window_y.max(work_position.y + 20), // 确保不会贴顶
             }));
         }
         

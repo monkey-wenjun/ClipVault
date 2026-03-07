@@ -18,38 +18,34 @@
         "acceptFirstMouse": true,
         "alwaysOnTop": true,
         "decorations": false,
-        "height": 600,
+        "height": 700,
         "label": "main",
         "maximizable": false,
-        "minHeight": 600,
-        "minWidth": 360,
+        "minHeight": 500,
+        "minWidth": 800,
         "skipTaskbar": true,
         "title": "ClipVault",
         "transparent": true,
         "url": "index.html/#/",
         "visible": false,
         "visibleOnAllWorkspaces": true,
-        "width": 360
+        "width": 1200
       },
       {
         "center": true,
+        "decorations": true,
         "dragDropEnabled": false,
         "height": 956,
-        "hiddenTitle": true,
         "label": "preference",
         "maximizable": false,
         "minHeight": 956,
         "minWidth": 1226,
         "skipTaskbar": true,
-        "titleBarStyle": "Overlay",
+        "title": "偏好设置",
         "transparent": true,
         "url": "index.html/#/preference",
         "visible": false,
-        "width": 1226,
-        "windowEffects": {
-          "effects": ["sidebar"],
-          "state": "active"
-        }
+        "width": 1226
       }
     ]
   },

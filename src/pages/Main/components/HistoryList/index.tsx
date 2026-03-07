@@ -316,10 +316,8 @@ const HistoryList = () => {
   );
 
   // 限制同时渲染的项数，提高性能
-  const visibleItems = useMemo(() => {
-    // 只渲染前 50 项，避免过多渲染导致卡顿
-    return rootState.list.slice(0, 50);
-  }, [rootState.list]);
+  // 直接使用 rootState.list，确保响应式更新
+  const visibleItems = rootState.list.slice(0, 50);
 
   return (
     <div className={styles.container}>

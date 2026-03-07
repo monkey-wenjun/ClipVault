@@ -17,6 +17,7 @@ export type DatabaseSchemaHistory<
   note?: string;
   subtype?: DatabaseSchemaHistorySubtype;
   tags?: string; // JSON string of tag ids
+  count?: number; // 内容长度/数量
 };
 
 export type DatabaseSchemaGroupId = LiteralUnion<

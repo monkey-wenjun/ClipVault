@@ -1,7 +1,7 @@
 // 用于加密/解密图床凭证的模块
 use aes_gcm::{
     aead::{Aead, KeyInit},
-    Aes256Gcm, Nonce,
+    Aes256Gcm,
 };
 use rand::RngCore;
 use sha2::{Sha256, Digest};
@@ -36,7 +36,7 @@ pub fn encrypt(plaintext: &str) -> Result<String, String> {
     
     let mut nonce_bytes = [0u8; NONCE_SIZE];
     rand::thread_rng().fill_bytes(&mut nonce_bytes);
-    let nonce: &Nonce = (&nonce_bytes).into();
+    let nonce = (&nonce_bytes).into();
     
     let ciphertext = cipher
         .encrypt(nonce, plaintext.as_bytes())
@@ -77,7 +77,7 @@ pub fn decrypt(ciphertext_b64: &str) -> Result<String, String> {
         return Err("Invalid ciphertext length".to_string());
     }
     
-    let nonce: &Nonce = (&ciphertext[..NONCE_SIZE]).into();
+    let nonce = (&ciphertext[..NONCE_SIZE]).into();
     let encrypted_bytes = &ciphertext[NONCE_SIZE..];
     
     let plaintext = cipher

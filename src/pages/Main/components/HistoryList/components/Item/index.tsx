@@ -232,7 +232,10 @@ const Item: FC<ItemProps> = (props) => {
       {/* 卡片底部 - 简洁的元信息 */}
       <div className={styles.footer}>
         <div className={styles.meta}>
-          <span>{count} 字符</span>
+          <span>
+            {count ?? 0}{" "}
+            {type === "files" ? "个文件" : type === "image" ? "" : "字符"}
+          </span>
           <span>·</span>
           <span>{new Date(createTime).toLocaleTimeString()}</span>
         </div>

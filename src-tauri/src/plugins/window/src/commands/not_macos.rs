@@ -1,8 +1,8 @@
 use super::{is_main_window, shared_hide_window, shared_show_window};
 use tauri::{command, AppHandle, Runtime, WebviewWindow};
 
-const WINDOW_HEIGHT: f64 = 600.0;
-const WINDOW_WIDTH_RATIO: f64 = 0.85; // 窗口宽度占屏幕宽度的比例
+const WINDOW_HEIGHT: f64 = 720.0;
+const WINDOW_WIDTH_RATIO: f64 = 0.88; // 窗口宽度占屏幕宽度的比例
 
 // 显示窗口
 #[command]
@@ -25,16 +25,16 @@ pub async fn show_window<R: Runtime>(_app_handle: AppHandle<R>, window: WebviewW
             
             // 设置窗口尺寸
             let _ = window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-                width: window_width,
+                width: window_width.max(1000), // 最小宽度 1000
                 height: WINDOW_HEIGHT as u32,
             }));
             
-            // 设置窗口位置：紧贴着工作区域底部（任务栏上方）
-            let window_y = work_position.y + (work_size.height as i32) - (WINDOW_HEIGHT as i32);
+            // 设置窗口位置：屏幕中央偏下
+            let window_y = work_position.y + ((work_size.height as i32) - (WINDOW_HEIGHT as i32)) / 2;
             
             let _ = window.set_position(tauri::Position::Physical(tauri::PhysicalPosition {
                 x: window_x,
-                y: window_y,
+                y: window_y.max(work_position.y + 20), // 确保不会贴顶
             }));
         }
     } else {

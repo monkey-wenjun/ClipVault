@@ -82,15 +82,27 @@ export const useHistoryList = (options: Options) => {
       state.noMore = list.length === 0;
 
       if (page === 1) {
-        // 合并现有列表和新查询的列表，保留可能已添加但未保存到数据库的新内容
-        rootState.list = unionBy(list, rootState.list, "id");
+        // 合并时优先保留内存中的数据（新添加的），但确保新查询的数据也包含
+        // 使用 reverse + unionBy 确保新数据在前
+        const merged = unionBy(rootState.list, list, "id");
+        // 按创建时间排序（最新的在前）
+        merged.sort(
+          (a, b) =>
+            new Date(b.createTime).getTime() - new Date(a.createTime).getTime(),
+        );
+        rootState.list = merged;
 
         if (state.noMore) return;
 
         return scrollToTop();
       }
 
-      rootState.list = unionBy(rootState.list, list, "id");
+      const merged = unionBy(rootState.list, list, "id");
+      merged.sort(
+        (a, b) =>
+          new Date(b.createTime).getTime() - new Date(a.createTime).getTime(),
+      );
+      rootState.list = merged;
     } finally {
       state.loading = false;
     }
