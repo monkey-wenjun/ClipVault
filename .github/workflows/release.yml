@@ -105,14 +105,24 @@ jobs:
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
           # 安装 OpenSSL 和 ARM64 库
           sudo apt-get install -y libssl-dev:arm64 libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf || true
-          # 创建 OpenSSL 头文件目录结构
+          # 验证 OpenSSL 头文件位置
+          echo "=== Checking OpenSSL header locations ==="
+          ls -la /usr/include/openssl/ 2>/dev/null || echo "Not in /usr/include/openssl/"
+          ls -la /usr/include/aarch64-linux-gnu/openssl/ 2>/dev/null || echo "Not in /usr/include/aarch64-linux-gnu/openssl/"
+          # 创建完整的 OpenSSL 头文件目录结构
           sudo mkdir -p /usr/aarch64-linux-gnu/include/openssl
-          # 复制 openssl 头文件到交叉编译目录
-          sudo cp -r /usr/include/openssl/* /usr/aarch64-linux-gnu/include/openssl/ || true
-          # 复制架构特定的 opensslconf.h (覆盖通用版本)
-          sudo cp /usr/include/aarch64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/ || true
-          # 验证文件
+          # 复制主 openssl 头文件
+          sudo cp -r /usr/include/openssl/* /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || true
+          # 复制架构特定的 opensslconf.h (关键文件！)
+          if [ -f /usr/include/aarch64-linux-gnu/openssl/opensslconf.h ]; then
+            sudo cp /usr/include/aarch64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/include/openssl/
+            echo "Copied architecture-specific opensslconf.h"
+          fi
+          # 验证最终目录结构
+          echo "=== Final /usr/aarch64-linux-gnu/include/openssl/ contents ==="
           ls -la /usr/aarch64-linux-gnu/include/openssl/ || true
+          echo "=== Verifying opensslconf.h exists ==="
+          ls -la /usr/aarch64-linux-gnu/include/openssl/opensslconf.h || true
 
       # 使用 Rust 缓存，加快安装速度
       - name: Rust cache
@@ -145,11 +155,13 @@ jobs:
           echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
           echo "CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
           echo "CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++" >> $GITHUB_ENV
-          echo "PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
+          echo "PKG_CONFIG_SYSROOT_DIR=/" >> $GITHUB_ENV
           echo "PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig" >> $GITHUB_ENV
           echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
-          # 设置 OpenSSL 环境变量 - 使用交叉编译目录
-          echo "OPENSSL_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
+          # 设置 OpenSSL 环境变量
+          # OPENSSL_DIR 指向系统根目录，openssl-sys 会在 $OPENSSL_DIR/include 找头文件
+          # 并在 $OPENSSL_LIB_DIR 找库文件
+          echo "OPENSSL_DIR=/usr" >> $GITHUB_ENV
           echo "OPENSSL_INCLUDE_DIR=/usr/aarch64-linux-gnu/include" >> $GITHUB_ENV
           echo "OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
 
