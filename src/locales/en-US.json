@@ -289,6 +289,82 @@
         "title": "History"
       }
     },
+    "imageHosting": {
+      "button": {
+        "add": "Add Image Hosting",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "export": "Export",
+        "import": "Import",
+        "save": "Save",
+        "set_default": "Set Default",
+        "test": "Test Connection"
+      },
+      "columns": {
+        "action": "Action",
+        "bucket": "Bucket",
+        "customDomain": "Custom Domain",
+        "name": "Name",
+        "provider": "Provider"
+      },
+      "confirm": {
+        "delete_content": "This cannot be recovered after deletion. Continue?",
+        "delete_title": "Confirm Delete"
+      },
+      "default_tag": "Default",
+      "hints": {
+        "auto_upload": "Automatically upload images when copied",
+        "enable": "Enable image hosting feature",
+        "generate_markdown": "Automatically generate Markdown image link after upload"
+      },
+      "label": {
+        "accessKey": "Access Key (AK)",
+        "auto_upload": "Auto Upload",
+        "bucket": "Bucket Name",
+        "customDomain": "Custom Domain (Optional)",
+        "enable": "Enable Image Hosting",
+        "endpoint": "Endpoint (Optional)",
+        "generate_markdown": "Generate Markdown Link",
+        "pathPrefix": "Path Prefix (Optional)",
+        "provider": "Cloud Storage Provider",
+        "region": "Region (e.g., cn-shanghai)",
+        "secretKey": "Secret Key (SK)"
+      },
+      "message": {
+        "add_success": "Added successfully",
+        "delete_success": "Deleted successfully",
+        "export_error": "Export failed",
+        "export_success": "Export successful",
+        "import_error": "Import failed",
+        "import_success": "Import successful",
+        "set_default_success": "Set as default",
+        "test_error": "Test failed",
+        "test_success": "Test successful! URL: {{url}}",
+        "update_success": "Updated successfully"
+      },
+      "modal": {
+        "add_title": "Add Image Hosting",
+        "edit_title": "Edit Image Hosting"
+      },
+      "no_config": "No image hosting configured, click Add button in the top right",
+      "placeholder": {
+        "customDomain": "e.g., https://img.example.com",
+        "endpoint": "Custom API endpoint address",
+        "name": "e.g., My Aliyun Image Hosting",
+        "pathPrefix": "e.g., images/ or clips/",
+        "region": "e.g., cn-shanghai"
+      },
+      "providers": {
+        "aliyun": "Aliyun OSS",
+        "aws": "AWS S3",
+        "github": "GitHub",
+        "qiniu": "Qiniu Cloud",
+        "tencent": "Tencent COS",
+        "upyun": "Upyun"
+      },
+      "secretKey_placeholder": "Leave blank to keep unchanged (encrypted storage)",
+      "title": "Image Hosting Settings"
+    },
     "menu": {
       "title": {
         "about": "About",
@@ -296,7 +372,9 @@
         "clipboard": "Clipboard",
         "general": "General",
         "history": "History",
+        "imageHosting": "Image Hosting",
         "shortcut": "Shortcuts",
+        "sync": "Sync",
         "tags": "Tags Management"
       }
     },
@@ -381,6 +459,64 @@
           "quick_paste": "Quick Paste"
         },
         "title": "Shortcuts"
+      }
+    },
+    "sync": {
+      "encryption_settings": {
+        "button": {
+          "copy": "Copy",
+          "disable": "Disable Encryption",
+          "generate": "Generate",
+          "save": "Save"
+        },
+        "encryption_disabled": "Encryption Disabled",
+        "hints": {
+          "encryption_key": "Set AES-256 encryption key for sync data encryption"
+        },
+        "invalid_key_length": "Key must be 64 hexadecimal characters (32 bytes)",
+        "key_copied": "Key copied to clipboard",
+        "key_copy_error": "Failed to copy key",
+        "key_length": "Current length: {{length}} characters",
+        "key_save_error": "Failed to save key",
+        "key_saved_success": "Key saved successfully",
+        "label": {
+          "encryption_key": "Encryption Key",
+          "status": "Encryption Status"
+        },
+        "placeholder": {
+          "key": "Enter 64-character hexadecimal key"
+        },
+        "security_warning_desc": "Please keep the encryption key safe! Lost keys cannot decrypt data, and leaked keys will allow others to access your data. It is recommended to store the key in a secure location (such as a password manager).",
+        "security_warning_title": "Security Warning",
+        "status_disabled": "Disabled",
+        "status_enabled": "Enabled",
+        "title": "Encryption Settings"
+      },
+      "sync_settings": {
+        "button": {
+          "select_folder": "Select Folder",
+          "sync_now": "Sync Now"
+        },
+        "disabled_success": "Sync Disabled",
+        "enabled_success": "Sync Enabled",
+        "hints": {
+          "enable_sync": "Sync clipboard data to local directory (such as cloud drive folder)",
+          "manual_sync": "Manually trigger sync operation"
+        },
+        "label": {
+          "enable_sync": "Enable Sync",
+          "manual_sync": "Manual Sync",
+          "sync_path": "Sync Directory"
+        },
+        "no_path_selected": "No directory selected",
+        "path_set_error": "Failed to set sync directory",
+        "path_set_success": "Sync directory set successfully",
+        "please_select_folder_first": "Please select sync directory first",
+        "select_folder_title": "Select Sync Directory",
+        "sync_error": "Sync failed",
+        "sync_success": "Sync successful",
+        "title": "Sync Settings",
+        "toggle_error": "Failed to toggle sync status"
       }
     },
     "tags": {

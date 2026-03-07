@@ -290,6 +290,82 @@
         "title": "履歴"
       }
     },
+    "imageHosting": {
+      "button": {
+        "add": "画像ホスティングを追加",
+        "cancel": "キャンセル",
+        "delete": "削除",
+        "export": "エクスポート",
+        "import": "インポート",
+        "save": "保存",
+        "set_default": "デフォルトに設定",
+        "test": "接続テスト"
+      },
+      "columns": {
+        "action": "操作",
+        "bucket": "Bucket",
+        "customDomain": "カスタムドメイン",
+        "name": "名前",
+        "provider": "プロバイダー"
+      },
+      "confirm": {
+        "delete_content": "削除後は元に戻せません。続行しますか？",
+        "delete_title": "削除の確認"
+      },
+      "default_tag": "デフォルト",
+      "hints": {
+        "auto_upload": "画像をコピーしたときに自動的にアップロードします",
+        "enable": "有効にすると、画像をコピーしたときに自動的にクラウドストレージにアップロードされます",
+        "generate_markdown": "アップロード成功後、自動的にMarkdown形式の画像リンクを生成します"
+      },
+      "label": {
+        "accessKey": "Access Key (AK)",
+        "auto_upload": "自動アップロード",
+        "bucket": "Bucket 名",
+        "customDomain": "カスタムドメイン（オプション）",
+        "enable": "画像ホスティングを有効にする",
+        "endpoint": "Endpoint（オプション）",
+        "generate_markdown": "Markdownリンクを生成",
+        "pathPrefix": "パスプレフィックス（オプション）",
+        "provider": "クラウドストレージプロバイダー",
+        "region": "リージョン（例：cn-shanghai）",
+        "secretKey": "Secret Key (SK)"
+      },
+      "message": {
+        "add_success": "追加しました",
+        "delete_success": "削除しました",
+        "export_error": "エクスポートに失敗しました",
+        "export_success": "エクスポートしました",
+        "import_error": "インポートに失敗しました",
+        "import_success": "インポートしました",
+        "set_default_success": "デフォルトに設定しました",
+        "test_error": "テストに失敗しました",
+        "test_success": "テスト成功！URL: {{url}}",
+        "update_success": "更新しました"
+      },
+      "modal": {
+        "add_title": "画像ホスティングを追加",
+        "edit_title": "画像ホスティングを編集"
+      },
+      "no_config": "画像ホスティングが設定されていません。右上のボタンをクリックして追加してください",
+      "placeholder": {
+        "customDomain": "例：https://img.example.com",
+        "endpoint": "カスタムAPIエンドポイントアドレス",
+        "name": "例：私の阿里云画像ホスティング",
+        "pathPrefix": "例：images/ または clips/",
+        "region": "例：cn-shanghai"
+      },
+      "providers": {
+        "aliyun": "阿里云 OSS",
+        "aws": "AWS S3",
+        "github": "GitHub",
+        "qiniu": "七牛云",
+        "tencent": "腾讯云 COS",
+        "upyun": "又拍云"
+      },
+      "secretKey_placeholder": "空白のままにすると変更されません（暗号化されて保存されています）",
+      "title": "画像ホスティング設定"
+    },
     "menu": {
       "title": {
         "about": "について",
@@ -297,7 +373,9 @@
         "clipboard": "クリップボード",
         "general": "共通設定",
         "history": "履歴",
+        "imageHosting": "画像ホスティング",
         "shortcut": "ショートカットキー",
+        "sync": "同期",
         "tags": "タグ管理"
       }
     },
@@ -382,6 +460,64 @@
           "quick_paste": "クイックペースト"
         },
         "title": "ショートカットキー"
+      }
+    },
+    "sync": {
+      "encryption_settings": {
+        "button": {
+          "copy": "コピー",
+          "disable": "暗号化を無効にする",
+          "generate": "生成",
+          "save": "保存"
+        },
+        "encryption_disabled": "暗号化が無効になりました",
+        "hints": {
+          "encryption_key": "AES-256 暗号化キーを設定し、同期データの暗号化に使用します"
+        },
+        "invalid_key_length": "キーの長さは64文字の16進数（32バイト）である必要があります",
+        "key_copied": "キーをクリップボードにコピーしました",
+        "key_copy_error": "キーのコピーに失敗しました",
+        "key_length": "現在の長さ：{{length}} 文字",
+        "key_save_error": "キーの保存に失敗しました",
+        "key_saved_success": "キーを保存しました",
+        "label": {
+          "encryption_key": "暗号化キー",
+          "status": "暗号化状態"
+        },
+        "placeholder": {
+          "key": "64文字の16進数キーを入力してください"
+        },
+        "security_warning_desc": "暗号化キーは大切に保管してください！キーを紛失するとデータを復元できなくなり、キーが漏洩すると他人にデータが見られる可能性があります。キーは安全な場所（パスワードマネージャーなど）に保存することをお勧めします。",
+        "security_warning_title": "セキュリティ警告",
+        "status_disabled": "無効",
+        "status_enabled": "有効",
+        "title": "暗号化設定"
+      },
+      "sync_settings": {
+        "button": {
+          "select_folder": "フォルダを選択",
+          "sync_now": "今すぐ同期"
+        },
+        "disabled_success": "同期が無効になりました",
+        "enabled_success": "同期が有効になりました",
+        "hints": {
+          "enable_sync": "クリップボードデータをローカルディレクトリ（クラウドストレージフォルダなど）に同期します",
+          "manual_sync": "手動で同期操作を実行します"
+        },
+        "label": {
+          "enable_sync": "同期を有効にする",
+          "manual_sync": "手動同期",
+          "sync_path": "同期ディレクトリ"
+        },
+        "no_path_selected": "ディレクトリが選択されていません",
+        "path_set_error": "同期ディレクトリの設定に失敗しました",
+        "path_set_success": "同期ディレクトリを設定しました",
+        "please_select_folder_first": "同期ディレクトリを選択してください",
+        "select_folder_title": "同期ディレクトリを選択",
+        "sync_error": "同期に失敗しました",
+        "sync_success": "同期しました",
+        "title": "同期設定",
+        "toggle_error": "同期状態の切り替えに失敗しました"
       }
     },
     "tags": {

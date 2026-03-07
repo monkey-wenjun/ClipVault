@@ -33,31 +33,8 @@ import {
   importImageHostingConfig,
 } from "@/utils/imageHostingConfig";
 
-const PROVIDER_OPTIONS: {
-  value: ImageHostingProvider;
-  label: string;
-  icon: string;
-}[] = [
-  { icon: "☁️", label: "阿里云 OSS", value: "aliyun" },
-  { icon: "☁️", label: "腾讯云 COS", value: "tencent" },
-  { icon: "☁️", label: "七牛云", value: "qiniu" },
-  { icon: "☁️", label: "又拍云", value: "upyun" },
-  { icon: "☁️", label: "AWS S3", value: "aws" },
-  { icon: "🐙", label: "GitHub", value: "github" },
-];
-
-const DEFAULT_CONFIG: Partial<ImageHostingConfig> = {
-  bucket: "",
-  customDomain: "",
-  enabled: true,
-  endpoint: "",
-  pathStyle: false,
-  provider: "aliyun",
-  region: "",
-};
-
 const ImageHosting = () => {
-  const { t: _t } = useTranslation();
+  const { t } = useTranslation();
   const { enabled, configs, defaultId, autoUpload, generateMarkdown } =
     useSnapshot(imageHostingStore);
   const [isModalOpen, { setTrue: openModal, setFalse: closeModal }] =
@@ -68,6 +45,53 @@ const ImageHosting = () => {
   const [form] = Form.useForm();
   const [testing, { setTrue: startTesting, setFalse: stopTesting }] =
     useBoolean(false);
+
+  const PROVIDER_OPTIONS: {
+    value: ImageHostingProvider;
+    label: string;
+    icon: string;
+  }[] = [
+    {
+      icon: "☁️",
+      label: t("preference.imageHosting.providers.aliyun"),
+      value: "aliyun",
+    },
+    {
+      icon: "☁️",
+      label: t("preference.imageHosting.providers.tencent"),
+      value: "tencent",
+    },
+    {
+      icon: "☁️",
+      label: t("preference.imageHosting.providers.qiniu"),
+      value: "qiniu",
+    },
+    {
+      icon: "☁️",
+      label: t("preference.imageHosting.providers.upyun"),
+      value: "upyun",
+    },
+    {
+      icon: "☁️",
+      label: t("preference.imageHosting.providers.aws"),
+      value: "aws",
+    },
+    {
+      icon: "🐙",
+      label: t("preference.imageHosting.providers.github"),
+      value: "github",
+    },
+  ];
+
+  const DEFAULT_CONFIG: Partial<ImageHostingConfig> = {
+    bucket: "",
+    customDomain: "",
+    enabled: true,
+    endpoint: "",
+    pathStyle: false,
+    provider: "aliyun",
+    region: "",
+  };
 
   const handleAdd = () => {
     setEditingConfig(null);
@@ -87,16 +111,16 @@ const ImageHosting = () => {
 
   const handleDelete = (id: string) => {
     Modal.confirm({
-      content: "删除后无法恢复，是否继续？",
+      content: t("preference.imageHosting.confirm.delete_content"),
       onOk: () => {
         const newConfigs = configs.filter((c) => c.id !== id);
         imageHostingStore.configs = newConfigs;
         if (defaultId === id) {
           imageHostingStore.defaultId = newConfigs[0]?.id || "";
         }
-        message.success("删除成功");
+        message.success(t("preference.imageHosting.message.delete_success"));
       },
-      title: "确认删除",
+      title: t("preference.imageHosting.confirm.delete_title"),
     });
   };
 
@@ -136,7 +160,11 @@ const ImageHosting = () => {
       }
 
       closeModal();
-      message.success(editingConfig ? "修改成功" : "添加成功");
+      message.success(
+        editingConfig
+          ? t("preference.imageHosting.message.update_success")
+          : t("preference.imageHosting.message.add_success"),
+      );
     } catch (error) {
       void error;
     }
@@ -177,12 +205,20 @@ const ImageHosting = () => {
       const result = await uploadImage(testImage, "test.png", testConfig);
 
       if (result.success) {
-        message.success(`测试成功！URL: ${result.url}`);
+        message.success(
+          t("preference.imageHosting.message.test_success", {
+            url: result.url,
+          }),
+        );
       } else {
-        message.error(`测试失败: ${result.error}`);
+        message.error(
+          `${t("preference.imageHosting.message.test_error")}: ${result.error}`,
+        );
       }
     } catch (error) {
-      message.error(`测试失败: ${String(error)}`);
+      message.error(
+        `${t("preference.imageHosting.message.test_error")}: ${String(error)}`,
+      );
     } finally {
       stopTesting();
     }
@@ -190,7 +226,7 @@ const ImageHosting = () => {
 
   const handleSetDefault = (id: string) => {
     imageHostingStore.defaultId = id;
-    message.success("已设为默认");
+    message.success(t("preference.imageHosting.message.set_default_success"));
   };
 
   const columns = [
@@ -203,10 +239,12 @@ const ImageHosting = () => {
             {PROVIDER_OPTIONS.find((p) => p.value === record.provider)?.icon}
           </span>
           <span>{text}</span>
-          {record.id === defaultId && <Tag color="blue">默认</Tag>}
+          {record.id === defaultId && (
+            <Tag color="blue">{t("preference.imageHosting.default_tag")}</Tag>
+          )}
         </Space>
       ),
-      title: "名称",
+      title: t("preference.imageHosting.columns.name"),
       width: 180,
     },
     {
@@ -214,14 +252,14 @@ const ImageHosting = () => {
       key: "provider",
       render: (v: ImageHostingProvider) =>
         PROVIDER_OPTIONS.find((p) => p.value === v)?.label || v,
-      title: "平台",
+      title: t("preference.imageHosting.columns.provider"),
       width: 100,
     },
     {
       dataIndex: "bucket",
       ellipsis: true,
       key: "bucket",
-      title: "Bucket",
+      title: t("preference.imageHosting.columns.bucket"),
       width: 120,
     },
     {
@@ -229,7 +267,7 @@ const ImageHosting = () => {
       ellipsis: true,
       key: "customDomain",
       render: (v: string) => v || "-",
-      title: "自定义域名",
+      title: t("preference.imageHosting.columns.customDomain"),
       width: 160,
     },
     {
@@ -255,24 +293,26 @@ const ImageHosting = () => {
               size="small"
               type="link"
             >
-              设为默认
+              {t("preference.imageHosting.button.set_default")}
             </Button>
           )}
         </Space>
       ),
-      title: "操作",
+      title: t("preference.imageHosting.columns.action"),
       width: 160,
     },
   ];
 
   return (
     <>
-      <ProList header="图床设置">
+      <ProList header={t("preference.imageHosting.title")}>
         <div className="flex items-center justify-between px-4 py-3">
           <div>
-            <div className="font-medium">启用图床功能</div>
+            <div className="font-medium">
+              {t("preference.imageHosting.label.enable")}
+            </div>
             <div className="text-color-3 text-xs">
-              开启后复制图片将自动上传到云存储
+              {t("preference.imageHosting.hints.enable")}
             </div>
           </div>
           <Switch
@@ -285,9 +325,11 @@ const ImageHosting = () => {
 
         <div className="flex items-center justify-between px-4 py-3">
           <div>
-            <div className="font-medium">自动上传图片</div>
+            <div className="font-medium">
+              {t("preference.imageHosting.label.auto_upload")}
+            </div>
             <div className="text-color-3 text-xs">
-              复制图片时自动上传到配置的图床
+              {t("preference.imageHosting.hints.auto_upload")}
             </div>
           </div>
           <Switch
@@ -300,9 +342,11 @@ const ImageHosting = () => {
 
         <div className="flex items-center justify-between px-4 py-3">
           <div>
-            <div className="font-medium">生成 Markdown 链接</div>
+            <div className="font-medium">
+              {t("preference.imageHosting.label.generate_markdown")}
+            </div>
             <div className="text-color-3 text-xs">
-              上传成功后自动生成 Markdown 格式图片链接
+              {t("preference.imageHosting.hints.generate_markdown")}
             </div>
           </div>
           <Switch
@@ -317,7 +361,7 @@ const ImageHosting = () => {
       <ProList
         header={
           <div className="flex items-center justify-between">
-            <span>图床配置</span>
+            <span>{t("preference.imageHosting.title")}</span>
             <div className="flex gap-2">
               <Button
                 icon={<ImportOutlined />}
@@ -331,21 +375,25 @@ const ImageHosting = () => {
                 }}
                 size="small"
               >
-                导入
+                {t("preference.imageHosting.button.import")}
               </Button>
               <Button
                 icon={<ExportOutlined />}
                 onClick={async () => {
                   const success = await exportImageHostingConfig();
                   if (success) {
-                    message.success("导出成功");
+                    message.success(
+                      t("preference.imageHosting.message.export_success"),
+                    );
                   } else {
-                    message.error("导出失败");
+                    message.error(
+                      t("preference.imageHosting.message.export_error"),
+                    );
                   }
                 }}
                 size="small"
               >
-                导出
+                {t("preference.imageHosting.button.export")}
               </Button>
               <Button
                 icon={<PlusOutlined />}
@@ -353,7 +401,7 @@ const ImageHosting = () => {
                 size="small"
                 type="primary"
               >
-                添加图床
+                {t("preference.imageHosting.button.add")}
               </Button>
             </div>
           </div>
@@ -370,7 +418,7 @@ const ImageHosting = () => {
           />
           {configs.length === 0 && (
             <div className="py-8 text-center text-gray-400">
-              暂无图床配置，点击右上角添加
+              {t("preference.imageHosting.no_config")}
             </div>
           )}
         </div>
@@ -379,31 +427,42 @@ const ImageHosting = () => {
       <Modal
         footer={[
           <Button key="test" loading={testing} onClick={handleTest}>
-            测试连接
+            {t("preference.imageHosting.button.test")}
           </Button>,
           <Button key="cancel" onClick={closeModal}>
-            取消
+            {t("preference.imageHosting.button.cancel")}
           </Button>,
           <Button key="save" onClick={handleSave} type="primary">
-            保存
+            {t("preference.imageHosting.button.save")}
           </Button>,
         ]}
         onCancel={closeModal}
         open={isModalOpen}
-        title={editingConfig ? "编辑图床" : "添加图床"}
+        title={
+          editingConfig
+            ? t("preference.imageHosting.modal.edit_title")
+            : t("preference.imageHosting.modal.add_title")
+        }
         width={560}
       >
         <Form form={form} layout="vertical" preserve={false}>
           <Form.Item
-            label="图床名称"
+            label={t("preference.imageHosting.label.name")}
             name="name"
-            rules={[{ message: "请输入图床名称", required: true }]}
+            rules={[
+              {
+                message: t("preference.imageHosting.label.name"),
+                required: true,
+              },
+            ]}
           >
-            <Input placeholder="例如：我的阿里云图床" />
+            <Input
+              placeholder={t("preference.imageHosting.placeholder.name")}
+            />
           </Form.Item>
 
           <Form.Item
-            label="云存储平台"
+            label={t("preference.imageHosting.label.provider")}
             name="provider"
             rules={[{ required: true }]}
           >
@@ -417,50 +476,93 @@ const ImageHosting = () => {
           </Form.Item>
 
           <Form.Item
-            label="Access Key (AK)"
+            label={t("preference.imageHosting.label.accessKey")}
             name="accessKey"
-            rules={[{ message: "请输入 Access Key", required: true }]}
+            rules={[
+              {
+                message: t("preference.imageHosting.label.accessKey"),
+                required: true,
+              },
+            ]}
           >
             <Input placeholder="" />
           </Form.Item>
 
           <Form.Item
-            label="Secret Key (SK)"
+            label={t("preference.imageHosting.label.secretKey")}
             name="secretKey"
-            rules={[{ message: "请输入 Secret Key", required: !editingConfig }]}
+            rules={[
+              {
+                message: t("preference.imageHosting.label.secretKey"),
+                required: !editingConfig,
+              },
+            ]}
           >
             <Input.Password
-              placeholder={editingConfig ? "留空表示不修改（已加密存储）" : ""}
+              placeholder={
+                editingConfig
+                  ? t("preference.imageHosting.secretKey_placeholder")
+                  : ""
+              }
             />
           </Form.Item>
 
           <Form.Item
-            label="Bucket 名称"
+            label={t("preference.imageHosting.label.bucket")}
             name="bucket"
-            rules={[{ message: "请输入 Bucket 名称", required: true }]}
+            rules={[
+              {
+                message: t("preference.imageHosting.label.bucket"),
+                required: true,
+              },
+            ]}
           >
-            <Input placeholder="例如：my-bucket" />
+            <Input placeholder="" />
           </Form.Item>
 
           <Form.Item
-            help="例如：cn-shanghai、cn-beijing、oss-cn-hangzhou"
-            label="存储区域 (Region)"
+            help={t("preference.imageHosting.placeholder.region")}
+            label={t("preference.imageHosting.label.region")}
             name="region"
-            rules={[{ message: "请输入存储区域", required: true }]}
+            rules={[
+              {
+                message: t("preference.imageHosting.label.region"),
+                required: true,
+              },
+            ]}
           >
-            <Input placeholder="例如：cn-shanghai" />
+            <Input
+              placeholder={t("preference.imageHosting.placeholder.region")}
+            />
           </Form.Item>
 
-          <Form.Item label="自定义域名 (可选)" name="customDomain">
-            <Input placeholder="例如：https://img.example.com" />
+          <Form.Item
+            label={t("preference.imageHosting.label.customDomain")}
+            name="customDomain"
+          >
+            <Input
+              placeholder={t(
+                "preference.imageHosting.placeholder.customDomain",
+              )}
+            />
           </Form.Item>
 
-          <Form.Item label="存储路径前缀 (可选)" name="pathPrefix">
-            <Input placeholder="例如：images/ 或 clips/" />
+          <Form.Item
+            label={t("preference.imageHosting.label.pathPrefix")}
+            name="pathPrefix"
+          >
+            <Input
+              placeholder={t("preference.imageHosting.placeholder.pathPrefix")}
+            />
           </Form.Item>
 
-          <Form.Item label="Endpoint (可选)" name="endpoint">
-            <Input placeholder="自定义 API 端点地址" />
+          <Form.Item
+            label={t("preference.imageHosting.label.endpoint")}
+            name="endpoint"
+          >
+            <Input
+              placeholder={t("preference.imageHosting.placeholder.endpoint")}
+            />
           </Form.Item>
         </Form>
       </Modal>

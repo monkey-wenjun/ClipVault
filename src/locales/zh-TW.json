@@ -290,6 +290,82 @@
         "title": "歷史記錄"
       }
     },
+    "imageHosting": {
+      "button": {
+        "add": "添加圖床",
+        "cancel": "取消",
+        "delete": "刪除",
+        "export": "導出",
+        "import": "導入",
+        "save": "保存",
+        "set_default": "設為默認",
+        "test": "測試連接"
+      },
+      "columns": {
+        "action": "操作",
+        "bucket": "Bucket",
+        "customDomain": "自定義域名",
+        "name": "名稱",
+        "provider": "平台"
+      },
+      "confirm": {
+        "delete_content": "刪除後無法恢復，是否繼續？",
+        "delete_title": "確認刪除"
+      },
+      "default_tag": "默認",
+      "hints": {
+        "auto_upload": "複製圖片時自動上傳到配置的圖床",
+        "enable": "開啟後複製圖片將自動上傳到雲存儲",
+        "generate_markdown": "上傳成功後自動生成 Markdown 格式圖片鏈接"
+      },
+      "label": {
+        "accessKey": "Access Key (AK)",
+        "auto_upload": "自動上傳圖片",
+        "bucket": "Bucket 名稱",
+        "customDomain": "自定義域名（可選）",
+        "enable": "啟用圖床功能",
+        "endpoint": "Endpoint（可選）",
+        "generate_markdown": "生成 Markdown 鏈接",
+        "pathPrefix": "存儲路徑前綴（可選）",
+        "provider": "雲存儲平台",
+        "region": "存儲區域（如 cn-shanghai）",
+        "secretKey": "Secret Key (SK)"
+      },
+      "message": {
+        "add_success": "添加成功",
+        "delete_success": "刪除成功",
+        "export_error": "導出失敗",
+        "export_success": "導出成功",
+        "import_error": "導入失敗",
+        "import_success": "導入成功",
+        "set_default_success": "已設為默認",
+        "test_error": "測試失敗",
+        "test_success": "測試成功！URL: {{url}}",
+        "update_success": "修改成功"
+      },
+      "modal": {
+        "add_title": "添加圖床",
+        "edit_title": "編輯圖床"
+      },
+      "no_config": "暫無圖床配置，點擊右上角添加",
+      "placeholder": {
+        "customDomain": "例如：https://img.example.com",
+        "endpoint": "自定義 API 端點地址",
+        "name": "例如：我的阿里雲圖床",
+        "pathPrefix": "例如：images/ 或 clips/",
+        "region": "例如：cn-shanghai"
+      },
+      "providers": {
+        "aliyun": "阿里雲 OSS",
+        "aws": "AWS S3",
+        "github": "GitHub",
+        "qiniu": "七牛雲",
+        "tencent": "騰訊雲 COS",
+        "upyun": "又拍雲"
+      },
+      "secretKey_placeholder": "留空表示不修改（已加密存儲）",
+      "title": "圖床設置"
+    },
     "menu": {
       "title": {
         "about": "關於",
@@ -297,7 +373,9 @@
         "clipboard": "剪貼簿",
         "general": "通用設定",
         "history": "歷史記錄",
+        "imageHosting": "圖床",
         "shortcut": "快捷鍵",
+        "sync": "同步",
         "tags": "標籤管理"
       }
     },
@@ -382,6 +460,64 @@
           "quick_paste": "快速貼上"
         },
         "title": "快捷鍵"
+      }
+    },
+    "sync": {
+      "encryption_settings": {
+        "button": {
+          "copy": "複製",
+          "disable": "禁用加密",
+          "generate": "生成",
+          "save": "保存"
+        },
+        "encryption_disabled": "加密已禁用",
+        "hints": {
+          "encryption_key": "設置 AES-256 加密密鑰，用於加密同步數據"
+        },
+        "invalid_key_length": "密鑰長度必須為 64 位十六進制字符（32 字節）",
+        "key_copied": "密鑰已複製到剪貼簿",
+        "key_copy_error": "複製密鑰失敗",
+        "key_length": "當前長度：{{length}} 字符",
+        "key_save_error": "密鑰保存失敗",
+        "key_saved_success": "密鑰保存成功",
+        "label": {
+          "encryption_key": "加密密鑰",
+          "status": "加密狀態"
+        },
+        "placeholder": {
+          "key": "請輸入 64 位十六進制密鑰"
+        },
+        "security_warning_desc": "請妥善保管加密密鑰！密鑰丟失將無法解密數據，密鑰泄露將導致數據被他人訪問。建議將密鑰保存在安全的地方（如密碼管理器）。",
+        "security_warning_title": "安全提醒",
+        "status_disabled": "未啟用",
+        "status_enabled": "已啟用",
+        "title": "加密設置"
+      },
+      "sync_settings": {
+        "button": {
+          "select_folder": "選擇文件夾",
+          "sync_now": "立即同步"
+        },
+        "disabled_success": "同步已禁用",
+        "enabled_success": "同步已啟用",
+        "hints": {
+          "enable_sync": "將剪貼簿數據同步到本地目錄（如雲盤文件夾）",
+          "manual_sync": "手動觸發同步操作"
+        },
+        "label": {
+          "enable_sync": "啟用同步",
+          "manual_sync": "手動同步",
+          "sync_path": "同步目錄"
+        },
+        "no_path_selected": "未選擇目錄",
+        "path_set_error": "設置同步目錄失敗",
+        "path_set_success": "同步目錄設置成功",
+        "please_select_folder_first": "請先選擇同步目錄",
+        "select_folder_title": "選擇同步目錄",
+        "sync_error": "同步失敗",
+        "sync_success": "同步成功",
+        "title": "同步設置",
+        "toggle_error": "切換同步狀態失敗"
       }
     },
     "tags": {
