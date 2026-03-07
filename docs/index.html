@@ -4,26 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ClipVault - 剪切板+ 图床管理工具</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+  <link rel="icon" href="logo.png" type="image/png">
   <meta name="description" content="ClipVault - 一款现代化的剪切板管理工具，支持图床上传、加密同步、自定义标签，Windows/macOS/Linux 全平台支持">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --secondary: #8b5cf6;
-      --accent: #06b6d4;
-      --bg-dark: #0f0f23;
-      --bg-card: #16162a;
-      --bg-card-hover: #1e1e3a;
+      --primary: #f97316;
+      --primary-dark: #ea580c;
+      --secondary: #fb923c;
+      --accent: #fdba74;
+      --bg-dark: #0a0a0a;
+      --bg-card: #171717;
+      --bg-card-hover: #262626;
       --text-primary: #ffffff;
-      --text-secondary: #a1a1aa;
-      --text-muted: #71717a;
+      --text-secondary: #a3a3a3;
+      --text-muted: #737373;
       --border: rgba(255,255,255,0.1);
-      --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
-      --gradient-2: linear-gradient(135deg, #f472b6 0%, #a78bfa 50%, #6366f1 100%);
+      --gradient-1: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
+      --gradient-2: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
     }
 
     * {
@@ -44,7 +44,7 @@
       background: var(--bg-dark);
     }
 
-    /* 背景动画 */
+    /* 背景 - 纯深色 */
     .bg-animation {
       position: fixed;
       top: 0;
@@ -52,27 +52,7 @@
       z-index: -1;
       width: 100%;
       height: 100%;
-      overflow: hidden;
-    }
-
-    .bg-animation::before {
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      content: '';
-      background: 
-        radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
-      animation: bgMove 20s ease-in-out infinite;
-    }
-
-    @keyframes bgMove {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      33% { transform: translate(2%, 2%) rotate(120deg); }
-      66% { transform: translate(-2%, 1%) rotate(240deg); }
+      background: var(--bg-dark);
     }
 
     /* 导航 */
@@ -83,7 +63,7 @@
       left: 0;
       z-index: 1000;
       padding: 1rem 2rem;
-      background: rgba(15, 15, 35, 0.8);
+      background: rgba(10, 10, 10, 0.8);
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(20px);
       transition: all 0.3s ease;
@@ -91,7 +71,7 @@
 
     nav.scrolled {
       padding: 0.75rem 2rem;
-      background: rgba(15, 15, 35, 0.95);
+      background: rgba(10, 10, 10, 0.95);
     }
 
     .nav-container {
@@ -113,14 +93,26 @@
     }
 
     .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .logo-text {
       display: flex;
+      gap: 0.5rem;
       align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      font-size: 1.25rem;
-      background: var(--gradient-1);
-      border-radius: 12px;
+    }
+
+    .logo-beta {
+      padding: 0.15rem 0.5rem;
+      font-size: 0.625rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
     }
 
     .nav-links {
@@ -186,12 +178,23 @@
     .btn-primary {
       color: white;
       background: var(--gradient-1);
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
     }
 
     .btn-primary:hover {
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.5);
       transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      color: var(--text-primary);
+      background: transparent;
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-card);
+      border-color: var(--primary);
     }
 
     .btn-large {
@@ -211,15 +214,18 @@
     }
 
     .hero-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      display: flex;
+      flex-direction: column;
       align-items: center;
       width: 100%;
       max-width: 1200px;
+      text-align: center;
     }
 
     .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       animation: fadeInUp 1s ease;
     }
 
@@ -239,20 +245,19 @@
       gap: 0.5rem;
       align-items: center;
       padding: 0.5rem 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       font-size: 0.875rem;
-      color: var(--text-secondary);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      color: var(--secondary);
+      background: rgba(249, 115, 22, 0.1);
+      border: 1px solid rgba(249, 115, 22, 0.2);
       border-radius: 50px;
     }
 
     .badge-dot {
-      width: 8px;
-      height: 8px;
-      background: #22c55e;
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
       border-radius: 50%;
-      animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
@@ -262,26 +267,24 @@
 
     .hero h1 {
       margin-bottom: 1.5rem;
-      font-size: 3.5rem;
+      font-size: 4rem;
       font-weight: 700;
       line-height: 1.1;
-      -webkit-text-fill-color: transparent;
-      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
+      color: var(--text-primary);
     }
 
-    .hero h1 span {
+    .hero h1 .highlight {
       -webkit-text-fill-color: transparent;
-      background: var(--gradient-1);
+      background: var(--gradient-2);
       -webkit-background-clip: text;
       background-clip: text;
     }
 
     .hero-description {
-      max-width: 500px;
-      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-bottom: 2.5rem;
       font-size: 1.25rem;
+      line-height: 1.6;
       color: var(--text-secondary);
     }
 
@@ -289,67 +292,27 @@
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
+      justify-content: center;
+      margin-bottom: 3rem;
     }
 
-    .hero-stats {
+    .hero-features {
       display: flex;
-      gap: 2rem;
-      padding-top: 2rem;
-      margin-top: 3rem;
-      border-top: 1px solid var(--border);
+      gap: 3rem;
+      justify-content: center;
     }
 
-    .stat {
-      text-align: center;
+    .hero-feature {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
     }
 
-    .stat-value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .stat-label {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-    }
-
-    .hero-visual {
-      position: relative;
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-20px); }
-    }
-
-    .hero-image {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: 
-        0 25px 50px -12px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.1);
-    }
-
-    .hero-glow {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: -1;
-      width: 120%;
-      height: 120%;
-      background: var(--gradient-1);
-      opacity: 0.3;
-      filter: blur(100px);
-      transform: translate(-50%, -50%);
-      animation: glowPulse 4s ease-in-out infinite;
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-      50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
+    .hero-feature-icon {
+      font-size: 1.1rem;
+      color: var(--primary);
     }
 
     /* Features Section */
@@ -467,23 +430,30 @@
     }
 
     .download-card:hover {
-      border-color: rgba(99, 102, 241, 0.3);
+      background: var(--gradient-1);
+      border-color: transparent;
       transform: translateY(-5px);
     }
 
-    .download-card.featured {
-      background: var(--gradient-1);
-      border: none;
-    }
-
-    .download-card.featured h3,
-    .download-card.featured p {
+    .download-card:hover h3,
+    .download-card:hover p {
       color: white;
     }
 
     .download-icon {
-      margin-bottom: 1rem;
-      font-size: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .download-card:hover .download-icon {
+      background: rgba(255,255,255,0.15);
     }
 
     .download-card h3 {
@@ -503,51 +473,188 @@
       width: 100%;
     }
 
-    /* Screenshots Section */
-    .screenshots {
+    /* Screenshot Gallery Section */
+    .screenshot-gallery {
       padding: 6rem 2rem;
-    }
-
-    .screenshots-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-      gap: 2rem;
-      margin-top: 3rem;
-    }
-
-    .screenshot-item {
-      position: relative;
       overflow: hidden;
+    }
+
+    .gallery-row {
+      position: relative;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+      );
+    }
+
+    .gallery-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .gallery-track {
+      display: flex;
+      gap: 1.5rem;
+      width: max-content;
+      will-change: transform;
+    }
+
+    /* 上排向左滚动 */
+    .gallery-track-left {
+      animation: scroll-left 30s linear infinite;
+    }
+
+    /* 下排向右滚动 */
+    .gallery-track-right {
+      animation: scroll-right 25s linear infinite;
+    }
+
+    /* Hover 时暂停滚动 */
+    .gallery-row:hover .gallery-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes scroll-right {
+      0% {
+        transform: translateX(-50%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    .gallery-item {
+      position: relative;
+      flex-shrink: 0;
+      width: 400px;
+      overflow: hidden;
+      background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      transition: all 0.3s ease;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .screenshot-item:hover {
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      transform: scale(1.02);
+    .gallery-item:hover {
+      z-index: 10;
+      border-color: rgba(99, 102, 241, 0.5);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(99, 102, 241, 0.3);
+      transform: scale(1.05);
     }
 
-    .screenshot-item img {
+    .gallery-item img {
       display: block;
       width: 100%;
       height: auto;
+      transition: transform 0.4s ease;
     }
 
-    .screenshot-label {
+    .gallery-item:hover img {
+      transform: scale(1.02);
+    }
+
+    .gallery-item-label {
       position: absolute;
       right: 0;
       bottom: 0;
       left: 0;
-      padding: 1.5rem;
+      padding: 1rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      background: linear-gradient(transparent, rgba(15, 15, 35, 0.95) 80%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-item-label {
+      opacity: 1;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+      .gallery-item {
+        width: 280px;
+      }
+      
+      .gallery-track-left {
+        animation-duration: 20s;
+      }
+      
+      .gallery-track-right {
+        animation-duration: 18s;
+      }
+    }
+
+    /* FAQ Section */
+    .faq {
+      padding: 6rem 2rem;
+      background: var(--bg-card);
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 3rem auto 0;
+    }
+
+    .faq-item {
+      padding: 2rem;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(249, 115, 22, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .faq-item h3 {
+      margin-bottom: 1rem;
+      font-size: 1.125rem;
       font-weight: 600;
-      background: linear-gradient(transparent, rgba(15, 15, 35, 0.95));
+      color: var(--text-primary);
+    }
+
+    .faq-item p {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* Tech Stack */
     .tech-stack {
       padding: 6rem 2rem;
-      background: var(--bg-card);
+      background: var(--bg-dark);
     }
 
     .tech-grid {
@@ -672,6 +779,11 @@
         font-size: 2.5rem;
       }
 
+      .hero-features {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
       .hero-description {
         margin-right: auto;
         margin-left: auto;
@@ -679,14 +791,6 @@
 
       .hero-buttons {
         justify-content: center;
-      }
-
-      .hero-stats {
-        justify-content: center;
-      }
-
-      .hero-visual {
-        order: -1;
       }
 
       .nav-links,
@@ -702,9 +806,6 @@
         grid-template-columns: 1fr;
       }
 
-      .screenshots-grid {
-        grid-template-columns: 1fr;
-      }
     }
 
     /* Scroll animations */
@@ -728,17 +829,25 @@
   <nav id="navbar">
     <div class="nav-container">
       <a href="#" class="logo">
-        <div class="logo-icon">📋</div>
-        <span>ClipVault</span>
+        <img src="logo.png" alt="ClipVault" class="logo-icon" style="width: 36px; height: 36px; border-radius: 10px;">
+        <div class="logo-text">
+          <span>ClipVault</span>
+          <span class="logo-beta">BETA</span>
+        </div>
       </a>
       <ul class="nav-links">
-        <li><a href="#features">特性</a></li>
+        <li><a href="#features">功能</a></li>
+        <li><a href="#gallery">演示</a></li>
         <li><a href="#download">下载</a></li>
-        <li><a href="#screenshots">截图</a></li>
-        <li><a href="#sponsor">赞助</a></li>
+        <li><a href="#faq">FAQ</a></li>
       </ul>
       <div class="nav-cta">
-        <a href="https://github.com/monkey-wenjun/ClipVault" class="btn btn-secondary" target="_blank">GitHub</a>
+        <a href="https://github.com/monkey-wenjun/ClipVault" class="btn btn-outline" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px; vertical-align: middle;">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          GitHub
+        </a>
         <a href="#download" class="btn btn-primary">立即下载</a>
       </div>
       <button type="button" class="mobile-menu-btn">☰</button>
@@ -751,37 +860,36 @@
       <div class="hero-content">
         <div class="badge">
           <span class="badge-dot"></span>
-          v1.0.0-beta.1 现已发布
+          v1.0.0-beta.4 已发布
         </div>
-        <h1>剪切板+ <span>图床管理工具</span></h1>
+        <h1>你的剪贴板，<br><span class="highlight">从此安全无忧</span></h1>
         <p class="hero-description">
-          一款现代化的剪切板管理工具，支持图床上传、加密同步、自定义标签。
-          Windows / macOS / Linux 全平台支持。
+          基于 Rust 构建的跨平台剪贴板管理神器。<br>
+          AES 加密同步 + 内置图床，让复制粘贴变得安全又强大。
         </p>
         <div class="hero-buttons">
-          <a href="#download" class="btn btn-primary btn-large">免费下载</a>
-          <a href="https://github.com/monkey-wenjun/ClipVault" class="btn btn-secondary btn-large" target="_blank">
-            <span>⭐ Star on GitHub</span>
+          <a href="#download" class="btn btn-primary btn-large">
+            免费下载
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 8px; vertical-align: middle;">
+              <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
           </a>
+          <a href="https://github.com/monkey-wenjun/ClipVault" class="btn btn-outline btn-large" target="_blank">查看源码</a>
         </div>
-        <div class="hero-stats">
-          <div class="stat">
-            <div class="stat-value">3</div>
-            <div class="stat-label">支持平台</div>
+        <div class="hero-features">
+          <div class="hero-feature">
+            <span class="hero-feature-icon">🛡️</span>
+            <span>AES 加密</span>
           </div>
-          <div class="stat">
-            <div class="stat-value">6+</div>
-            <div class="stat-label">图床提供商</div>
+          <div class="hero-feature">
+            <span class="hero-feature-icon">⚡</span>
+            <span>极速同步</span>
           </div>
-          <div class="stat">
-            <div class="stat-value">AES</div>
-            <div class="stat-label">加密同步</div>
+          <div class="hero-feature">
+            <span class="hero-feature-icon">💻</span>
+            <span>跨平台</span>
           </div>
         </div>
-      </div>
-      <div class="hero-visual">
-        <div class="hero-glow"></div>
-        <img src="https://file.awen.me/clip_1772695934945_i18agr.png" alt="ClipVault 主界面" class="hero-image">
       </div>
     </div>
   </section>
@@ -838,6 +946,86 @@
     </div>
   </section>
 
+  <!-- Screenshot Gallery Section -->
+  <section class="screenshot-gallery" id="gallery">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2>界面一览</h2>
+        <p>简洁优雅的设计，深色与浅色主题随心切换</p>
+      </div>
+      
+      <!-- 上排：亮色主题 - 向左滚动 -->
+      <div class="gallery-row gallery-row-light">
+        <div class="gallery-track gallery-track-left">
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205641_363.png" alt="通用设置">
+            <div class="gallery-item-label">通用设置</div>
+          </div>
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205627_789.png" alt="剪贴板设置">
+            <div class="gallery-item-label">剪贴板设置</div>
+          </div>
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205615_525.png" alt="快捷键">
+            <div class="gallery-item-label">快捷键</div>
+          </div>
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205554_304.png" alt="关于页面">
+            <div class="gallery-item-label">关于页面</div>
+          </div>
+          <!-- 复制一份用于无限循环 -->
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205641_363.png" alt="通用设置">
+            <div class="gallery-item-label">通用设置</div>
+          </div>
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205627_789.png" alt="剪贴板设置">
+            <div class="gallery-item-label">剪贴板设置</div>
+          </div>
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205615_525.png" alt="快捷键">
+            <div class="gallery-item-label">快捷键</div>
+          </div>
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205554_304.png" alt="关于页面">
+            <div class="gallery-item-label">关于页面</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 下排：暗色主题 - 向右滚动 -->
+      <div class="gallery-row gallery-row-dark">
+        <div class="gallery-track gallery-track-right">
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205354_271.png" alt="主界面">
+            <div class="gallery-item-label">主界面</div>
+          </div>
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205310_241.png" alt="图床设置">
+            <div class="gallery-item-label">图床设置</div>
+          </div>
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205202_577.png" alt="关于页面">
+            <div class="gallery-item-label">关于页面</div>
+          </div>
+          <!-- 复制一份用于无限循环 -->
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205354_271.png" alt="主界面">
+            <div class="gallery-item-label">主界面</div>
+          </div>
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205310_241.png" alt="图床设置">
+            <div class="gallery-item-label">图床设置</div>
+          </div>
+          <div class="gallery-item">
+            <img src="../images/ScreenShot_2026-03-06_205202_577.png" alt="关于页面">
+            <div class="gallery-item-label">关于页面</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Download Section -->
   <section class="download" id="download">
     <div class="container">
@@ -846,71 +1034,33 @@
         <p>支持 Windows、macOS、Linux 三大主流平台，总有一款适合你</p>
       </div>
       <div class="download-grid">
-        <div class="download-card featured animate-on-scroll">
-          <div class="download-icon">🪟</div>
+        <div class="download-card animate-on-scroll">
+          <div class="download-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 48px; height: 48px;">
+              <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+            </svg>
+          </div>
           <h3>Windows</h3>
           <p>Windows 10/11 64位</p>
-          <a href="https://github.com/monkey-wenjun/ClipVault/releases/latest" class="btn btn-primary" target="_blank">下载 .exe</a>
+          <a href="https://github.com/monkey-wenjun/ClipVault/releases/latest" class="btn btn-secondary" target="_blank">下载 .exe</a>
         </div>
         <div class="download-card animate-on-scroll">
-          <div class="download-icon">🍎</div>
+          <div class="download-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 48px; height: 48px;">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+          </div>
           <h3>macOS</h3>
           <p>Intel / Apple Silicon</p>
           <a href="https://github.com/monkey-wenjun/ClipVault/releases/latest" class="btn btn-secondary" target="_blank">下载 .dmg</a>
         </div>
         <div class="download-card animate-on-scroll">
-          <div class="download-icon">🐧</div>
+          <div class="download-icon">
+            <img src="tux.png" alt="Linux" style="width: 48px; height: 48px; object-fit: contain;">
+          </div>
           <h3>Linux</h3>
           <p>AppImage / deb / rpm</p>
           <a href="https://github.com/monkey-wenjun/ClipVault/releases/latest" class="btn btn-secondary" target="_blank">下载</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Screenshots Section -->
-  <section class="screenshots" id="screenshots">
-    <div class="container">
-      <div class="section-header animate-on-scroll">
-        <h2>界面预览</h2>
-        <p>直观优雅的用户界面，让每一次操作都是一种享受</p>
-      </div>
-      <div class="screenshots-grid">
-        <div class="screenshot-item animate-on-scroll">
-          <img src="https://file.awen.me/clip_1772695934945_i18agr.png" alt="主界面">
-          <div class="screenshot-label">主界面 - 现代化 Win11 风格设计</div>
-        </div>
-        <div class="screenshot-item animate-on-scroll">
-          <img src="https://file.awen.me/clip_1772695815202_udwkrt.png" alt="图床配置">
-          <div class="screenshot-label">图床配置 - 支持阿里云/七牛云/腾讯云等</div>
-        </div>
-        <div class="screenshot-item animate-on-scroll">
-          <img src="https://file.awen.me/clip_1772695833427_42ihqy.png" alt="图床配置2">
-          <div class="screenshot-label">图床上传 - 一键上传到云端</div>
-        </div>
-        <div class="screenshot-item animate-on-scroll">
-          <img src="https://file.awen.me/clip_1772695856251_0eiazb.png" alt="标签管理">
-          <div class="screenshot-label">标签管理 - 自定义分类</div>
-        </div>
-        <div class="screenshot-item animate-on-scroll">
-          <img src="https://file.awen.me/clip_1772695883261_mbv5py.png" alt="标签管理2">
-          <div class="screenshot-label">标签筛选 - 快速查找内容</div>
-        </div>
-        <div class="screenshot-item animate-on-scroll">
-          <img src="https://file.awen.me/clip_1772695988211_6wn0wt.png" alt="AES-256 加密">
-          <div class="screenshot-label">AES-256 端到端加密同步</div>
-        </div>
-        <div class="screenshot-item animate-on-scroll">
-          <img src="https://file.awen.me/clip_1772695907672_2w4fu9.png" alt="设置界面">
-          <div class="screenshot-label">设置界面 - 丰富的个性化选项</div>
-        </div>
-        <div class="screenshot-item animate-on-scroll">
-          <img src="https://file.awen.me/clip_1772696042128_c1cn4m.png" alt="深色模式">
-          <div class="screenshot-label">深色模式 - 自动跟随系统主题</div>
-        </div>
-        <div class="screenshot-item animate-on-scroll">
-          <img src="https://file.awen.me/clip_1772696070875_4b52xr.png" alt="多语言">
-          <div class="screenshot-label">多语言支持 - 简中/繁中/英文/日文</div>
         </div>
       </div>
     </div>
@@ -958,6 +1108,34 @@
       <p style="margin-top: 2rem; color: var(--text-secondary);">
         你的支持将用于：☕️ 买杯咖啡保持开发动力 | 🚀 服务器和域名费用 | 💡 持续开发新功能
       </p>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2>常见问题</h2>
+        <p>关于 ClipVault 你可能想知道的问题</p>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item animate-on-scroll">
+          <h3>ClipVault 支持哪些平台？</h3>
+          <p>ClipVault 支持 Windows 10/11、macOS（Intel/Apple Silicon）和 Linux（AppImage/deb/rpm），实现全平台覆盖。</p>
+        </div>
+        <div class="faq-item animate-on-scroll">
+          <h3>数据同步是否安全？</h3>
+          <p>是的，ClipVault 使用 AES-256 端到端加密，您的数据在离开设备前就已经加密，即使云盘提供商也无法读取您的数据。</p>
+        </div>
+        <div class="faq-item animate-on-scroll">
+          <h3>支持哪些图床？</h3>
+          <p>目前支持阿里云 OSS、七牛云、腾讯云 COS、AWS S3、GitHub、Gitee 等多种图床，后续会继续添加更多支持。</p>
+        </div>
+        <div class="faq-item animate-on-scroll">
+          <h3>如何排除特定应用？</h3>
+          <p>在偏好设置中，您可以添加需要排除的应用名称（如密码管理器），从这些应用复制的内容将不会被记录。</p>
+        </div>
+      </div>
     </div>
   </section>
 
