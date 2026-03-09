@@ -1,7 +1,8 @@
-import { useReactive } from "ahooks";
+import { useReactive, useUpdateEffect } from "ahooks";
 import { isString } from "es-toolkit";
 import { unionBy } from "es-toolkit/compat";
 import { useContext, useEffect } from "react";
+import { useSnapshot } from "valtio";
 import { LISTEN_KEY } from "@/constants";
 import { selectHistory } from "@/database/history";
 import { selectHistoryByTagId } from "@/database/tag";
@@ -17,6 +18,7 @@ interface Options {
 export const useHistoryList = (options: Options) => {
   const { scrollToTop } = options;
   const { rootState } = useContext(MainContext);
+  const snapshot = useSnapshot(tagStore);
   const state = useReactive({
     loading: false,
     noMore: false,
@@ -24,7 +26,12 @@ export const useHistoryList = (options: Options) => {
     size: 20,
   });
 
-  const fetchData = async () => {
+  // 直接根据当前状态获取数据的函数
+  const fetchData = async (
+    currentGroup = snapshot.group,
+    currentTagId = snapshot.selectedTagId,
+    search = rootState.search,
+  ) => {
     try {
       if (state.loading) return;
 
@@ -33,25 +40,24 @@ export const useHistoryList = (options: Options) => {
       const { page } = state;
 
       // 如果是标签筛选，需要特殊处理
-      const { selectedTagId } = tagStore;
       let historyIds: string[] = [];
 
-      if (selectedTagId) {
-        const results = await selectHistoryByTagId(selectedTagId);
+      if (currentTagId) {
+        const results = await selectHistoryByTagId(currentTagId);
         historyIds = results.map((r) => r.historyId);
       }
 
+      const isFavoriteGroup = currentGroup === "favorite";
+      const isNormalGroup =
+        currentGroup !== "all" && !isFavoriteGroup && !currentTagId;
+      const isTagGroup = !!currentTagId;
+
       const list = await selectHistory((qb) => {
         const { size } = state;
-        const { group, search } = rootState;
-        const isFavoriteGroup = group === "favorite";
-        const isNormalGroup =
-          group !== "all" && !isFavoriteGroup && !selectedTagId;
-        const isTagGroup = !!selectedTagId;
 
         return qb
           .$if(isFavoriteGroup, (eb) => eb.where("favorite", "=", true))
-          .$if(isNormalGroup, (eb) => eb.where("group", "=", group))
+          .$if(isNormalGroup, (eb) => eb.where("group", "=", currentGroup))
           .$if(isTagGroup && historyIds.length > 0, (eb) =>
             eb.where("id", "in", historyIds),
           )
@@ -82,21 +88,15 @@ export const useHistoryList = (options: Options) => {
       state.noMore = list.length === 0;
 
       if (page === 1) {
-        // 合并时优先保留内存中的数据（新添加的），但确保新查询的数据也包含
-        // 使用 reverse + unionBy 确保新数据在前
-        const merged = unionBy(rootState.list, list, "id");
-        // 按创建时间排序（最新的在前）
-        merged.sort(
-          (a, b) =>
-            new Date(b.createTime).getTime() - new Date(a.createTime).getTime(),
-        );
-        rootState.list = merged;
+        // 第一页直接替换，避免切换标签/搜索时旧数据干扰
+        rootState.list = list;
 
         if (state.noMore) return;
 
         return scrollToTop();
       }
 
+      // 加载更多时合并数据
       const merged = unionBy(rootState.list, list, "id");
       merged.sort(
         (a, b) =>
@@ -112,7 +112,8 @@ export const useHistoryList = (options: Options) => {
     state.page = 1;
     state.noMore = false;
 
-    return fetchData();
+    // 直接传入当前最新值
+    return fetchData(snapshot.group, snapshot.selectedTagId, rootState.search);
   };
 
   const loadMore = () => {
@@ -120,20 +121,32 @@ export const useHistoryList = (options: Options) => {
 
     state.page += 1;
 
-    fetchData();
+    fetchData(snapshot.group, snapshot.selectedTagId, rootState.search);
   };
 
   useTauriListen(LISTEN_KEY.REFRESH_CLIPBOARD_LIST, reload);
 
-  // 切换选项卡或搜索时重新加载
+  // 初始加载
   useEffect(() => {
+    reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 切换选项卡或标签时重新加载
+  useUpdateEffect(() => {
     // 清空选中状态，保留列表避免闪烁，立即重新加载
     rootState.selectedIds = [];
 
     reload();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rootState.group, rootState.search, tagStore.selectedTagId]);
+  }, [snapshot.group, snapshot.selectedTagId]);
+
+  // 搜索单独处理，避免频繁触发
+  useUpdateEffect(() => {
+    rootState.selectedIds = [];
+    reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rootState.search]);
 
   return {
     loadMore,

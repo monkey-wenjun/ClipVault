@@ -217,14 +217,22 @@ error: failed to run custom build command for `openssl-sys v0.9.x`
 - name: Install ARM cross-compile dependencies
   if: matrix.target == 'aarch64-unknown-linux-gnu'
   run: |
+    # 添加 ARM64 架构支持
     sudo dpkg --add-architecture arm64
-    # 切换 apt 源到 ports.ubuntu.com
-    sudo sed -i 's|archive.ubuntu.com|ports.ubuntu.com/ubuntu-ports|g' /etc/apt/sources.list
-    sudo sed -i 's|security.ubuntu.com|ports.ubuntu.com/ubuntu-ports|g' /etc/apt/sources.list
+    
+    # 切换到 ports.ubuntu.com 源以获取 ARM64 软件包
+    sudo sed -i 's|http://archive.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
+    sudo sed -i 's|http://security.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
+    
     sudo apt-get update || true
+    
+    # 安装交叉编译工具链
     sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-    # 关键：安装 ARM64 OpenSSL 开发库
+    
+    # 安装 ARM64 架构的 OpenSSL 开发库
     sudo apt-get install -y libssl-dev:arm64 || true
+    
+    # 安装其他 ARM64 依赖库
     sudo apt-get install -y libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf || true
 ```
 
@@ -242,10 +250,14 @@ error: failed to run custom build command for `openssl-sys v0.9.x`
     echo "PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
     echo "PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig" >> $GITHUB_ENV
     echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
-    # 关键：OpenSSL 路径配置
+    # 关键：OpenSSL 路径配置（指向系统 ARM64 库位置）
     echo "OPENSSL_DIR=/usr" >> $GITHUB_ENV
     echo "OPENSSL_INCLUDE_DIR=/usr/include" >> $GITHUB_ENV
     echo "OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
+    # 同时设置目标特定的环境变量
+    echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_DIR=/usr" >> $GITHUB_ENV
+    echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_INCLUDE_DIR=/usr/include" >> $GITHUB_ENV
+    echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
 ```
 
 #### 3. 备选方案：使用 vendored OpenSSL
@@ -323,12 +335,22 @@ jobs:
       - name: Install ARM cross-compile dependencies
         if: matrix.target == 'aarch64-unknown-linux-gnu'
         run: |
+          # 添加 ARM64 架构支持
           sudo dpkg --add-architecture arm64
-          sudo sed -i 's|archive.ubuntu.com|ports.ubuntu.com/ubuntu-ports|g' /etc/apt/sources.list
-          sudo sed -i 's|security.ubuntu.com|ports.ubuntu.com/ubuntu-ports|g' /etc/apt/sources.list
+          
+          # 切换到 ports.ubuntu.com 源以获取 ARM64 软件包
+          sudo sed -i 's|http://archive.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
+          sudo sed -i 's|http://security.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
+          
           sudo apt-get update || true
+          
+          # 安装交叉编译工具链
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+          
+          # 安装 ARM64 架构的 OpenSSL 开发库
           sudo apt-get install -y libssl-dev:arm64 || true
+          
+          # 安装其他 ARM64 依赖库
           sudo apt-get install -y libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf || true
 
       - name: Rust cache
@@ -349,6 +371,9 @@ jobs:
           echo "OPENSSL_DIR=/usr" >> $GITHUB_ENV
           echo "OPENSSL_INCLUDE_DIR=/usr/include" >> $GITHUB_ENV
           echo "OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
+          echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_DIR=/usr" >> $GITHUB_ENV
+          echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_INCLUDE_DIR=/usr/include" >> $GITHUB_ENV
+          echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0

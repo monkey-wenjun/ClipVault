@@ -1,13 +1,12 @@
 import { useBoolean, useKeyPress, useMount } from "ahooks";
 import clsx from "clsx";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 import { PRESET_COLORS } from "@/components/TagSelector";
 import { addTag, loadTags, tagStore } from "@/stores/tag";
 import type { DatabaseSchemaGroup, DatabaseSchemaTag } from "@/types/database";
 import { scrollElementToCenter } from "@/utils/dom";
-import { MainContext } from "../..";
 import styles from "./index.module.scss";
 
 // 预设颜色（循环使用）
@@ -16,9 +15,8 @@ const getRandomColor = () => {
 };
 
 const GroupList = () => {
-  const { rootState } = useContext(MainContext);
   const { t } = useTranslation();
-  const { tags, selectedTagId } = useSnapshot(tagStore);
+  const { tags, selectedTagId, group } = useSnapshot(tagStore);
   const [isAdding, { setTrue: startAdding, setFalse: stopAdding }] =
     useBoolean(false);
   const [newTagName, setNewTagName] = useState("");
@@ -30,8 +28,8 @@ const GroupList = () => {
   });
 
   useEffect(() => {
-    scrollElementToCenter(rootState.group);
-  }, [rootState.group]);
+    scrollElementToCenter(group);
+  }, [group]);
 
   // 当开始添加时，聚焦输入框
   useEffect(() => {
@@ -74,11 +72,11 @@ const GroupList = () => {
       ...presetGroups,
       ...tags.map((t) => ({ ...t, icon: "🏷️" })),
     ];
-    const index = allItems.findIndex((item) => item.id === rootState.group);
+    const index = allItems.findIndex((item) => item.id === group);
     const length = allItems.length;
     const nextIndex = index === 0 ? length - 1 : index - 1;
     const nextGroup = allItems[nextIndex];
-    rootState.group = nextGroup.id;
+    tagStore.group = nextGroup.id;
     if ("color" in nextGroup) {
       tagStore.selectedTagId = nextGroup.id;
     } else {
@@ -91,11 +89,11 @@ const GroupList = () => {
       ...presetGroups,
       ...tags.map((t) => ({ ...t, icon: "🏷️" })),
     ];
-    const index = allItems.findIndex((item) => item.id === rootState.group);
+    const index = allItems.findIndex((item) => item.id === group);
     const length = allItems.length;
     const nextIndex = index === length - 1 ? 0 : index + 1;
     const nextGroup = allItems[nextIndex];
-    rootState.group = nextGroup.id;
+    tagStore.group = nextGroup.id;
     if ("color" in nextGroup) {
       tagStore.selectedTagId = nextGroup.id;
     } else {
@@ -104,12 +102,12 @@ const GroupList = () => {
   });
 
   const handlePresetGroupClick = (id: string) => {
-    rootState.group = id;
+    tagStore.group = id;
     tagStore.selectedTagId = null;
   };
 
   const handleTagClick = (tag: DatabaseSchemaTag) => {
-    rootState.group = "tag";
+    tagStore.group = "tag";
     tagStore.selectedTagId = tag.id;
   };
 
@@ -137,7 +135,7 @@ const GroupList = () => {
 
     // 选中新创建的标签
     tagStore.selectedTagId = newTagId;
-    rootState.group = "tag";
+    tagStore.group = "tag";
 
     setNewTagName("");
     stopAdding();
@@ -167,7 +165,7 @@ const GroupList = () => {
       {/* 预设分组 */}
       {presetGroups.map((item) => {
         const { id, name, icon } = item;
-        const isActive = id === rootState.group && !selectedTagId;
+        const isActive = id === group && !selectedTagId;
 
         return (
           <button

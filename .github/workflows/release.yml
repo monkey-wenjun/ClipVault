@@ -97,64 +97,29 @@ jobs:
       - name: Install ARM cross-compile dependencies (ubuntu only)
         if: matrix.target == 'aarch64-unknown-linux-gnu'
         run: |
-          sudo apt-get update
+          # 添加 ARM64 架构支持
+          sudo dpkg --add-architecture arm64
+          
+          # 切换到 ports.ubuntu.com 源以获取 ARM64 软件包
+          sudo sed -i 's|http://archive.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
+          sudo sed -i 's|http://security.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
+          
+          sudo apt-get update || true
+          
           # 安装交叉编译工具链
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-          # 安装 OpenSSL 开发包 (用于头文件和库)
-          sudo apt-get install -y libssl-dev
           
-          # 查找系统上所有的 OpenSSL 相关文件
-          echo "=== Searching for OpenSSL files ==="
-          find /usr -name "opensslconf.h" 2>/dev/null
-          find /usr -name "configuration.h" 2>/dev/null
-          find /usr -name "libssl.so*" 2>/dev/null
-          find /usr -name "libcrypto.so*" 2>/dev/null
+          # 安装 ARM64 架构的 OpenSSL 开发库
+          sudo apt-get install -y libssl-dev:arm64 || true
           
-          # 创建交叉编译目录结构
-          sudo mkdir -p /usr/aarch64-linux-gnu/include/openssl
-          sudo mkdir -p /usr/aarch64-linux-gnu/lib
+          # 安装其他 ARM64 依赖库
+          sudo apt-get install -y libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf || true
           
-          # 方法1: 尝试使用 pkg-config 获取正确的路径
-          PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig pkg-config --cflags openssl 2>/dev/null || true
-          PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig pkg-config --libs openssl 2>/dev/null || true
-          
-          # 方法2: 手动设置 - 复制所有 OpenSSL 头文件
-          # 首先复制主头文件目录
-          if [ -d /usr/include/openssl ]; then
-            sudo cp -r /usr/include/openssl/* /usr/aarch64-linux-gnu/include/openssl/
-            echo "Copied main OpenSSL headers"
-          fi
-          
-          # 查找并复制架构特定的头文件 (包括 configuration.h)
-          # 这些文件可能在不同位置
-          for arch_dir in x86_64-linux-gnu aarch64-linux-gnu; do
-            if [ -d /usr/include/$arch_dir/openssl ]; then
-              echo "Copying arch-specific headers from /usr/include/$arch_dir/openssl/"
-              sudo cp -r /usr/include/$arch_dir/openssl/* /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || true
-            fi
-          done
-          
-          # 查找并复制任何生成的 configuration.h
-          for conf_file in $(find /usr -name "configuration.h" -path "*openssl*" 2>/dev/null); do
-            echo "Found configuration.h at: $conf_file"
-            sudo cp "$conf_file" /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || true
-          done
-          
-          # 复制库文件
-          if [ -d /usr/lib/aarch64-linux-gnu ]; then
-            sudo cp /usr/lib/aarch64-linux-gnu/libssl.so* /usr/aarch64-linux-gnu/lib/ 2>/dev/null || true
-            sudo cp /usr/lib/aarch64-linux-gnu/libcrypto.so* /usr/aarch64-linux-gnu/lib/ 2>/dev/null || true
-          fi
-          
-          # 验证关键文件
-          echo "=== Verifying OpenSSL setup ==="
-          echo "Headers in /usr/aarch64-linux-gnu/include/openssl/:"
-          ls -la /usr/aarch64-linux-gnu/include/openssl/ 2>/dev/null || echo "Directory empty or not found"
-          
-          echo "Checking for critical files:"
-          ls -la /usr/aarch64-linux-gnu/include/openssl/opensslconf.h 2>/dev/null || echo "opensslconf.h missing!"
-          ls -la /usr/aarch64-linux-gnu/include/openssl/configuration.h 2>/dev/null || echo "configuration.h missing!"
-          ls -la /usr/aarch64-linux-gnu/include/openssl/opensslv.h 2>/dev/null || echo "opensslv.h missing!"
+          # 验证 OpenSSL ARM64 库文件
+          echo "=== Verifying OpenSSL ARM64 libraries ==="
+          ls -la /usr/lib/aarch64-linux-gnu/libssl* 2>/dev/null || echo "Warning: libssl not found"
+          ls -la /usr/lib/aarch64-linux-gnu/libcrypto* 2>/dev/null || echo "Warning: libcrypto not found"
+          ls -la /usr/include/aarch64-linux-gnu/openssl/ 2>/dev/null || echo "Warning: ARM64 OpenSSL headers not found"
 
       # 使用 Rust 缓存，加快安装速度
       - name: Rust cache
@@ -187,16 +152,17 @@ jobs:
           echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
           echo "CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
           echo "CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++" >> $GITHUB_ENV
-          echo "PKG_CONFIG_SYSROOT_DIR=/" >> $GITHUB_ENV
+          # 设置 pkg-config 用于交叉编译
+          echo "PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
           echo "PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig" >> $GITHUB_ENV
           echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
-          # 设置 OpenSSL 环境变量 - 使用交叉编译目录结构
-          echo "OPENSSL_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
-          echo "OPENSSL_INCLUDE_DIR=/usr/aarch64-linux-gnu/include" >> $GITHUB_ENV
+          # 设置 OpenSSL 环境变量 - 指向系统 ARM64 库位置
+          echo "OPENSSL_DIR=/usr" >> $GITHUB_ENV
+          echo "OPENSSL_INCLUDE_DIR=/usr/include" >> $GITHUB_ENV
           echo "OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
           # 同时设置目标特定的环境变量
-          echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
-          echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_INCLUDE_DIR=/usr/aarch64-linux-gnu/include" >> $GITHUB_ENV
+          echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_DIR=/usr" >> $GITHUB_ENV
+          echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_INCLUDE_DIR=/usr/include" >> $GITHUB_ENV
           echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
 
       # 执行构建，以及推送 github release

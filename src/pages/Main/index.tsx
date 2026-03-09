@@ -23,10 +23,7 @@ import {
 import { clipboardStore } from "@/stores/clipboard";
 import { globalStore } from "@/stores/global";
 import { imageHostingStore } from "@/stores/imageHosting";
-import type {
-  DatabaseSchemaGroupId,
-  DatabaseSchemaHistory,
-} from "@/types/database";
+import type { DatabaseSchemaHistory } from "@/types/database";
 import type { Store } from "@/types/store";
 import { deepAssign } from "@/utils/object";
 import DockMode from "./components/DockMode";
@@ -38,7 +35,6 @@ interface EventBusPayload {
 }
 
 export interface State {
-  group: DatabaseSchemaGroupId;
   search?: string;
   pinned?: boolean;
   activeId?: string;
@@ -49,7 +45,6 @@ export interface State {
 }
 
 const INITIAL_STATE: State = {
-  group: "all",
   list: [],
   quickPasteKeys: [],
   selectedIds: [],

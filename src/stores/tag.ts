@@ -1,12 +1,17 @@
 import { proxy } from "valtio";
-import type { DatabaseSchemaTag } from "@/types/database";
+import type {
+  DatabaseSchemaGroupId,
+  DatabaseSchemaTag,
+} from "@/types/database";
 
 export interface TagStore {
   tags: DatabaseSchemaTag[];
   selectedTagId: string | null;
+  group: DatabaseSchemaGroupId;
 }
 
 export const tagStore = proxy<TagStore>({
+  group: "all",
   selectedTagId: null,
   tags: [],
 });
@@ -46,4 +51,14 @@ export const removeTag = async (id: string) => {
 
   await deleteTag(id);
   await loadTags();
+};
+
+// 设置当前分组
+export const setGroup = (group: DatabaseSchemaGroupId) => {
+  tagStore.group = group;
+};
+
+// 设置选中的标签
+export const setSelectedTagId = (id: string | null) => {
+  tagStore.selectedTagId = id;
 };
