@@ -1,6 +1,6 @@
 [package]
 name = "ClipVault"
-version = "1.0.0-beta.1"
+version = "1.0.6"
 description = "A powerful clipboard manager with sync and encryption"
 authors = []
 edition = "2021"
