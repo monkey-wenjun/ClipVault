@@ -4,7 +4,9 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 import TagBadge from "@/components/TagBadge";
-import { tagStore } from "@/stores/tag";
+import { LISTEN_KEY } from "@/constants";
+import { useTauriListen } from "@/hooks/useTauriListen";
+import { loadTags, tagStore } from "@/stores/tag";
 import styles from "./index.module.scss";
 
 // 预设颜色
@@ -49,11 +51,15 @@ const TagSelector = forwardRef<TagSelectorRef>((_, ref) => {
   // 加载标签
   useRequest(
     async () => {
-      const { loadTags } = await import("@/stores/tag");
       await loadTags();
     },
     { ready: open },
   );
+
+  // 监听标签变化事件（来自其他窗口）
+  useTauriListen(LISTEN_KEY.TAGS_CHANGED, () => {
+    loadTags();
+  });
 
   const handleToggleTag = async (tagId: string) => {
     const isSelected = selectedTagIds.includes(tagId);

@@ -32,6 +32,7 @@ export const LISTEN_KEY = {
   REFRESH_CLIPBOARD_LIST: "refresh-clipboard-list",
   SHOW_WINDOW: "show-window",
   STORE_CHANGED: "store-changed",
+  TAGS_CHANGED: "tags-changed",
   TOGGLE_LISTEN_CLIPBOARD: "toggle-listen-clipboard",
   UPDATE_APP: "update-app",
 };

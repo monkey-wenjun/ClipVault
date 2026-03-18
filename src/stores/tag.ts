@@ -1,4 +1,6 @@
+import { emit } from "@tauri-apps/api/event";
 import { proxy } from "valtio";
+import { LISTEN_KEY } from "@/constants";
 import type {
   DatabaseSchemaGroupId,
   DatabaseSchemaTag,
@@ -31,6 +33,9 @@ export const addTag = async (name: string, color: string) => {
   await insertTag({ color, createTime, id, name });
   await loadTags();
 
+  // 通知其他窗口标签已变化
+  emit(LISTEN_KEY.TAGS_CHANGED);
+
   return id;
 };
 
@@ -43,6 +48,9 @@ export const updateTag = async (
 
   await updateTagDb(id, updates);
   await loadTags();
+
+  // 通知其他窗口标签已变化
+  emit(LISTEN_KEY.TAGS_CHANGED);
 };
 
 // 删除标签
@@ -51,6 +59,9 @@ export const removeTag = async (id: string) => {
 
   await deleteTag(id);
   await loadTags();
+
+  // 通知其他窗口标签已变化
+  emit(LISTEN_KEY.TAGS_CHANGED);
 };
 
 // 设置当前分组

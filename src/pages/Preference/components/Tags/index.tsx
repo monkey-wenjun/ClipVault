@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 import ProList from "@/components/ProList";
+import { LISTEN_KEY } from "@/constants";
+import { useTauriListen } from "@/hooks/useTauriListen";
 import { addTag, loadTags, removeTag, tagStore, updateTag } from "@/stores/tag";
 import type { DatabaseSchemaTag } from "@/types/database";
 import styles from "./index.module.scss";
@@ -42,6 +44,11 @@ const Tags = () => {
       setLoading(false);
     };
     fetchTags();
+  });
+
+  // 监听标签变化事件（来自其他窗口）
+  useTauriListen(LISTEN_KEY.TAGS_CHANGED, () => {
+    loadTags();
   });
 
   const handleAdd = () => {

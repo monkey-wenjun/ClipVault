@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSnapshot } from "valtio";
 import { PRESET_COLORS } from "@/components/TagSelector";
+import { LISTEN_KEY } from "@/constants";
+import { useTauriListen } from "@/hooks/useTauriListen";
 import { addTag, loadTags, tagStore } from "@/stores/tag";
 import type { DatabaseSchemaGroup, DatabaseSchemaTag } from "@/types/database";
 import { scrollElementToCenter } from "@/utils/dom";
@@ -24,6 +26,11 @@ const GroupList = () => {
 
   // 加载标签
   useMount(() => {
+    loadTags();
+  });
+
+  // 监听标签变化事件（来自其他窗口）
+  useTauriListen(LISTEN_KEY.TAGS_CHANGED, () => {
     loadTags();
   });
 
