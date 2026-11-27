@@ -186,4 +186,7 @@ jobs:
           releaseBody: ""
           releaseDraft: false
           prerelease: false
-          args: --target ${{ matrix.target }}
+          # aarch64 交叉打包时 linuxdeploy 的 aarch64 版无法在 x86_64 主机上执行
+          # (Exec format error), 所以 ARM64 只出 deb/rpm —— 两者都是纯 Rust 打包,
+          # 不需要运行目标架构的程序。AppImage 仅提供 amd64。
+          args: --target ${{ matrix.target }} ${{ matrix.target == 'aarch64-unknown-linux-gnu' && '--bundles deb,rpm' || '' }}
