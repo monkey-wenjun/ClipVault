@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>me.awen.clipvault</id>
+  <name>ClipVault</name>
+  <summary>Clipboard manager with encrypted sync and image hosting</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>Apache-2.0</project_license>
+  <description>
+    <p>
+      ClipVault is a clipboard manager that keeps your copy history searchable
+      and at your fingertips, and uploads screenshots to your own image
+      hosting service with one click.
+    </p>
+    <ul>
+      <li>Clipboard history with tags, favorites and full-text search</li>
+      <li>AES-256 end-to-end encrypted sync through your own cloud drive</li>
+      <li>One-click upload of screenshots to image hosting services</li>
+      <li>Global shortcuts for quick paste and image upload</li>
+      <li>Exclude sensitive apps, such as password managers</li>
+      <li>Light and dark themes; user interface in English, Japanese and Chinese</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">ClipVault.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/monkey-wenjun/ClipVault/master/images/ScreenShot_2026-03-06_205202_577.png</image>
+      <caption>Main window with clipboard history</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/monkey-wenjun/ClipVault/master/images/ScreenShot_2026-03-06_205554_304.png</image>
+      <caption>Image hosting settings</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/monkey-wenjun/ClipVault/master/images/ScreenShot_2026-03-06_205615_525.png</image>
+      <caption>Encrypted sync settings</caption>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1" />
+  <releases>
+    <release version="1.0.6" date="2026-03-19" />
+    <release version="1.0.5" date="2026-03-09" />
+    <release version="1.0.0" date="2026-03-07" />
+  </releases>
+  <url type="homepage">https://github.com/monkey-wenjun/ClipVault</url>
+  <developer>
+    <name>monkey-wenjun</name>
+  </developer>
+  <provides>
+    <binary>ClipVault</binary>
+  </provides>
+</component>

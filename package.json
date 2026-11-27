@@ -79,7 +79,7 @@
 		"@iconify-json/lucide": "^1.2.70",
 		"@iconify-json/simple-icons": "^1.2.54",
 		"@iconify-json/skill-icons": "^1.2.3",
-		"@tauri-apps/cli": "^2.8.4",
+		"@tauri-apps/cli": "^2.12.6",
 		"@types/is-url": "^1.2.32",
 		"@types/node": "^22.18.11",
 		"@types/react": "^18.3.26",

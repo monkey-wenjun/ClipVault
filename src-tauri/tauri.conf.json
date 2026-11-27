@@ -57,6 +57,12 @@
   },
   "bundle": {
     "active": true,
+    "appimage": {
+      "files": {
+        "usr/share/metainfo/me.awen.clipvault.appdata.xml": "./me.awen.clipvault.appdata.xml"
+      }
+    },
+    "category": "Utility",
     "createUpdaterArtifacts": true,
     "icon": [
       "icons/32x32.png",
@@ -66,7 +72,7 @@
       "icons/icon.ico"
     ],
     "resources": ["assets/tray.ico"],
-    "shortDescription": "ClipVault",
+    "shortDescription": "Clipboard manager with encrypted sync and image hosting",
     "targets": ["nsis", "dmg", "app", "appimage", "deb", "rpm"]
   },
   "identifier": "me.awen.clipvault",
