@@ -12,13 +12,48 @@ import jaJP from "./ja-JP.json";
 import zhCN from "./zh-CN.json";
 import zhTW from "./zh-TW.json";
 
+/**
+ * 从系统语言里检测应用支持的界面语言
+ *
+ * 规则：中文 -> 简体/繁体；日文 -> 日文；其它（含 "C"、未知 locale）一律回退英文，
+ * 以保证非中文环境下默认展示英文界面。
+ * @param locales 系统 locale 列表（如 ["zh-CN", "en"]），缺省时取浏览器/WebView 的系统语言
+ */
+export const detectLanguage = (
+  ...locales: Array<string | null | undefined>
+): Language => {
+  const candidates = locales.length
+    ? locales
+    : [...(navigator.languages ?? []), navigator.language];
+
+  for (const locale of candidates) {
+    const lang = (locale ?? "").toLowerCase();
+
+    if (lang.startsWith("zh")) {
+      return ["tw", "hk", "hant"].some((region) => lang.includes(region))
+        ? LANGUAGE.ZH_TW
+        : LANGUAGE.ZH_CN;
+    }
+
+    if (lang.startsWith("ja")) {
+      return LANGUAGE.JA_JP;
+    }
+
+    if (lang.startsWith("en")) {
+      return LANGUAGE.EN_US;
+    }
+  }
+
+  return LANGUAGE.EN_US;
+};
+
 i18n.use(initReactI18next).init({
   debug: false,
-  fallbackLng: LANGUAGE.ZH_CN,
+  fallbackLng: LANGUAGE.EN_US,
   interpolation: {
     escapeValue: false,
   },
-  lng: LANGUAGE.ZH_CN,
+  lng: detectLanguage(),
   resources: {
     [LANGUAGE.ZH_CN]: {
       translation: zhCN,
@@ -37,7 +72,7 @@ i18n.use(initReactI18next).init({
 
 export { i18n };
 
-export const getAntdLocale = (language: Language = LANGUAGE.ZH_CN) => {
+export const getAntdLocale = (language: Language = detectLanguage()) => {
   const antdLanguage: Record<Language, AntdLocale> = {
     [LANGUAGE.ZH_CN]: antdZhCN,
     [LANGUAGE.ZH_TW]: antdZhTW,

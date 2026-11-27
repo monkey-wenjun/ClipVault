@@ -9,10 +9,11 @@ import {
 import { platform } from "@tauri-apps/plugin-os";
 import { omit } from "es-toolkit/compat";
 import { getLocale } from "tauri-plugin-locale-api";
+import { detectLanguage } from "@/locales";
 import { clipboardStore } from "@/stores/clipboard";
 import { globalStore } from "@/stores/global";
 import { imageHostingStore } from "@/stores/imageHosting";
-import type { Language, Store } from "@/types/store";
+import type { Store } from "@/types/store";
 import { deepAssign } from "./object";
 import { getSaveStorePath } from "./path";
 
@@ -20,7 +21,7 @@ import { getSaveStorePath } from "./path";
  * 初始化配置项
  */
 const initStore = async () => {
-  globalStore.appearance.language ??= await getLocale<Language>();
+  globalStore.appearance.language ??= detectLanguage(await getLocale<string>());
   globalStore.env.platform = platform();
   globalStore.env.appName = await getName();
   globalStore.env.appVersion = await getVersion();
