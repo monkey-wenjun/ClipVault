@@ -22,6 +22,7 @@
     "hints": {
       "delete_modal_content": "Are you sure you want to delete this?",
       "empty_hint": "Copy anything and it will show up here",
+      "empty_shortcut": "Quick paste: {{shortcut}}",
       "empty_title": "No clipboard history yet",
       "search_placeholder": "Search..."
     },

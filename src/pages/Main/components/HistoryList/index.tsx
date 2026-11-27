@@ -12,7 +12,9 @@ import { selectHistoryTagIds } from "@/database/tag";
 import { useHistoryList } from "@/hooks/useHistoryList";
 import { useKeyboard } from "@/hooks/useKeyboard";
 import { useTauriListen } from "@/hooks/useTauriListen";
+import { globalStore } from "@/stores/global";
 import type { DatabaseSchemaHistory } from "@/types/database";
+import { isMac } from "@/utils/is";
 import { MainContext } from "../..";
 import Item from "./components/Item";
 import NoteModal, { type NoteModalRef } from "./components/NoteModal";
@@ -319,6 +321,12 @@ const HistoryList = () => {
   // 直接使用 rootState.list，确保响应式更新
   const visibleItems = rootState.list.slice(0, 50);
 
+  // 空态里展示唤起快捷键（Windows/Linux 显示 Ctrl，macOS 显示 Cmd）
+  const shortcutHint = globalStore.shortcut.clipboard?.replace(
+    "CommandOrControl",
+    isMac ? "Cmd" : "Ctrl",
+  );
+
   return (
     <div className={styles.container}>
       <div
@@ -334,6 +342,13 @@ const HistoryList = () => {
             <div className={styles.emptyHint}>
               {t("clipboard.hints.empty_hint")}
             </div>
+            {shortcutHint && (
+              <div className={styles.emptyShortcut}>
+                {t("clipboard.hints.empty_shortcut", {
+                  shortcut: shortcutHint,
+                })}
+              </div>
+            )}
           </>
         ) : (
           visibleItems.map((item, index) => (
