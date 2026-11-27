@@ -21,6 +21,8 @@
     },
     "hints": {
       "delete_modal_content": "确定要删除此项吗？",
+      "empty_hint": "复制任意内容后会自动出现在这里",
+      "empty_title": "暂无剪贴板记录",
       "search_placeholder": "搜索"
     },
     "label": {

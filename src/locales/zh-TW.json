@@ -21,6 +21,8 @@
     },
     "hints": {
       "delete_modal_content": "確定要删除此項嗎？",
+      "empty_hint": "複製任意內容後會自動出現在這裡",
+      "empty_title": "暫無剪貼板記錄",
       "search_placeholder": "搜尋"
     },
     "label": {

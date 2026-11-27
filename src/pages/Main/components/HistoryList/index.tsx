@@ -321,29 +321,44 @@ const HistoryList = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.list} onClick={handleListClick} ref={scrollerRef}>
-        {visibleItems.map((item, index) => (
-          <div
-            className={clsx(styles.itemWrapper)}
-            data-item-index={index}
-            key={item.id}
-          >
-            <Item
-              data={item}
-              deleteModal={deleteModal}
-              handleNote={() => noteModelRef.current?.open(item.id)}
-              handlePreviewImage={() => {
-                setPreviewImage(item as DatabaseSchemaHistory<"image">);
-                setPreviewVisible(true);
-              }}
-              handleTag={() => handleTag(item.id)}
-              index={index}
-              isActive={rootState.activeId === item.id}
-              isSelected={selectedSet.has(item.id)}
-              search={rootState.search}
-            />
-          </div>
-        ))}
+      <div
+        className={clsx(styles.list, visibleItems.length === 0 && styles.empty)}
+        onClick={handleListClick}
+        ref={scrollerRef}
+      >
+        {visibleItems.length === 0 ? (
+          <>
+            <div className={styles.emptyTitle}>
+              {t("clipboard.hints.empty_title")}
+            </div>
+            <div className={styles.emptyHint}>
+              {t("clipboard.hints.empty_hint")}
+            </div>
+          </>
+        ) : (
+          visibleItems.map((item, index) => (
+            <div
+              className={clsx(styles.itemWrapper)}
+              data-item-index={index}
+              key={item.id}
+            >
+              <Item
+                data={item}
+                deleteModal={deleteModal}
+                handleNote={() => noteModelRef.current?.open(item.id)}
+                handlePreviewImage={() => {
+                  setPreviewImage(item as DatabaseSchemaHistory<"image">);
+                  setPreviewVisible(true);
+                }}
+                handleTag={() => handleTag(item.id)}
+                index={index}
+                isActive={rootState.activeId === item.id}
+                isSelected={selectedSet.has(item.id)}
+                search={rootState.search}
+              />
+            </div>
+          ))
+        )}
       </div>
 
       <NoteModal ref={noteModelRef} />

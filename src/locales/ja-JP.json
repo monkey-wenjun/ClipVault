@@ -21,6 +21,8 @@
     },
     "hints": {
       "delete_modal_content": "本当に削除しますか？",
+      "empty_hint": "何かをコピーするとここに表示されます",
+      "empty_title": "クリップボードの履歴はまだありません",
       "search_placeholder": "検索"
     },
     "label": {
