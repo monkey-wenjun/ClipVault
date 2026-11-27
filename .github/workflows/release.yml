@@ -97,29 +97,36 @@ jobs:
       - name: Install ARM cross-compile dependencies (ubuntu only)
         if: matrix.target == 'aarch64-unknown-linux-gnu'
         run: |
-          # 添加 ARM64 架构支持
           sudo dpkg --add-architecture arm64
-          
-          # 切换到 ports.ubuntu.com 源以获取 ARM64 软件包
-          sudo sed -i 's|http://archive.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
-          sudo sed -i 's|http://security.ubuntu.com/ubuntu/|http://ports.ubuntu.com/ubuntu-ports/|g' /etc/apt/sources.list
-          
-          sudo apt-get update || true
-          
+
+          # GitHub runners point sources.list at an amd64-only mirror
+          # (azure.archive.ubuntu.com), so rewriting its URL to ports.ubuntu.com
+          # never matches anything (and ports does not serve amd64 at all).
+          # Instead: add a dedicated arm64 ports source and restrict the existing
+          # sources to amd64.
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ jammy main universe restricted multiverse" | sudo tee /etc/apt/sources.list.d/arm64-ports.list > /dev/null
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ jammy-updates main universe restricted multiverse" | sudo tee -a /etc/apt/sources.list.d/arm64-ports.list > /dev/null
+          sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
+
+          sudo apt-get update
+
           # 安装交叉编译工具链
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-          
-          # 安装 ARM64 架构的 OpenSSL 开发库
-          sudo apt-get install -y libssl-dev:arm64 || true
-          
-          # 安装其他 ARM64 依赖库
-          sudo apt-get install -y libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf || true
-          
+
+          # 安装 ARM64 依赖库。不能用 "|| true"：静默失败会让构建在很后面的
+          # openssl-sys 才炸，还查不到原因。
+          sudo apt-get install -y libssl-dev:arm64 libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf
+
+          # openssl-sys 只接受一个 include 根目录，而 Ubuntu 的 multiarch 把通用
+          # 头放在 /usr/include/openssl、架构特定的 opensslconf.h 放在
+          # /usr/include/aarch64-linux-gnu/openssl —— 合并成单一前缀给交叉编译用。
+          sudo mkdir -p /usr/aarch64-linux-gnu/openssl-arm64/include/openssl
+          sudo cp /usr/include/openssl/*.h /usr/aarch64-linux-gnu/openssl-arm64/include/openssl/
+          sudo cp /usr/include/aarch64-linux-gnu/openssl/opensslconf.h /usr/aarch64-linux-gnu/openssl-arm64/include/openssl/
+
           # 验证 OpenSSL ARM64 库文件
           echo "=== Verifying OpenSSL ARM64 libraries ==="
-          ls -la /usr/lib/aarch64-linux-gnu/libssl* 2>/dev/null || echo "Warning: libssl not found"
-          ls -la /usr/lib/aarch64-linux-gnu/libcrypto* 2>/dev/null || echo "Warning: libcrypto not found"
-          ls -la /usr/include/aarch64-linux-gnu/openssl/ 2>/dev/null || echo "Warning: ARM64 OpenSSL headers not found"
+          ls -la /usr/lib/aarch64-linux-gnu/libssl* /usr/lib/aarch64-linux-gnu/libcrypto* > /dev/null && echo "ARM64 OpenSSL libraries present" || { echo "ERROR: ARM64 OpenSSL libraries missing"; exit 1; }
 
       # 使用 Rust 缓存，加快安装速度
       - name: Rust cache
@@ -152,18 +159,17 @@ jobs:
           echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
           echo "CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
           echo "CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++" >> $GITHUB_ENV
-          # 设置 pkg-config 用于交叉编译
-          echo "PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
+          # pkg-config 走路径直连：不要设 PKG_CONFIG_SYSROOT_DIR。Ubuntu 的
+          # multiarch 头文件分散在 /usr/include 与 /usr/include/aarch64-linux-gnu，
+          # 设了 sysroot 会把所有 -I 前缀化到不存在的
+          # /usr/aarch64-linux-gnu/usr/include/... 下。直接用现成路径即可
+          # （arm64 的 .pc 文件 libdir=/usr/lib/aarch64-linux-gnu，
+          # 其中的 arch 特定头如 glibconfig.h、dbus-arch-deps.h 也都正确）。
           echo "PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig" >> $GITHUB_ENV
           echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
-          # 设置 OpenSSL 环境变量 - 指向系统 ARM64 库位置
-          echo "OPENSSL_DIR=/usr" >> $GITHUB_ENV
-          echo "OPENSSL_INCLUDE_DIR=/usr/include" >> $GITHUB_ENV
+          # OpenSSL：include 指向上一步合并好的单一前缀，lib 指向 arm64 实际库目录
+          echo "OPENSSL_INCLUDE_DIR=/usr/aarch64-linux-gnu/openssl-arm64/include" >> $GITHUB_ENV
           echo "OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
-          # 同时设置目标特定的环境变量
-          echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_DIR=/usr" >> $GITHUB_ENV
-          echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_INCLUDE_DIR=/usr/include" >> $GITHUB_ENV
-          echo "AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
 
       # 执行构建，以及推送 github release
       - name: Build the app
