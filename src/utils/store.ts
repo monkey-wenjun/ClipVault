@@ -55,8 +55,9 @@ export const saveStore = async (backup = false) => {
 /**
  * 从本地存储恢复配置项
  * @param backup 是否为备份数据
+ * @returns 是否为首次运行（没有已保存的配置文件）
  */
-export const restoreStore = async (backup = false) => {
+export const restoreStore = async (backup = false): Promise<boolean> => {
   const path = await getSaveStorePath(backup);
 
   const existed = await exists(path);
@@ -73,7 +74,9 @@ export const restoreStore = async (backup = false) => {
     }
   }
 
-  if (backup) return;
+  if (backup) return false;
 
-  return initStore();
+  await initStore();
+
+  return !existed;
 };

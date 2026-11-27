@@ -34,7 +34,13 @@ const App = () => {
   useMount(async () => {
     await restoreState();
 
-    await restoreStore();
+    const firstRun = await restoreStore();
+
+    // 首次运行时显示主窗口：默认的静默启动 + 隐藏窗口对老用户友好,
+    // 但新用户（和 AppImage 目录的启动测试）需要能看到应用本身
+    if (firstRun && getCurrentWebviewWindow().label === "main") {
+      showWindow();
+    }
 
     // 如果开启了自启动，确保系统注册
     if (globalStore.app.autoStart) {
